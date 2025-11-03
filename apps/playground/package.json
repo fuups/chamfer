@@ -1,0 +1,20 @@
+{
+  "name": "@chamfer/playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Chamfer UI HTML playground for rapid CSS iteration.",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@chamfer/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^5.4.2"
+  }
+}

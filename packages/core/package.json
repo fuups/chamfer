@@ -1,0 +1,39 @@
+{
+  "name": "@chamfer/core",
+  "version": "0.0.0",
+  "description": "Chamfer UI core CSS bundle that consumes semantic tokens and exposes framework-agnostic styles.",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./css": "./dist/css/index.css",
+    "./css/base": "./dist/css/base.css"
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run compile && pnpm run styles",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true });\"",
+    "compile": "tsc -p tsconfig.json",
+    "styles": "tsx scripts/build.ts",
+    "dev": "pnpm run build",
+    "lint": "echo \"TODO: lint core styles\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@chamfer/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@chamfer/tokens": "workspace:*"
+  },
+  "keywords": [
+    "css",
+    "design-system",
+    "chamfer"
+  ],
+  "license": "MIT"
+}

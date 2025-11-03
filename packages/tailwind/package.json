@@ -1,0 +1,36 @@
+{
+  "name": "@chamfer/tailwind",
+  "version": "0.0.0",
+  "description": "Tailwind CSS preset and plugin for Chamfer UI design tokens.",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./preset": {
+      "types": "./dist/preset.d.ts",
+      "default": "./dist/preset.js"
+    }
+  },
+  "scripts": {
+    "build": "echo \"TODO: build tailwind preset\"",
+    "dev": "echo \"TODO: watch tailwind preset\"",
+    "lint": "echo \"TODO: lint tailwind preset\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0",
+    "@chamfer/tokens": "workspace:*"
+  },
+  "keywords": [
+    "tailwindcss",
+    "design-system",
+    "chamfer"
+  ],
+  "license": "MIT"
+}

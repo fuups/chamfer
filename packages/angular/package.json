@@ -1,0 +1,34 @@
+{
+  "name": "@chamfer/angular",
+  "version": "0.0.0",
+  "description": "Angular directives and components for Chamfer UI.",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "echo \"TODO: build Angular package\"",
+    "dev": "echo \"TODO: watch Angular package\"",
+    "lint": "echo \"TODO: lint Angular package\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@chamfer/core": "workspace:*",
+    "@chamfer/behavior": "workspace:*"
+  },
+  "keywords": [
+    "angular",
+    "design-system",
+    "chamfer"
+  ],
+  "license": "MIT"
+}

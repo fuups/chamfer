@@ -1,0 +1,35 @@
+{
+  "name": "@chamfer/tokens",
+  "version": "0.0.0",
+  "description": "Design tokens for Chamfer UI with CSS + TypeScript outputs.",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./css": "./dist/css/index.css",
+    "./css/primitives": "./dist/css/primitives.css",
+    "./css/semantic": "./dist/css/semantic.css",
+    "./data": "./dist/json/tokens.json"
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run compile && pnpm run artifacts",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true });\"",
+    "compile": "tsc -p tsconfig.json",
+    "dev": "pnpm run build",
+    "artifacts": "tsx scripts/build.ts",
+    "lint": "echo \"TODO: lint tokens\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [
+    "design-tokens",
+    "oklch",
+    "css"
+  ],
+  "license": "MIT"
+}

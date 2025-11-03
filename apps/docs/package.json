@@ -1,0 +1,13 @@
+{
+  "name": "@chamfer/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Chamfer UI documentation site powered by Astro.",
+  "type": "module",
+  "scripts": {
+    "build": "echo \"TODO: build docs\"",
+    "dev": "echo \"TODO: start docs dev server\"",
+    "lint": "echo \"TODO: lint docs\"",
+    "typecheck": "echo \"TODO: typecheck docs\""
+  }
+}

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chamfer Playground</title>
+    <link rel="stylesheet" href="/src/playground.css" />
+  </head>
+  <body>
+    <header class="playground-header">
+      <div>
+        <h1>Chamfer Playground</h1>
+        <p>Design token smoke-test (DESIGN_SYSTEM v1.0.1).</p>
+      </div>
+      <div class="playground-controls">
+        <label>
+          Theme
+          <select id="theme-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" id="contrast-toggle" />
+          High contrast
+        </label>
+        <label>
+          Density
+          <select id="density-select">
+            <option value="1.1">Comfortable</option>
+            <option value="1" selected>Default</option>
+            <option value="0.95">Compact</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <p id="playground-status" class="sr-only" aria-live="polite"></p>
+
+    <main class="playground-main">
+      <section>
+        <h2>Color primitives</h2>
+        <div class="color-grid">
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-contrast);">
+            <span class="token-label">--color-contrast</span>
+            <span class="token-example">Contrast</span>
+          </div>
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-default);">
+            <span class="token-label">--color-default</span>
+            <span class="token-example">Default</span>
+          </div>
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-primary);">
+            <span class="token-label">--color-primary</span>
+            <span class="token-example">Primary</span>
+          </div>
+          <div class="color-swatch color-swatch--light" style="background: var(--color-secondary);">
+            <span class="token-label">--color-secondary</span>
+            <span class="token-example">Secondary</span>
+          </div>
+          <div class="color-swatch color-swatch--light" style="background: var(--color-tertiary);">
+            <span class="token-label">--color-tertiary</span>
+            <span class="token-example">Tertiary</span>
+          </div>
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-success);">
+            <span class="token-label">--color-success</span>
+            <span class="token-example">Success</span>
+          </div>
+          <div class="color-swatch color-swatch--light" style="background: var(--color-warning);">
+            <span class="token-label">--color-warning</span>
+            <span class="token-example">Warning</span>
+          </div>
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-danger);">
+            <span class="token-label">--color-danger</span>
+            <span class="token-example">Danger</span>
+          </div>
+          <div class="color-swatch color-swatch--dark" style="background: var(--color-info);">
+            <span class="token-label">--color-info</span>
+            <span class="token-example">Info</span>
+          </div>
+          <div class="color-swatch color-swatch--light" style="background: var(--color-background);">
+            <span class="token-label">--color-background</span>
+            <span class="token-example">Background</span>
+          </div>
+          <div class="color-swatch color-swatch--light" style="background: var(--color-surface);">
+            <span class="token-label">--color-surface</span>
+            <span class="token-example">Surface</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Text</h2>
+        <ul class="token-list">
+          <li class="token-item">
+            <span class="token-label">--ch-text-primary</span>
+            <span class="token-example" style="color: var(--ch-text-primary);">
+              Primary body copy
+            </span>
+          </li>
+          <li class="token-item">
+            <span class="token-label">--ch-text-secondary</span>
+            <span class="token-example" style="color: var(--ch-text-secondary);">
+              Secondary tone
+            </span>
+          </li>
+          <li class="token-item">
+            <span class="token-label">--ch-text-tertiary</span>
+            <span class="token-example" style="color: var(--ch-text-tertiary);">
+              Tertiary caption
+            </span>
+          </li>
+          <li class="token-item token-item--inverse">
+            <span class="token-label">--ch-text-inverse</span>
+            <span class="token-example" style="color: var(--ch-text-inverse);">
+              Inverse on contrast
+            </span>
+          </li>
+          <li class="token-item token-item--muted">
+            <span class="token-label">--ch-text-disabled</span>
+            <span class="token-example" style="color: var(--ch-text-disabled);">
+              Disabled copy
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Surfaces</h2>
+        <div class="surface-grid">
+          <div class="surface-tile" style="background: var(--ch-surface-base);">
+            <span class="token-label">surface-base</span>
+          </div>
+          <div class="surface-tile" style="background: var(--ch-surface-raised);">
+            <span class="token-label">surface-raised</span>
+          </div>
+          <div class="surface-tile surface-tile--inverse">
+            <span class="token-label">surface-inverse</span>
+          </div>
+          <div class="surface-tile surface-tile--overlay">
+            <span class="token-label">surface-overlay</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Action intents</h2>
+        <div class="intent-grid">
+          <div class="intent-swatch" style="background: var(--ch-action-primary-bg); color: var(--ch-action-primary-fg); border-color: var(--ch-action-primary-soft-border);">
+            <span class="token-label">primary</span>
+            <span class="token-example">Solid action</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-secondary-bg); color: var(--ch-action-secondary-fg); border-color: var(--ch-action-secondary-soft-border);">
+            <span class="token-label">secondary</span>
+            <span class="token-example">Solid action</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-success-bg); color: var(--ch-action-success-fg); border-color: var(--ch-action-success-soft-border);">
+            <span class="token-label">success</span>
+            <span class="token-example">Solid action</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-warning-bg); color: var(--ch-action-warning-fg); border-color: var(--ch-action-warning-soft-border);">
+            <span class="token-label">warning</span>
+            <span class="token-example">Solid action</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-danger-bg); color: var(--ch-action-danger-fg); border-color: var(--ch-action-danger-soft-border);">
+            <span class="token-label">danger</span>
+            <span class="token-example">Solid action</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Soft & outline helpers</h2>
+        <div class="intent-grid">
+          <div class="intent-swatch" style="background: var(--ch-action-primary-soft-bg); border-color: var(--ch-action-primary-soft-border); color: var(--ch-action-primary-soft-fg);">
+            <span class="token-label">primary-soft</span>
+            <span class="token-example">Soft tone</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-secondary-soft-bg); border-color: var(--ch-action-secondary-soft-border); color: var(--ch-action-secondary-soft-fg);">
+            <span class="token-label">secondary-soft</span>
+            <span class="token-example">Soft tone</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-action-warning-soft-bg); border-color: var(--ch-action-warning-soft-border); color: var(--ch-action-warning-soft-fg);">
+            <span class="token-label">warning-soft</span>
+            <span class="token-example">Soft tone</span>
+          </div>
+          <div class="intent-swatch" style="background: var(--ch-tone-info-soft-bg); border-color: var(--ch-tone-info-soft-border); color: var(--ch-tone-info-soft-fg);">
+            <span class="token-label">tone-info</span>
+            <span class="token-example">Messaging</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Buttons</h2>
+        <div class="demo-buttons">
+          <button
+            class="demo-button demo-button--primary"
+            style="background: var(--ch-action-primary-bg); color: var(--ch-action-primary-fg); border-color: var(--ch-action-primary-soft-border);"
+          >
+            Solid
+          </button>
+          <button
+            class="demo-button"
+            style="background: transparent; color: var(--ch-action-outline-primary-fg); border-color: var(--ch-action-outline-primary-border);"
+          >
+            Outline
+          </button>
+          <button
+            class="demo-button"
+            style="background: transparent; color: var(--ch-text-secondary); border-color: transparent;"
+          >
+            Ghost
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const root = document.documentElement;
+      const themeSelect = document.getElementById("theme-select");
+      const contrastToggle = document.getElementById("contrast-toggle");
+      const densitySelect = document.getElementById("density-select");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+      const statusEl = document.getElementById("playground-status");
+
+      function applyTheme(theme) {
+        let resolved = theme;
+
+        if (theme === "system") {
+          resolved = prefersDark.matches ? "dark" : "light";
+        }
+
+        root.setAttribute("data-theme", theme);
+        root.classList.toggle("dark", resolved === "dark");
+        root.style.setProperty("color-scheme", resolved);
+
+        if (statusEl) {
+          statusEl.textContent = `Theme set to ${theme === "system" ? `system (${resolved})` : resolved}.`;
+        }
+      }
+
+      function applyContrast(enabled) {
+        if (enabled) {
+          root.classList.add("high-contrast");
+          root.setAttribute("data-contrast", "high");
+        } else {
+          root.classList.remove("high-contrast");
+          root.removeAttribute("data-contrast");
+        }
+
+        if (statusEl) {
+          statusEl.textContent = `High contrast ${enabled ? "enabled" : "disabled"}.`;
+        }
+      }
+
+      function applyDensity(value) {
+        root.style.setProperty("--ch-density-scale", value);
+
+        if (statusEl) {
+          statusEl.textContent = `Density set to ${densitySelect.selectedOptions[0]?.textContent ?? value}.`;
+        }
+      }
+
+      themeSelect.addEventListener("change", (event) => {
+        applyTheme(event.target.value);
+      });
+
+      prefersDark.addEventListener("change", () => {
+        if (themeSelect.value === "system") {
+          applyTheme("system");
+        }
+      });
+
+      contrastToggle.addEventListener("change", (event) => {
+        applyContrast(event.target.checked);
+      });
+
+      densitySelect.addEventListener("change", (event) => {
+        applyDensity(event.target.value);
+      });
+
+      (async () => {
+        try {
+          await import("../../packages/core/dist/css/index.css");
+        } catch (error) {
+          console.warn(
+            "Chamfer core CSS not found. Run `pnpm --filter @chamfer/core build` and re-run the playground.",
+            error
+          );
+        }
+      })();
+
+      applyTheme(themeSelect.value);
+      applyContrast(contrastToggle.checked);
+      applyDensity(densitySelect.value);
+    </script>
+  </body>
+</html>

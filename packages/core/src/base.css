@@ -1,0 +1,84 @@
+/* Core baseline – normalizes layout and applies Chamfer semantic tokens. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ch-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-size: var(--ch-text-md, 1rem);
+  line-height: var(--ch-leading-normal, 1.5);
+  color: var(--ch-text-primary, #111);
+  background-color: var(--ch-surface-base, #fff);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: var(--ch-focus-outline-width, 2px) solid var(--ch-focus-outer, #111111);
+  outline-offset: var(--ch-focus-outline-offset, 2px);
+  box-shadow:
+    0 0 0 var(--ch-ring-inner-width, 2px) var(--ch-focus-accent, #3b82f6),
+    0 0 0 var(--ch-ring-outer-width, 4px) var(--ch-focus-outer, #111111);
+}
+
+::selection {
+  background: var(--ch-selection-bg, rgba(36, 87, 230, 0.22));
+  color: var(--ch-selection-fg, var(--ch-text-primary, currentColor));
+}
+
+a {
+  color: var(--ch-link-fg, currentColor);
+  text-decoration-color: var(--ch-link-underline-color, currentColor);
+  text-decoration-thickness: var(--ch-link-underline-thickness, 1px);
+  text-underline-offset: var(--ch-link-underline-offset, 2px);
+}
+
+a:hover {
+  color: var(--ch-link-fg-hover, currentColor);
+}
+
+a:active {
+  color: var(--ch-link-fg-active, currentColor);
+}
+
+a:visited {
+  color: var(--ch-link-fg-visited, currentColor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

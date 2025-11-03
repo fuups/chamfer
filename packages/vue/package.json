@@ -1,0 +1,33 @@
+{
+  "name": "@chamfer/vue",
+  "version": "0.0.0",
+  "description": "Vue bindings for Chamfer UI components.",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "echo \"TODO: build Vue package\"",
+    "dev": "echo \"TODO: watch Vue package\"",
+    "lint": "echo \"TODO: lint Vue package\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0",
+    "@chamfer/core": "workspace:*",
+    "@chamfer/behavior": "workspace:*"
+  },
+  "keywords": [
+    "vue",
+    "design-system",
+    "chamfer"
+  ],
+  "license": "MIT"
+}
