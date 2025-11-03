@@ -1,5 +1,10 @@
 # Chamfer Shared Configs
 
-Workspace-level linting/build configurations will live here (e.g., PostCSS, Stylelint, ESLint). Each package will reference these configs to ensure consistent tooling across the monorepo.
+Workspace-level linting/build configurations live here. Reference them from individual packages to keep tooling consistent across the monorepo.
 
-> Status: waiting on actual config files.
+Available configs:
+
+- `eslint.config.cjs` — base ESLint rules for TypeScript, React, Vue, JSON.
+- `prettier.config.cjs` — shared Prettier formatting settings.
+- `stylelint.config.cjs` — Stylelint rules (with property ordering) for CSS token files.
+- `postcss.config.cjs` — PostCSS plugin stack (import, nesting, preset-env, autoprefixer).

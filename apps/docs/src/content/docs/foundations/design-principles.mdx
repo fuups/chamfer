@@ -1,0 +1,24 @@
+---
+title: Design Principles
+description: Core principles guiding Chamfer UI’s components and tokens.
+status: draft
+updated: "2025-01-05"
+---
+
+Chamfer UI is grounded in four principles that guide every token, component, and documentation decision.
+
+## Clarity
+
+Interfaces must be legible, discoverable, and predictable. Tokens follow semantic naming so designers and engineers can discuss “primary action soft foreground” instead of hard-coded hex values. Components ship with accessible defaults (contrast, focus outlines, high-contrast fallbacks) so UIs remain understandable across light/dark/HCM contexts.
+
+## Consistency
+
+The token pipeline enforces consistency by mapping primitives → semantic → component layers. Components never reference primitives directly; they rely on semantic aliases, ensuring theme overrides flow through the same contract. Framework adapters render identical markup and attribute patterns so behavior stays uniform across React/Vue/Angular.
+
+## Flexibility
+
+Chamfer exposes density scaling, forced-color overrides, and Tailwind utilities so teams can adapt components to varying contexts without forking the CSS. The vanilla HTML playground and framework wrappers both pull from the same tokens and behaviors, encouraging reuse instead of custom one-offs.
+
+## Accessibility
+
+Every component defaults to accessible structures: data attributes for hooks, `aria-*` guidance, ripple checks for `prefers-reduced-motion`, and high-contrast tokens. Documentation highlights the minimum accessibility checklist per component so teams can verify every state (focus, hover, disabled, loading) before shipping.

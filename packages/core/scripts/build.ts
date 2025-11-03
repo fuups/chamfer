@@ -1,8 +1,8 @@
-import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
+import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,8 +42,8 @@ async function readCssFragments(sourceDir: string): Promise<string[]> {
   const entries = await readdir(sourceDir, { withFileTypes: true });
 
   const cssFiles = entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".css"))
-    .map((entry) => entry.name)
+    .filter(entry => entry.isFile() && entry.name.endsWith(".css"))
+    .map(entry => entry.name)
     .sort((a, b) => a.localeCompare(b));
 
   const fragments: string[] = [];
@@ -68,19 +68,12 @@ async function build(): Promise<void> {
   const baseFragments = await readCssFragments(path.resolve(packageRoot, "src"));
   const baseCss = baseFragments.join("\n\n").trim();
 
-  const baseOutput = [
-    "/* Chamfer core baseline styles – generated. */",
-    baseCss
-  ]
+  const baseOutput = ["/* Chamfer core baseline styles – generated. */", baseCss]
     .filter(Boolean)
     .join("\n\n")
     .concat("\n");
 
-  const bundleOutput = [
-    "/* Chamfer core bundle – generated. */",
-    tokensBundle,
-    baseCss
-  ]
+  const bundleOutput = ["/* Chamfer core bundle – generated. */", tokensBundle, baseCss]
     .filter(Boolean)
     .join("\n\n")
     .concat("\n");

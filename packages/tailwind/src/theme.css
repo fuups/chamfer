@@ -1,0 +1,5 @@
+/* Chamfer Tailwind theme */
+
+/* Expose Chamfer tokens so utilities resolve. */
+@import "@chamfer/core/css/index.css" layer(base);
+@import "@chamfer/core/css/base.css" layer(base);

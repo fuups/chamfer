@@ -1,0 +1,23 @@
+{
+  "name": "@chamfer/playground-html-tailwind",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Chamfer UI HTML playground rendered with the Tailwind preset.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@chamfer/core": "workspace:*",
+    "@chamfer/tailwind": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.16",
+    "tailwindcss": "^4.1.16",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.2"
+  }
+}

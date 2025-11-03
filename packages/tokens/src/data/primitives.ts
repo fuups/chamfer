@@ -1,288 +1,89 @@
-import type {
-  ColorTokenBlock,
-  PrimitiveTokens,
-  SimpleTokenBlock
-} from "../types.js";
+import type { ColorTokenBlock, PrimitiveTokens, SimpleTokenBlock } from "../types.js";
 
 const colorBlocks: ColorTokenBlock[] = [
   {
     type: "color",
-    label: "Color primitives (light)",
+    label: "Structural colors (light)",
     selector: ":root",
     tokens: [
       {
-        name: "color-contrast",
-        oklch: "oklch(0.0000 0.0000 0.00)",
-        hsla: "hsla(0, 0%, 0%, 1)",
-        hsl: "hsl(0 0% 0% / 1)",
-        hex: "#000000",
-        value: "var(--color-contrast-hex)"
-      },
-      {
-        name: "color-default",
-        oklch: "oklch(0.2621 0.0095 248.19)",
-        hsla: "hsla(210, 11%, 15%, 1)",
-        hsl: "hsl(210 11% 15% / 1)",
+        name: "ch-color-default",
         hex: "#212529",
-        value: "var(--color-default-hex)"
+        hsl: "hsl(210 11% 15% / 1)",
+        value: "var(--ch-color-default-hex)"
       },
       {
-        name: "color-primary",
-        oklch: "oklch(0.0000 0.0000 0.00)",
-        hsla: "hsla(0, 0%, 0%, 1)",
-        hsl: "hsl(0 0% 0% / 1)",
-        hex: "#000000",
-        value: "var(--color-primary-hex)"
-      },
-      {
-        name: "color-secondary",
-        oklch: "oklch(0.4985 0.0145 244.89)",
-        hsla: "hsla(208, 7%, 38%, 1)",
-        hsl: "hsl(208 7% 38% / 1)",
+        name: "ch-color-secondary",
         hex: "#5A6169",
-        value: "var(--color-secondary-hex)"
+        hsl: "hsl(212 8% 38% / 1)",
+        value: "var(--ch-color-secondary-hex)"
       },
       {
-        name: "color-tertiary",
-        oklch: "oklch(0.8261 0.0000 89.88)",
-        hsla: "hsla(0, 0%, 78%, 1)",
-        hsl: "hsl(0 0% 78% / 1)",
-        hex: "#C7C7C7",
-        value: "var(--color-tertiary-hex)"
-      },
-      {
-        name: "color-success",
-        oklch: "oklch(0.5753 0.1341 147.92)",
-        hsla: "hsla(132, 45%, 38%, 1)",
-        hsl: "hsl(132 45% 38% / 1)",
-        hex: "#358546",
-        value: "var(--color-success-hex)"
-      },
-      {
-        name: "color-warning",
-        oklch: "oklch(0.7403 0.1587 85.16)",
-        hsla: "hsla(45, 92%, 42%, 1)",
-        hsl: "hsl(45 92% 42% / 1)",
-        hex: "#D9A100",
-        value: "var(--color-warning-hex)"
-      },
-      {
-        name: "color-danger",
-        oklch: "oklch(0.5579 0.2300 27.58)",
-        hsla: "hsla(0, 88%, 48%, 1)",
-        hsl: "hsl(0 88% 48% / 1)",
-        hex: "#E21E1E",
-        value: "var(--color-danger-hex)"
-      },
-      {
-        name: "color-info",
-        oklch: "oklch(0.5814 0.1418 245.25)",
-        hsla: "hsla(205, 75%, 45%, 1)",
-        hsl: "hsl(205 75% 45% / 1)",
-        hex: "#1C7EC5",
-        value: "var(--color-info-hex)"
-      },
-      {
-        name: "color-background",
-        oklch: "oklch(1.0000 0.0000 89.88)",
-        hsla: "hsla(0, 0%, 100%, 1)",
-        hsl: "hsl(0 0% 100% / 1)",
+        name: "ch-color-background",
         hex: "#FFFFFF",
-        value: "var(--color-background-hex)"
+        hsl: "hsl(0 0% 100% / 1)",
+        value: "var(--ch-color-background-hex)"
       },
       {
-        name: "color-surface",
-        oklch: "oklch(0.9850 0.0000 89.88)",
-        hsla: "hsla(0, 0%, 98%, 1)",
-        hsl: "hsl(0 0% 98% / 1)",
+        name: "ch-color-surface",
         hex: "#FAFAFA",
-        value: "var(--color-surface-hex)"
+        hsl: "hsl(0 0% 98% / 1)",
+        value: "var(--ch-color-surface-hex)"
+      },
+      {
+        name: "ch-border-default",
+        hex: "#8F8F8F",
+        hsl: "hsl(0 0% 56% / 1)",
+        value: "var(--ch-border-default-hex)"
       }
     ]
   },
   {
     type: "color",
-    label: "Color primitives (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    label: "Structural colors (dark)",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       {
-        name: "color-contrast",
-        oklch: "oklch(1.0000 0.0000 89.88)",
-        hsla: "hsla(0, 0%, 100%, 1)",
-        hsl: "hsl(0 0% 100% / 1)",
-        hex: "#FFFFFF",
-        value: "var(--color-contrast-hex)"
-      },
-      {
-        name: "color-default",
-        oklch: "oklch(0.9248 0.0071 268.54)",
-        hsla: "hsla(223, 15%, 91%, 1)",
-        hsl: "hsl(223 15% 91% / 1)",
+        name: "ch-color-default",
         hex: "#E4E6EB",
-        value: "var(--color-default-hex)"
+        hsl: "hsl(223 15% 91% / 1)",
+        value: "var(--ch-color-default-hex)"
       },
       {
-        name: "color-primary",
-        oklch: "oklch(1.0000 0.0000 89.88)",
-        hsla: "hsla(0, 0%, 100%, 1)",
-        hsl: "hsl(0 0% 100% / 1)",
-        hex: "#FFFFFF",
-        value: "var(--color-primary-hex)"
-      },
-      {
-        name: "color-secondary",
-        oklch: "oklch(0.7359 0.0079 260.73)",
-        hsla: "hsla(218, 6%, 67%, 1)",
-        hsl: "hsl(218 6% 67% / 1)",
+        name: "ch-color-secondary",
         hex: "#A4A7AC",
-        value: "var(--color-secondary-hex)"
+        hsl: "hsl(218 5% 66% / 1)",
+        value: "var(--ch-color-secondary-hex)"
       },
       {
-        name: "color-tertiary",
-        oklch: "oklch(0.3817 0.0022 247.89)",
-        hsla: "hsla(210, 2%, 27%, 1)",
-        hsl: "hsl(210 2% 27% / 1)",
-        hex: "#444546",
-        value: "var(--color-tertiary-hex)"
-      },
-      {
-        name: "color-success",
-        oklch: "oklch(0.6353 0.1341 147.92)",
-        hsla: "hsla(132, 43%, 46%, 1)",
-        hsl: "hsl(132 43% 46% / 1)",
-        hex: "#44A859",
-        value: "var(--color-success-hex)"
-      },
-      {
-        name: "color-warning",
-        oklch: "oklch(0.8503 0.1687 85.16)",
-        hsla: "hsla(45, 96%, 55%, 1)",
-        hsl: "hsl(45 96% 55% / 1)",
-        hex: "#FFC61A",
-        value: "var(--color-warning-hex)"
-      },
-      {
-        name: "color-danger",
-        oklch: "oklch(0.6379 0.2300 27.58)",
-        hsla: "hsla(0, 86%, 57%, 1)",
-        hsl: "hsl(0 86% 57% / 1)",
-        hex: "#F53333",
-        value: "var(--color-danger-hex)"
-      },
-      {
-        name: "color-info",
-        oklch: "oklch(0.7524 0.1125 242.34)",
-        hsla: "hsla(206, 82%, 68%, 1)",
-        hsl: "hsl(206 82% 68% / 1)",
-        hex: "#6AB7F0",
-        value: "var(--color-info-hex)"
-      },
-      {
-        name: "color-background",
-        oklch: "oklch(0.2127 0.0025 247.94)",
-        hsla: "hsla(210, 4%, 10%, 1)",
-        hsl: "hsl(210 4% 10% / 1)",
+        name: "ch-color-background",
         hex: "#18191A",
-        value: "var(--color-background-hex)"
+        hsl: "hsl(210 4% 10% / 1)",
+        value: "var(--ch-color-background-hex)"
       },
       {
-        name: "color-surface",
-        oklch: "oklch(0.2427 0.0025 247.94)",
-        hsla: "hsla(210, 4%, 13%, 1)",
-        hsl: "hsl(210 4% 13% / 1)",
+        name: "ch-color-surface",
         hex: "#1F2021",
-        value: "var(--color-surface-hex)"
+        hsl: "hsl(210 3% 13% / 1)",
+        value: "var(--ch-color-surface-hex)"
+      },
+      {
+        name: "ch-border-default",
+        hex: "#6A6B6C",
+        hsl: "hsl(210 1% 42% / 1)",
+        value: "var(--ch-border-default-hex)"
       }
     ]
   }
 ];
 
-const colorAliasBlock: SimpleTokenBlock = {
-  type: "scalar",
-  label: "Chamfer color aliases",
-  selector: ":root",
-  tokens: [
-    { name: "ch-color-contrast-oklch", value: "var(--color-contrast-oklch)" },
-    { name: "ch-color-contrast-hsla", value: "var(--color-contrast-hsla)" },
-    { name: "ch-color-contrast-hsl", value: "var(--color-contrast-hsl)" },
-    { name: "ch-color-contrast-hex", value: "var(--color-contrast-hex)" },
-    { name: "ch-color-contrast", value: "var(--color-contrast)" },
-
-    { name: "ch-color-default-oklch", value: "var(--color-default-oklch)" },
-    { name: "ch-color-default-hsla", value: "var(--color-default-hsla)" },
-    { name: "ch-color-default-hsl", value: "var(--color-default-hsl)" },
-    { name: "ch-color-default-hex", value: "var(--color-default-hex)" },
-    { name: "ch-color-default", value: "var(--color-default)" },
-
-    { name: "ch-color-primary-oklch", value: "var(--color-primary-oklch)" },
-    { name: "ch-color-primary-hsla", value: "var(--color-primary-hsla)" },
-    { name: "ch-color-primary-hsl", value: "var(--color-primary-hsl)" },
-    { name: "ch-color-primary-hex", value: "var(--color-primary-hex)" },
-    { name: "ch-color-primary", value: "var(--color-primary)" },
-
-    { name: "ch-color-secondary-oklch", value: "var(--color-secondary-oklch)" },
-    { name: "ch-color-secondary-hsla", value: "var(--color-secondary-hsla)" },
-    { name: "ch-color-secondary-hsl", value: "var(--color-secondary-hsl)" },
-    { name: "ch-color-secondary-hex", value: "var(--color-secondary-hex)" },
-    { name: "ch-color-secondary", value: "var(--color-secondary)" },
-
-    { name: "ch-color-tertiary-oklch", value: "var(--color-tertiary-oklch)" },
-    { name: "ch-color-tertiary-hsla", value: "var(--color-tertiary-hsla)" },
-    { name: "ch-color-tertiary-hsl", value: "var(--color-tertiary-hsl)" },
-    { name: "ch-color-tertiary-hex", value: "var(--color-tertiary-hex)" },
-    { name: "ch-color-tertiary", value: "var(--color-tertiary)" },
-
-    { name: "ch-color-success-oklch", value: "var(--color-success-oklch)" },
-    { name: "ch-color-success-hsla", value: "var(--color-success-hsla)" },
-    { name: "ch-color-success-hsl", value: "var(--color-success-hsl)" },
-    { name: "ch-color-success-hex", value: "var(--color-success-hex)" },
-    { name: "ch-color-success", value: "var(--color-success)" },
-
-    { name: "ch-color-warning-oklch", value: "var(--color-warning-oklch)" },
-    { name: "ch-color-warning-hsla", value: "var(--color-warning-hsla)" },
-    { name: "ch-color-warning-hsl", value: "var(--color-warning-hsl)" },
-    { name: "ch-color-warning-hex", value: "var(--color-warning-hex)" },
-    { name: "ch-color-warning", value: "var(--color-warning)" },
-
-    { name: "ch-color-danger-oklch", value: "var(--color-danger-oklch)" },
-    { name: "ch-color-danger-hsla", value: "var(--color-danger-hsla)" },
-    { name: "ch-color-danger-hsl", value: "var(--color-danger-hsl)" },
-    { name: "ch-color-danger-hex", value: "var(--color-danger-hex)" },
-    { name: "ch-color-danger", value: "var(--color-danger)" },
-
-    { name: "ch-color-info-oklch", value: "var(--color-info-oklch)" },
-    { name: "ch-color-info-hsla", value: "var(--color-info-hsla)" },
-    { name: "ch-color-info-hsl", value: "var(--color-info-hsl)" },
-    { name: "ch-color-info-hex", value: "var(--color-info-hex)" },
-    { name: "ch-color-info", value: "var(--color-info)" },
-
-    { name: "ch-color-background-oklch", value: "var(--color-background-oklch)" },
-    { name: "ch-color-background-hsla", value: "var(--color-background-hsla)" },
-    { name: "ch-color-background-hsl", value: "var(--color-background-hsl)" },
-    { name: "ch-color-background-hex", value: "var(--color-background-hex)" },
-    { name: "ch-color-background", value: "var(--color-background)" },
-
-    { name: "ch-color-surface-oklch", value: "var(--color-surface-oklch)" },
-    { name: "ch-color-surface-hsla", value: "var(--color-surface-hsla)" },
-    { name: "ch-color-surface-hsl", value: "var(--color-surface-hsl)" },
-    { name: "ch-color-surface-hex", value: "var(--color-surface-hex)" },
-    { name: "ch-color-surface", value: "var(--color-surface)" },
-
-    { name: "ch-border-default-oklch", value: "var(--color-tertiary-oklch)" },
-    { name: "ch-border-default-hsla", value: "var(--color-tertiary-hsla)" },
-    { name: "ch-border-default-hsl", value: "var(--color-tertiary-hsl)" },
-    { name: "ch-border-default-hex", value: "var(--color-tertiary-hex)" },
-    { name: "ch-border-default", value: "var(--color-tertiary)" },
-    { name: "ch-border-ui-default", value: "var(--ch-border-default)" }
-  ]
-};
-
 const scaleBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
-    label: "Border widths",
+    label: "Structural aliases & border widths",
     selector: ":root",
     tokens: [
+      { name: "ch-border-ui-default", value: "var(--ch-border-default)" },
       { name: "ch-border-width-sm", value: "1px" },
       { name: "ch-border-width-md", value: "1.5px", comment: "Hi-DPI friendly" },
       { name: "ch-border-width-lg", value: "2px" }
@@ -296,12 +97,12 @@ const scaleBlocks: SimpleTokenBlock[] = [
       {
         name: "ch-font-sans",
         value:
-          '"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Helvetica Neue", sans-serif'
+          '"Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Helvetica Neue", sans-serif'
       },
       {
         name: "ch-font-mono",
         value:
-          'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace'
+          '"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace'
       },
       { name: "ch-text-xs", value: "0.75rem" },
       { name: "ch-text-sm", value: "0.875rem" },
@@ -426,7 +227,7 @@ const scaleBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Overlays, scrims & chrome (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-surface-overlay", value: "rgba(255,255,255,0.12)" },
       { name: "ch-surface-modal", value: "rgba(255,255,255,0.16)" },
@@ -494,5 +295,5 @@ const scaleBlocks: SimpleTokenBlock[] = [
 
 export const primitives: PrimitiveTokens = {
   colors: colorBlocks,
-  scales: [colorAliasBlock, ...scaleBlocks]
+  scales: scaleBlocks
 };

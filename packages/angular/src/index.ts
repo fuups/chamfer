@@ -1,17 +1,22 @@
 import { Directive, ElementRef, Input, NgModule, OnDestroy, OnInit } from "@angular/core";
-import { enhanceButton } from "@chamfer/behavior";
+
+import { enhanceButton, type RippleOptions } from "@chamfer/behavior";
 
 @Directive({
-  selector: "[chamferButton]"
+  selector: "[chamferButton]",
+  host: {
+    "data-ch-component": "button",
+    class: "ch-button"
+  }
 })
 export class ChamferButtonDirective implements OnInit, OnDestroy {
-  @Input() chamferRipple = true;
+  @Input() chamferRipple: boolean | RippleOptions = true;
   private enhancement?: ReturnType<typeof enhanceButton>;
 
   constructor(private readonly elementRef: ElementRef<HTMLButtonElement>) {}
 
   ngOnInit(): void {
-    if (this.chamferRipple) {
+    if (this.chamferRipple !== false) {
       this.enhancement = enhanceButton(this.elementRef.nativeElement, {
         ripple: this.chamferRipple
       });

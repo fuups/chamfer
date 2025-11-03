@@ -1,6 +1,7 @@
-import type { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import type { ButtonHTMLAttributes, DetailedHTMLProps, FC } from "react";
 import { useEffect, useRef } from "react";
-import { enhanceButton } from "@chamfer/behavior";
+
+import { enhanceButton, type RippleOptions } from "@chamfer/behavior";
 
 export type ChamferButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -9,27 +10,37 @@ export type ChamferButtonProps = DetailedHTMLProps<
   /**
    * Enables/disables the ripple effect once implemented.
    */
-  ripple?: boolean;
+  ripple?: boolean | RippleOptions;
 };
 
-export const Button: React.FC<ChamferButtonProps> = ({
+export const Button: FC<ChamferButtonProps> = ({
   ripple = true,
+  className,
   children,
   ...rest
 }) => {
   const ref = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    if (!ref.current || !ripple) {
+    if (!ref.current || ripple === false) {
       return;
     }
 
-    const enhancement = enhanceButton(ref.current, { ripple });
+    const enhancement = enhanceButton(ref.current, {
+      ripple
+    });
     return enhancement.destroy;
   }, [ripple]);
 
+  const classes = ["ch-button", className].filter(Boolean).join(" ");
+
   return (
-    <button ref={ref} data-chamfer-component="button" {...rest}>
+    <button
+      ref={ref}
+      data-ch-component="button"
+      className={classes}
+      {...rest}
+    >
       {children}
     </button>
   );

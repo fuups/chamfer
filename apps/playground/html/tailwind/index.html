@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chamfer Playground · HTML + Tailwind</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+    />
+    <script type="module" src="/src/index.ts"></script>
+  </head>
+  <body class="min-h-screen bg-ch-surface-base text-ch-text-primary">
+    <header class="border-b border-ch-border-default">
+      <div class="mx-auto max-w-screen-lg px-ch-xl py-ch-2xl">
+        <div class="flex items-center justify-between gap-ch-md max-sm:flex-col max-sm:items-start">
+          <h1 class="text-ch-lg font-semibold tracking-tight">Chamfer</h1>
+          <nav>
+            <label class="sr-only" for="theme-select">Theme</label>
+            <select
+              id="theme-select"
+              aria-label="Theme"
+              class="rounded-ch-sm border border-ch-border-default bg-ch-surface-base px-ch-md py-ch-sm text-ch-sm text-ch-text-primary focus:outline focus:outline-2 focus:outline-ch-focus-outer"
+            >
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="system" selected>System</option>
+            </select>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <p id="status" class="sr-only" aria-live="polite">Theme: system</p>
+
+    <main class="mx-auto max-w-screen-lg px-ch-xl py-ch-2xl">
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Color</h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-ch-md">
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-border-default bg-[var(--ch-color-default)] p-ch-md font-mono text-ch-xs font-medium text-[var(--ch-on-inverse-fg)] transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            --ch-color-default
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-border-default bg-[var(--ch-color-secondary)] p-ch-md font-mono text-ch-xs font-medium text-[var(--ch-on-inverse-fg)] transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            --ch-color-secondary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-border-default bg-[var(--ch-color-background)] p-ch-md font-mono text-ch-xs font-medium text-[var(--ch-color-default)] transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            --ch-color-background
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-border-default bg-[var(--ch-color-surface)] p-ch-md font-mono text-ch-xs font-medium text-[var(--ch-color-default)] transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            --ch-color-surface
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-border-default p-ch-md font-mono text-ch-xs font-medium text-[var(--ch-color-default)] transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            --ch-border-default
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Actions</h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-ch-md">
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-action-primary p-ch-md font-mono text-ch-xs font-medium text-ch-action-primary-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            primary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-action-secondary p-ch-md font-mono text-ch-xs font-medium text-ch-action-secondary-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            secondary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-action-success p-ch-md font-mono text-ch-xs font-medium text-ch-action-success-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            success
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-action-warning p-ch-md font-mono text-ch-xs font-medium text-ch-action-warning-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            warning
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm bg-ch-action-danger p-ch-md font-mono text-ch-xs font-medium text-ch-action-danger-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Soft</h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-ch-md">
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-primary-soft-border bg-ch-action-primary-soft p-ch-md font-mono text-ch-xs font-medium text-ch-action-primary-soft-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            primary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-secondary-soft-border bg-ch-action-secondary-soft p-ch-md font-mono text-ch-xs font-medium text-ch-action-secondary-soft-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            secondary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-success-soft-border bg-ch-action-success-soft p-ch-md font-mono text-ch-xs font-medium text-ch-action-success-soft-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            success
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-warning-soft-border bg-ch-action-warning-soft p-ch-md font-mono text-ch-xs font-medium text-ch-action-warning-soft-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            warning
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-danger-soft-border bg-ch-action-danger-soft p-ch-md font-mono text-ch-xs font-medium text-ch-action-danger-soft-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Outline</h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-ch-md">
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-outline-primary-border bg-transparent p-ch-md font-mono text-ch-xs font-medium text-ch-action-outline-primary-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            primary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-outline-secondary-border bg-transparent p-ch-md font-mono text-ch-xs font-medium text-ch-action-outline-secondary-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            secondary
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-outline-success-border bg-transparent p-ch-md font-mono text-ch-xs font-medium text-ch-action-outline-success-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            success
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-outline-warning-border bg-transparent p-ch-md font-mono text-ch-xs font-medium text-ch-action-outline-warning-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            warning
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-action-outline-danger-border bg-transparent p-ch-md font-mono text-ch-xs font-medium text-ch-action-outline-danger-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Tones</h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-ch-md">
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-tone-info-border bg-ch-tone-info p-ch-md font-mono text-ch-xs font-medium text-ch-tone-info-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            info
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-tone-success-border bg-ch-tone-success p-ch-md font-mono text-ch-xs font-medium text-ch-tone-success-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            success
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-tone-warning-border bg-ch-tone-warning p-ch-md font-mono text-ch-xs font-medium text-ch-tone-warning-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            warning
+          </div>
+          <div
+            class="flex h-[100px] cursor-default items-end rounded-ch-sm border border-ch-tone-danger-border bg-ch-tone-danger p-ch-md font-mono text-ch-xs font-medium text-ch-tone-danger-foreground transition-transform duration-150 ease-out hover:-translate-y-0.5"
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-ch-2xl">
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">Typography</h2>
+        <div class="flex flex-col gap-ch-lg">
+          <p class="text-ch-md leading-ch-normal text-ch-text-primary">
+            Primary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="text-ch-md leading-ch-normal text-ch-text-secondary">
+            Secondary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="text-ch-md leading-ch-normal text-ch-text-tertiary">
+            Tertiary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="text-ch-md leading-ch-normal text-ch-text-disabled">
+            Disabled — The quick brown fox jumps over the lazy dog
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="mb-ch-lg text-ch-xs font-semibold uppercase tracking-[0.1em] text-ch-text-secondary">
+          Interactive
+        </h2>
+        <div class="flex flex-wrap gap-ch-md">
+          <button class="min-h-ch-pressable-md rounded-ch-sm bg-ch-action-primary px-ch-lg font-medium text-ch-action-primary-foreground">
+            Primary
+          </button>
+          <button class="min-h-ch-pressable-md rounded-ch-sm bg-ch-action-secondary px-ch-lg font-medium text-ch-action-secondary-foreground">
+            Secondary
+          </button>
+          <button class="min-h-ch-pressable-md rounded-ch-sm border border-ch-action-outline-primary-border bg-transparent px-ch-lg font-medium text-ch-action-outline-primary-foreground">
+            Outline
+          </button>
+          <button class="min-h-ch-pressable-md rounded-ch-sm border border-transparent bg-transparent px-ch-lg font-medium text-ch-text-primary transition hover:bg-ch-hover-on-base">
+            Ghost
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

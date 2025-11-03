@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chamfer Playground · Button (HTML)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+    />
+    <link rel="stylesheet" href="/src/playground.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-layout">
+        <div class="brand">
+          <h1><a href="../index.html">Chamfer Playground</a></h1>
+          <p>Component · Button</p>
+        </div>
+        <div class="header-controls">
+          <nav class="site-nav" aria-label="Playground navigation">
+            <a href="../index.html">Foundations</a>
+            <a href="./button.html" aria-current="page">Button</a>
+          </nav>
+          <div class="theme-switch">
+            <label class="sr-only" for="theme-select">Theme</label>
+            <select id="theme-select" aria-label="Theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="system" selected>System</option>
+            </select>
+            <button
+              id="hcm-toggle"
+              class="control-button"
+              type="button"
+              aria-pressed="false"
+            >
+              High contrast off
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <p id="status" class="sr-only" aria-live="polite">Theme: system</p>
+
+    <main class="container">
+      <section>
+        <h2>Overview</h2>
+        <p>
+          Vanilla HTML rendering of the Chamfer button. The root element uses the
+          <code>ch-button</code> class and <code>data-ch-component="button"</code> attribute.
+        </p>
+        <p class="note">
+          Specification reference: <code>components/button.md</code>
+        </p>
+      </section>
+
+      <section>
+        <h2>Meanings &amp; emphasis (md)</h2>
+        <div class="button-variant-grid">
+          <figure>
+            <figcaption>Primary</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Solid</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--soft ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Soft</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--outline ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--ghost ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Ghost</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Secondary</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Solid</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--soft ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Soft</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--outline ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--ghost ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Ghost</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Success</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--success"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Solid</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--soft ch-button--success"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Soft</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--outline ch-button--success"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--ghost ch-button--success"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Ghost</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Warning</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--warning"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Solid</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--soft ch-button--warning"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Soft</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--outline ch-button--warning"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--ghost ch-button--warning"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Ghost</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Danger</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--danger"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Solid</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--soft ch-button--danger"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Soft</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--outline ch-button--danger"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--ghost ch-button--danger"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Ghost</span>
+              </button>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>Sizes &amp; slots</h2>
+        <div class="button-variant-grid">
+          <figure>
+            <figcaption>Small (sm)</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--sm ch-button--solid ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__leading" aria-hidden="true">✓</span>
+                <span class="ch-button__label">Accept</span>
+              </button>
+              <button
+                class="ch-button ch-button--sm ch-button--soft ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Secondary</span>
+              </button>
+              <button
+                class="ch-button ch-button--sm ch-button--ghost ch-button--primary ch-button--icon-only"
+                data-ch-component="button"
+                type="button"
+                aria-label="Notifications"
+              >
+                <span class="ch-button__leading" aria-hidden="true">🔔</span>
+                <span class="ch-button__label">Notifications</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Medium (md)</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__leading" aria-hidden="true">←</span>
+                <span class="ch-button__label">Back</span>
+              </button>
+              <button
+                class="ch-button ch-button--md ch-button--solid ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Continue</span>
+                <span class="ch-button__trailing" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </figure>
+
+          <figure>
+            <figcaption>Large (lg)</figcaption>
+            <div class="button-row">
+              <button
+                class="ch-button ch-button--lg ch-button--solid ch-button--primary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Confirm purchase</span>
+              </button>
+              <button
+                class="ch-button ch-button--lg ch-button--outline ch-button--secondary"
+                data-ch-component="button"
+                type="button"
+              >
+                <span class="ch-button__label">Outline</span>
+              </button>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>States &amp; behaviors</h2>
+        <div class="button-state-grid">
+          <button
+            class="ch-button ch-button--md ch-button--solid ch-button--primary"
+            data-ch-component="button"
+            type="button"
+          >
+            <span class="ch-button__label">Default</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--solid ch-button--primary"
+            data-ch-component="button"
+            data-demo-state="hover"
+            type="button"
+          >
+            <span class="ch-button__label">Hover</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--solid ch-button--primary"
+            data-ch-component="button"
+            data-demo-state="active"
+            type="button"
+          >
+            <span class="ch-button__label">Active</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--solid ch-button--primary"
+            data-ch-component="button"
+            data-demo-state="focus"
+            type="button"
+          >
+            <span class="ch-button__label">Focus-visible</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--soft ch-button--secondary"
+            data-ch-component="button"
+            data-ch-ripple="false"
+            type="button"
+          >
+            <span class="ch-button__label">Ripple off</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--ghost ch-button--secondary"
+            data-ch-component="button"
+            data-ch-ripple="raised"
+            type="button"
+          >
+            <span class="ch-button__label">Raised ripple</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--solid ch-button--primary"
+            data-ch-component="button"
+            data-ch-loading="true"
+            data-ch-ripple="false"
+            aria-busy="true"
+            type="button"
+            disabled
+          >
+            <span class="ch-button__label">Loading…</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--md ch-button--ghost ch-button--danger"
+            data-ch-component="button"
+            type="button"
+            disabled
+          >
+            <span class="ch-button__label">Disabled</span>
+          </button>
+        </div>
+        <p class="note">
+          Hover/active/focus states are forced for illustration using <code>data-demo-state</code>;
+          interact with the default buttons to observe real transitions. The loading state disables the
+          ripple and sets <code>aria-busy="true"</code>. Use the high contrast toggle in the header to
+          simulate the upcoming <code>.hcm</code> mode.
+        </p>
+      </section>
+
+      <section>
+        <h2>Semantics</h2>
+        <div class="button-semantic-grid">
+          <a
+            class="ch-button ch-button--md ch-button--solid ch-button--secondary"
+            data-ch-component="button"
+            role="button"
+            href="#semantics"
+          >
+            <span class="ch-button__label">Anchor role=button</span>
+          </a>
+
+          <a
+            class="ch-button ch-button--md ch-button--ghost ch-button--primary"
+            data-ch-component="button"
+            role="button"
+            aria-disabled="true"
+            tabindex="-1"
+            href="#semantics"
+          >
+            <span class="ch-button__label">Disabled link</span>
+          </a>
+
+          <input
+            class="ch-button ch-button--md ch-button--solid ch-button--success"
+            data-ch-component="button"
+            type="submit"
+            value="Input submit"
+          />
+        </div>
+        <p class="note">
+          Non-<code>&lt;button&gt;</code> elements should set an explicit <code>role</code>, keyboard
+          focus, and <code>aria-disabled</code>/<code>tabindex</code> handling. The core styles are
+          applied via <code>class="ch-button"</code> plus <code>data-ch-component="button"</code>.
+        </p>
+      </section>
+
+      <section>
+        <h2>RTL &amp; long labels</h2>
+        <div class="button-rtl-demo" dir="rtl">
+          <button
+            class="ch-button ch-button--md ch-button--soft ch-button--primary"
+            data-ch-component="button"
+            type="button"
+          >
+            <span class="ch-button__leading" aria-hidden="true">★</span>
+            <span class="ch-button__label">
+              פעולה ראשית עם טקסט ארוך במיוחד כדי לבדוק גלישת שורה
+            </span>
+            <span class="ch-button__trailing" aria-hidden="true">↩︎</span>
+          </button>
+
+          <button
+            class="ch-button ch-button--sm ch-button--ghost ch-button--secondary"
+            data-ch-component="button"
+            type="button"
+            aria-label="Icon only in RTL"
+          >
+            <span class="ch-button__leading" aria-hidden="true">☰</span>
+            <span class="ch-button__label">Icon only in RTL</span>
+          </button>
+        </div>
+        <p class="note">
+          Buttons maintain slot ordering and padding in right-to-left layouts. Long labels wrap without
+          collapsing the leading/trailing content.
+        </p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

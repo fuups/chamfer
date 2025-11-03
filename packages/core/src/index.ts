@@ -1,4 +1,4 @@
-export const VERSION = "1.0.1";
+export const VERSION = "1.1.0";
 
 /**
  * Convenience export for consumers who want to reference the compiled CSS

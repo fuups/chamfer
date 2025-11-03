@@ -1,0 +1,26 @@
+---
+title: Introduction
+description: Overview of Chamfer UI’s architecture, packages, and documentation structure.
+status: draft
+updated: "2025-01-05"
+---
+
+Chamfer UI is a framework-agnostic component system focused on accessibility, semantic theming, and predictable design tokens. The monorepo is organised into pnpm workspaces so you can opt into just the layers you need—tokens, core CSS, progressive enhancement helpers, and framework wrappers.
+
+## Package landscape
+
+| Package | Description |
+| --- | --- |
+| `@chamfer/tokens` | Design tokens emitted as CSS, JSON, and TypeScript metadata. |
+| `@chamfer/core` | Framework-agnostic CSS bundle composed from semantic tokens. |
+| `@chamfer/behavior` | Progressive enhancement helpers (ripple, focus management, etc.). |
+| `@chamfer/{react,vue,angular}` | Framework adapters that wrap the core CSS + behaviors. |
+| `@chamfer/tailwind` | Tailwind preset + CSS utilities mapped to Chamfer tokens. |
+
+## Documentation structure
+
+- **Foundations** – principles, quick-start, tokens & theming, tooling.
+- **Components** – per-component specs with HTML baselines, behavior notes, and framework usage.
+- **Guides** (planned) – accessibility checklist, theming recipes, integration patterns.
+
+Each component page links back to the relevant foundation topics so you can understand both the “how” and the “why” behind the implementation.

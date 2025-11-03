@@ -2,11 +2,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  chamferTokens,
-  primitives,
-  semantic
-} from "../src/index.js";
+import { chamferTokens, semantic } from "../src/index.js";
 import type {
   ChamferTokenRegistry,
   ColorToken,
@@ -14,7 +10,6 @@ import type {
   PrimitiveTokens,
   SimpleToken,
   SimpleTokenBlock,
-  TokenBlock,
   TokenSupport
 } from "../src/types.js";
 
@@ -40,7 +35,7 @@ async function ensureDirectories(): Promise<void> {
 }
 
 function indentLines(lines: string[], indent = "  "): string[] {
-  return lines.map((line) =>
+  return lines.map(line =>
     line.length ? `${indent}${line}` : indent ? indent.trimEnd() : ""
   );
 }
@@ -93,8 +88,7 @@ function formatColorTokenBase(token: ColorToken): string[] {
       const [first, ...rest] = valueLines;
       const declaration: string[] = [`--${token.name}: ${first}`];
       declaration.push(...rest);
-      declaration[declaration.length - 1] =
-        `${declaration[declaration.length - 1]};`;
+      declaration[declaration.length - 1] = `${declaration[declaration.length - 1]};`;
       lines.push(...declaration);
     }
   }
@@ -117,8 +111,7 @@ function formatSimpleToken(token: SimpleToken): string[] {
     const [first, ...rest] = valueLines;
     const declaration: string[] = [`--${token.name}: ${first}`];
     declaration.push(...rest);
-    declaration[declaration.length - 1] =
-      `${declaration[declaration.length - 1]};`;
+    declaration[declaration.length - 1] = `${declaration[declaration.length - 1]};`;
     lines.push(...declaration);
   }
 
@@ -127,11 +120,7 @@ function formatSimpleToken(token: SimpleToken): string[] {
 
 function wrapSelector(selector: string, lines: string[]): string {
   const selectorLines = indentLines(lines);
-  return [
-    `${selector} {`,
-    ...selectorLines,
-    "}"
-  ].join("\n");
+  return [`${selector} {`, ...selectorLines, "}"].join("\n");
 }
 
 function wrapAtRule(content: string, atRule?: string): string {
@@ -143,7 +132,7 @@ function wrapAtRule(content: string, atRule?: string): string {
 }
 
 function renderColorBlock(block: ColorTokenBlock): string {
-  const baseLines = block.tokens.flatMap((token) => formatColorTokenBase(token));
+  const baseLines = block.tokens.flatMap(token => formatColorTokenBase(token));
 
   if (baseLines.length === 0) {
     return "";
@@ -187,7 +176,7 @@ function renderColorBlock(block: ColorTokenBlock): string {
 }
 
 function renderSimpleBlock(block: SimpleTokenBlock): string {
-  const baseLines = block.tokens.flatMap((token) => formatSimpleToken(token));
+  const baseLines = block.tokens.flatMap(token => formatSimpleToken(token));
 
   if (baseLines.length === 0) {
     return "";
@@ -220,11 +209,8 @@ function renderSimpleBlock(block: SimpleTokenBlock): string {
       continue;
     }
 
-    const lines = entries.map((entry) => entry.value);
-    const content = wrapAtRule(
-      wrapSelector(block.selector, lines),
-      block.atRule
-    );
+    const lines = entries.map(entry => entry.value);
+    const content = wrapAtRule(wrapSelector(block.selector, lines), block.atRule);
     supportsBlocks.push(
       `${condition} {\n${indentLines(content.split("\n")).join("\n")}\n}`
     );
@@ -235,14 +221,14 @@ function renderSimpleBlock(block: SimpleTokenBlock): string {
 
 function renderColorBlocks(blocks: ColorTokenBlock[]): string {
   return blocks
-    .map((block) => renderColorBlock(block))
+    .map(block => renderColorBlock(block))
     .filter(Boolean)
     .join("\n\n");
 }
 
 function renderSimpleBlocks(blocks: SimpleTokenBlock[]): string {
   return blocks
-    .map((block) => renderSimpleBlock(block))
+    .map(block => renderSimpleBlock(block))
     .filter(Boolean)
     .join("\n\n");
 }
@@ -251,9 +237,7 @@ function renderPrimitivesCss(tokens: PrimitiveTokens): string {
   const colorCss = renderColorBlocks(tokens.colors);
   const scaleCss = renderSimpleBlocks(tokens.scales);
 
-  return [HEADER_PRIMITIVES, colorCss, scaleCss]
-    .filter(Boolean)
-    .join("\n\n");
+  return [HEADER_PRIMITIVES, colorCss, scaleCss].filter(Boolean).join("\n\n");
 }
 
 function renderSemanticCss(): string {

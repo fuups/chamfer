@@ -1,8 +1,4 @@
-import type {
-  SemanticTokens,
-  SimpleToken,
-  SimpleTokenBlock
-} from "../types.js";
+import type { SemanticTokens, SimpleToken, SimpleTokenBlock } from "../types.js";
 
 interface PrimaryActionState {
   bgHex: string;
@@ -86,14 +82,14 @@ const solidActionIntents: SolidIntentConfig[] = [
   {
     name: "secondary",
     light: {
-      bg: "#0FA3B1",
-      fg: "#000000",
-      hover: "#0D92A0",
-      active: "#0B828F"
+      bg: "#0C727C",
+      fg: "#FFFFFF",
+      hover: "#0A646D",
+      active: "#095B63"
     },
     dark: {
       bg: "#86E1E8",
-      fg: "#000000",
+      fg: "#102A2C",
       hover: "#78CCD2",
       active: "#6AB7BD"
     }
@@ -117,7 +113,7 @@ const solidActionIntents: SolidIntentConfig[] = [
     name: "warning",
     light: {
       bg: "#D9A100",
-      fg: "#000000",
+      fg: "#5A3A00",
       hover: "#C49000",
       active: "#B08100"
     },
@@ -137,10 +133,10 @@ const solidActionIntents: SolidIntentConfig[] = [
       active: "#B21717"
     },
     dark: {
-      bg: "#F53333",
-      fg: "#000000",
-      hover: "#DC2E2E",
-      active: "#C62929"
+      bg: "#C42020",
+      fg: "#FFFFFF",
+      hover: "#B01C1C",
+      active: "#9C1919"
     }
   }
 ];
@@ -183,33 +179,32 @@ const textBlocks: SimpleTokenBlock[] = [
       { name: "ch-text-secondary", value: "var(--ch-color-secondary)" },
       {
         name: "ch-text-tertiary",
-        value: "rgba(90,97,105,0.86)",
+        value: "rgba(90,97,105,0.88)",
         supports: [
           {
             condition: "@supports (color: color-mix(in oklch, black 10%, white))",
             value:
-              "color-mix(in oklch, var(--color-secondary) 70%, var(--color-background) 30%)"
+              "color-mix(in oklch, var(--ch-color-secondary) 70%, var(--ch-color-background) 30%)"
           }
         ]
       },
       {
         name: "ch-text-disabled",
-        value: "rgba(33,37,41,0.4)",
+        value: "rgba(33,37,41,0.50)",
         supports: [
           {
             condition: "@supports (color: color-mix(in oklch, black 10%, white))",
             value:
-              "color-mix(in oklch, var(--color-default) 40%, var(--color-background) 60%)"
+              "color-mix(in oklch, var(--ch-color-default) 40%, var(--ch-color-background) 60%)"
           }
         ]
-      },
-      { name: "ch-text-inverse", value: "var(--ch-color-contrast)" }
+      }
     ]
   },
   {
     type: "scalar",
     label: "Text hierarchy (dark overrides)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-text-tertiary", value: "rgba(255,255,255,0.65)" },
       { name: "ch-text-disabled", value: "rgba(255,255,255,0.40)" }
@@ -226,7 +221,8 @@ const surfaceBlocks: SimpleTokenBlock[] = [
       { name: "ch-surface-base", value: "var(--ch-color-background)" },
       { name: "ch-surface-raised", value: "var(--ch-color-surface)" },
       { name: "ch-surface-inverse", value: "#111111" },
-      { name: "ch-surface-inverse-border", value: "#2A2A2A" },
+      { name: "ch-on-inverse-fg", value: "#FFFFFF" },
+      { name: "ch-surface-inverse-border", value: "#606060" },
       { name: "ch-shadow-sm", value: "0 1px 2px rgba(33,37,41,0.08)" },
       {
         name: "ch-shadow-md",
@@ -242,14 +238,14 @@ const surfaceBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Surfaces & elevation (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-surface-inverse", value: "#F2F2F2" },
-      { name: "ch-surface-inverse-border", value: "#DADADA" },
+      { name: "ch-on-inverse-fg", value: "#000000" },
+      { name: "ch-surface-inverse-border", value: "#8C8C8C" },
       {
         name: "ch-shadow-sm",
-        value:
-          "0 1px 2px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,0.06) inset"
+        value: "0 1px 2px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,0.06) inset"
       },
       {
         name: "ch-shadow-md",
@@ -271,13 +267,20 @@ const focusBlock: SimpleTokenBlock = {
   selector: ":root",
   tokens: [
     { name: "ch-focus-accent", value: "var(--ch-action-primary-bg)" },
-    { name: "ch-focus-outer", value: "var(--ch-color-contrast)" },
+    { name: "ch-focus-outer", value: "#000000" },
     { name: "ch-focus-outline-width", value: "2px" },
     { name: "ch-ring-inner-width", value: "2px" },
     { name: "ch-ring-outer-width", value: "4px" },
     { name: "ch-focus-outline-offset", value: "2px" },
     { name: "ch-outline-border-default", value: "var(--ch-border-ui-default)" }
   ]
+};
+
+const focusBlockDark: SimpleTokenBlock = {
+  type: "scalar",
+  label: "Focus system (dark overrides)",
+  selector: '.dark,\n[data-theme="dark"]',
+  tokens: [{ name: "ch-focus-outer", value: "#FFFFFF" }]
 };
 
 const ghostOverlayBlock: SimpleTokenBlock = {
@@ -292,29 +295,73 @@ const ghostOverlayBlock: SimpleTokenBlock = {
   ]
 };
 
+const buttonComponentBlock: SimpleTokenBlock = {
+  type: "scalar",
+  label: "Button component tokens",
+  selector: ":root",
+  tokens: [
+    {
+      name: "ch-button-padding-inline-sm",
+      value: "calc(var(--ch-space-md) * var(--ch-density-scale))"
+    },
+    {
+      name: "ch-button-padding-inline-md",
+      value: "calc(var(--ch-space-lg) * var(--ch-density-scale))"
+    },
+    {
+      name: "ch-button-padding-inline-lg",
+      value: "calc(var(--ch-space-xl) * var(--ch-density-scale))"
+    },
+    {
+      name: "ch-button-padding-block",
+      value: "calc(var(--ch-space-sm) * var(--ch-density-scale))"
+    },
+    { name: "ch-button-gap-inline", value: "var(--ch-space-sm)" },
+    { name: "ch-button-radius", value: "var(--ch-radius-sm)" },
+    { name: "ch-button-radius-lg", value: "var(--ch-radius-md)" },
+    { name: "ch-button-icon-size-sm", value: "var(--ch-icon-size-sm)" },
+    { name: "ch-button-icon-size-md", value: "var(--ch-icon-size-md)" },
+    { name: "ch-button-icon-size-lg", value: "var(--ch-icon-size-lg)" },
+    { name: "ch-button-font-weight", value: "var(--ch-weight-medium)" }
+  ]
+};
+
+const buttonForcedColorsBlock: SimpleTokenBlock = {
+  type: "scalar",
+  label: "Button forced-color tokens",
+  selector: ":root",
+  atRule: "@media (forced-colors: active)",
+  tokens: [
+    { name: "ch-button-hcm-bg", value: "ButtonFace" },
+    { name: "ch-button-hcm-fg", value: "ButtonText" },
+    { name: "ch-button-hcm-border", value: "ButtonText" },
+    { name: "ch-button-hcm-focus", value: "Highlight" }
+  ]
+};
+
 const softIntentsLight = [
   {
     name: "primary",
     bg: "rgba(0,0,0,0.06)",
-    fg: "#111111",
+    fg: "#373737",
     border: "rgba(0,0,0,0.24)"
   },
   {
     name: "secondary",
     bg: "rgba(15,163,177,0.14)",
-    fg: "#0C6E77",
+    fg: "#0C727C",
     border: "rgba(15,163,177,0.38)"
   },
   {
     name: "success",
     bg: "rgba(53,133,70,0.12)",
-    fg: "#1E5930",
+    fg: "#1F6134",
     border: "rgba(53,133,70,0.35)"
   },
   {
     name: "warning",
     bg: "rgba(217,161,0,0.14)",
-    fg: "#7A5C00",
+    fg: "#7F6000",
     border: "rgba(217,161,0,0.38)"
   },
   {
@@ -335,7 +382,7 @@ const softIntentsDark = [
   {
     name: "secondary",
     bg: "rgba(134,225,232,0.24)",
-    fg: "#102A2C",
+    fg: "#B8E8ED",
     border: "rgba(134,225,232,0.42)"
   },
   {
@@ -347,7 +394,7 @@ const softIntentsDark = [
   {
     name: "warning",
     bg: "rgba(255,198,26,0.22)",
-    fg: "#1A1400",
+    fg: "#FFEAA3",
     border: "rgba(255,198,26,0.45)"
   },
   {
@@ -371,7 +418,10 @@ const softTokensDark = softIntentsDark.flatMap(({ name, bg, fg, border }) => [
 ]);
 
 const softHelpersLight: SimpleToken[] = [
-  { name: "ch-action-outline-primary-fg", value: "var(--ch-text-primary)" },
+  {
+    name: "ch-action-outline-primary-fg",
+    value: "var(--ch-action-primary-soft-fg)"
+  },
   {
     name: "ch-action-outline-primary-border",
     value: "var(--ch-action-primary-soft-border)"
@@ -467,7 +517,7 @@ const messagingBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Messaging tones (soft dark overrides)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-tone-info-soft-bg", value: "rgba(106,183,240,0.22)" },
       { name: "ch-tone-info-soft-fg", value: "#D5ECFB" },
@@ -486,7 +536,7 @@ const messagingBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Messaging tones (solid dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-tone-info-bg", value: "#6AB7F0" },
       { name: "ch-tone-info-fg", value: "#000000" }
@@ -512,7 +562,7 @@ const linkBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Link tokens (dark overrides)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-link-fg", value: "#AFC2FF" },
       { name: "ch-link-fg-hover", value: "#99B2FF" },
@@ -538,7 +588,7 @@ const selectionAndDisplayBlocks: SimpleTokenBlock[] = [
       { name: "ch-kbd-border", value: "var(--ch-border-ui-default)" },
       {
         name: "ch-divider-color",
-        value: "color-mix(in oklab, var(--ch-color-contrast) 18%, transparent)"
+        value: "color-mix(in oklab, var(--ch-text-primary) 18%, transparent)"
       },
       { name: "ch-icon-primary", value: "var(--ch-text-primary)" },
       { name: "ch-icon-secondary", value: "var(--ch-text-secondary)" },
@@ -552,13 +602,13 @@ const selectionAndDisplayBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Selection, code, iconography (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-code-bg", value: "rgba(255,255,255,0.06)" },
       { name: "ch-kbd-bg", value: "rgba(255,255,255,0.08)" },
       {
         name: "ch-divider-color",
-        value: "color-mix(in oklab, var(--ch-color-contrast) 22%, transparent)"
+        value: "color-mix(in oklab, var(--ch-text-primary) 22%, transparent)"
       }
     ]
   }
@@ -586,10 +636,7 @@ const tableAndStateBlocks: SimpleTokenBlock[] = [
         name: "ch-input-readonly-border",
         value: "var(--ch-border-ui-default)"
       },
-      {
-        name: "ch-input-invalid-border",
-        value: "var(--ch-action-danger-soft-border)"
-      },
+      { name: "ch-input-invalid-border", value: "var(--ch-action-danger-bg)" },
       { name: "ch-input-invalid-bg", value: "var(--ch-action-danger-soft-bg)" },
       { name: "ch-input-invalid-fg", value: "var(--ch-text-primary)" },
       {
@@ -605,7 +652,7 @@ const tableAndStateBlocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Tables, skeletons, states (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [
       { name: "ch-skeleton-base", value: "rgba(255,255,255,0.10)" },
       {
@@ -623,7 +670,7 @@ const progressBlock: SimpleTokenBlock = {
   tokens: [
     {
       name: "ch-progress-track",
-      value: "color-mix(in oklab, var(--ch-color-contrast) 10%, transparent)"
+      value: "color-mix(in oklab, var(--ch-text-primary) 10%, transparent)"
     },
     { name: "ch-progress-bar", value: "var(--ch-action-primary-bg)" },
     { name: "ch-spinner-stroke", value: "var(--ch-action-primary-bg)" },
@@ -637,7 +684,10 @@ const blocks: SimpleTokenBlock[] = [
   ...textBlocks,
   ...surfaceBlocks,
   focusBlock,
+  focusBlockDark,
   ghostOverlayBlock,
+  buttonComponentBlock,
+  buttonForcedColorsBlock,
   {
     type: "scalar",
     label: "Action intents – primary",
@@ -647,7 +697,7 @@ const blocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Action intents – primary (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: primaryActionTokens.dark
   },
   {
@@ -659,7 +709,7 @@ const blocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Action intents – solids (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: solidActionTokens.dark
   },
   {
@@ -671,7 +721,7 @@ const blocks: SimpleTokenBlock[] = [
   {
     type: "scalar",
     label: "Action intents – soft & outline (dark)",
-    selector: ".dark,\n[data-theme=\"dark\"]",
+    selector: '.dark,\n[data-theme="dark"]',
     tokens: [...softTokensDark, ...softHelpersDark]
   },
   ...messagingBlocks,

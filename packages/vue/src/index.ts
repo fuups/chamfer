@@ -1,15 +1,23 @@
-import { onMounted, onBeforeUnmount, ref, h, defineComponent } from "vue";
-import { enhanceButton } from "@chamfer/behavior";
+import {
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  h,
+  defineComponent,
+  type PropType
+} from "vue";
+
+import { enhanceButton, type RippleOptions } from "@chamfer/behavior";
 
 export interface ChamferButtonProps {
-  ripple?: boolean;
+  ripple?: boolean | RippleOptions;
 }
 
 export const ChamferButton = defineComponent<ChamferButtonProps>({
   name: "ChamferButton",
   props: {
     ripple: {
-      type: Boolean,
+      type: [Boolean, Object] as PropType<boolean | RippleOptions>,
       default: true
     }
   },
@@ -27,16 +35,22 @@ export const ChamferButton = defineComponent<ChamferButtonProps>({
       enhancement?.destroy();
     });
 
-    return () =>
-      h(
+    return () => {
+      const mergedAttrs = {
+        ...attrs,
+        class: ["ch-button", attrs.class],
+        "data-ch-component": "button"
+      };
+
+      return h(
         "button",
         {
           ref: element,
-          "data-chamfer-component": "button",
-          ...attrs
+          ...mergedAttrs
         },
         slots.default?.()
       );
+    };
   }
 });
 

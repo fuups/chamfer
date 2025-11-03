@@ -17,7 +17,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@chamfer/*": ["packages/*/src/index.ts"]
+    }
   },
   "include": ["packages", "apps", "configs", "scripts"]
 }

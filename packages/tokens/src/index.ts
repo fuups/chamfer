@@ -6,7 +6,7 @@ import type { ChamferTokenRegistry } from "./types.js";
  * Version identifier for the token bundle. Mirrors the package version and
  * allows downstream tooling to confirm compatibility.
  */
-export const VERSION = "1.0.1";
+export const VERSION = "1.1.0";
 
 export const chamferTokens: ChamferTokenRegistry = {
   version: VERSION,

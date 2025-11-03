@@ -1,0 +1,343 @@
+---
+import "@chamfer/core/css";
+import "@styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const navGroups = [
+  {
+    title: "Foundations",
+    links: [
+      { href: "/foundations/introduction", label: "Introduction" },
+      { href: "/foundations/quick-start", label: "Quick Start" },
+      { href: "/foundations/design-principles", label: "Design Principles" },
+      { href: "/foundations/tokens", label: "Tokens & Theming" }
+    ]
+  },
+  {
+    title: "Components",
+    links: [{ href: "/components/button", label: "Button" }]
+  }
+];
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Chamfer UI</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+    />
+    <slot name="head" />
+  </head>
+  <body class="docs-root">
+    <header class="mobile-header">
+      <a href="/" class="mobile-brand">Chamfer UI</a>
+      <button id="mobile-nav-toggle" class="mobile-nav-toggle" type="button" aria-expanded="false">
+        Menu
+      </button>
+    </header>
+
+    <div class="docs-shell">
+      <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+      <aside class="docs-sidebar" id="docs-sidebar" data-open="false">
+        <div class="brand">
+          <a href="/" class="brand__title">Chamfer UI</a>
+          <p class="brand__subtitle">Framework-agnostic component system</p>
+        </div>
+
+        <nav aria-label="Primary" class="nav-sections">
+          {navGroups.map(group => (
+            <div class="nav-section">
+              <p class="nav-section__title">{group.title}</p>
+              <div class="nav-list">
+                {group.links.map(link => {
+                  const normalized = link.href === "/" ? "/" : link.href.replace(/\/+$/, "");
+                  const isCurrent = normalized === currentPath;
+                  return (
+                    <a href={link.href} class="nav-link" aria-current={isCurrent ? "page" : undefined}>
+                      {link.label}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        <div class="sidebar-controls">
+          <label class="control-label" for="theme-select">Theme</label>
+          <select id="theme-select" aria-label="Theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+          <button id="hcm-toggle" class="control-button" type="button" aria-pressed="false">
+            High contrast off
+          </button>
+        </div>
+
+        <footer class="sidebar-footer">
+          <a href="https://github.com/chamfer-ui" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href="https://www.npmjs.com/org/chamfer" target="_blank" rel="noreferrer">
+            npm
+          </a>
+        </footer>
+      </aside>
+
+      <main class="docs-main">
+        <slot />
+      </main>
+    </div>
+
+    <script is:inline>
+      const root = document.documentElement;
+      const themeSelect = document.getElementById("theme-select");
+      const hcmToggle = document.getElementById("hcm-toggle");
+      const sidebar = document.getElementById("docs-sidebar");
+      const mobileToggle = document.getElementById("mobile-nav-toggle");
+      const sidebarBackdrop = document.getElementById("sidebar-backdrop");
+      const prefersDark =
+        typeof window !== "undefined" && "matchMedia" in window
+          ? window.matchMedia("(prefers-color-scheme: dark)")
+          : null;
+
+      function resolveTheme(value) {
+        if (value === "system" && prefersDark) {
+          return prefersDark.matches ? "dark" : "light";
+        }
+        return value;
+      }
+
+      function updateTheme(value) {
+        const resolved = resolveTheme(value);
+        root.setAttribute("data-theme", value);
+        root.classList.toggle("dark", resolved === "dark");
+        root.style.setProperty("color-scheme", resolved);
+      }
+
+      function updateContrast(state) {
+        root.classList.toggle("hcm", state);
+        if (hcmToggle instanceof HTMLButtonElement) {
+          hcmToggle.setAttribute("aria-pressed", String(state));
+          hcmToggle.textContent = state ? "High contrast on" : "High contrast off";
+        }
+      }
+
+      if (themeSelect instanceof HTMLSelectElement) {
+        themeSelect.addEventListener("change", event => {
+          const value = event.target.value;
+          updateTheme(value);
+        });
+        if (prefersDark) {
+          const listener = () => {
+            if (themeSelect.value === "system") {
+              updateTheme("system");
+            }
+          };
+          if (typeof prefersDark.addEventListener === "function") {
+            prefersDark.addEventListener("change", listener);
+          } else if (typeof prefersDark.addListener === "function") {
+            prefersDark.addListener(listener);
+          }
+        }
+        updateTheme(themeSelect.value);
+      }
+
+      if (hcmToggle instanceof HTMLButtonElement) {
+        hcmToggle.addEventListener("click", () => {
+          const next = !root.classList.contains("hcm");
+          updateContrast(next);
+        });
+        updateContrast(false);
+      }
+
+      function setSidebar(state) {
+        if (!sidebar || !(mobileToggle instanceof HTMLButtonElement)) {
+          return;
+        }
+        sidebar.dataset.open = String(state);
+        mobileToggle.setAttribute("aria-expanded", String(state));
+        document.body.classList.toggle("drawer-open", state);
+      }
+
+      if (mobileToggle instanceof HTMLButtonElement) {
+        mobileToggle.addEventListener("click", () => {
+          const nextState = sidebar?.dataset.open !== "true";
+          setSidebar(nextState);
+        });
+      }
+
+      if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener("click", () => setSidebar(false));
+      }
+
+      document.querySelectorAll(".docs-sidebar .nav-link").forEach(link => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth <= 960) {
+            setSidebar(false);
+          }
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 960) {
+          setSidebar(false);
+        }
+      });
+    </script>
+
+    <style lang="css">
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ch-space-xs, 0.25rem);
+      }
+
+      .brand__title {
+        font-size: var(--ch-text-lg, 1.25rem);
+        font-weight: var(--ch-weight-semibold, 600);
+        text-decoration: none;
+      }
+
+      .brand__subtitle {
+        margin: 0;
+        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        font-size: var(--ch-text-sm, 0.875rem);
+      }
+
+      .nav-sections {
+        display: grid;
+        gap: var(--ch-space-xl, 1.5rem);
+      }
+
+      .nav-section {
+        display: grid;
+        gap: var(--ch-space-sm, 0.5rem);
+      }
+
+      .nav-section__title {
+        margin: 0;
+        font-size: var(--ch-text-xs, 0.75rem);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.68));
+      }
+
+      .nav-list {
+        display: grid;
+        gap: var(--ch-space-xs, 0.25rem);
+      }
+
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--ch-space-xs, 0.25rem);
+        padding: var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
+        border-radius: var(--ch-radius-sm, 0.375rem);
+        border: var(--ch-border-width-sm, 1px) solid transparent;
+        text-decoration: none;
+        font-size: var(--ch-text-sm, 0.875rem);
+        font-weight: var(--ch-weight-medium, 500);
+        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        transition: all var(--ch-dur-medium, 180ms) var(--ch-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+      }
+
+      .nav-link:hover,
+      .nav-link[aria-current="page"] {
+        color: var(--ch-text-primary, #212529);
+        border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
+        background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+      }
+
+      .sidebar-controls {
+        display: grid;
+        gap: var(--ch-space-xs, 0.25rem);
+      }
+
+      .control-label {
+        font-size: var(--ch-text-xs, 0.75rem);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.68));
+      }
+
+      #theme-select {
+        width: 100%;
+        font: inherit;
+        font-size: var(--ch-text-sm, 0.875rem);
+        padding: var(--ch-space-sm, 0.5rem) calc(var(--ch-space-xl, 2rem) + var(--ch-space-sm, 0.5rem))
+          var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
+        border: var(--ch-border-width-sm, 1px) solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
+        border-radius: var(--ch-radius-sm, 0.375rem);
+        background: var(--ch-surface-base, #fff);
+        color: var(--ch-text-primary, #212529);
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right var(--ch-space-sm, 0.5rem) center;
+      }
+
+      #theme-select:focus-visible {
+        outline: var(--ch-focus-outline-width, 2px) solid var(--ch-focus-outer, currentColor);
+        outline-offset: var(--ch-focus-outline-offset, 2px);
+      }
+
+      .control-button {
+        font: inherit;
+        font-size: var(--ch-text-sm, 0.875rem);
+        font-weight: var(--ch-weight-medium, 500);
+        padding: var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
+        border-radius: var(--ch-radius-sm, 0.375rem);
+        border: var(--ch-border-width-sm, 1px) solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
+        background: var(--ch-surface-base, #fff);
+        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        cursor: pointer;
+        transition: all var(--ch-dur-medium, 180ms) var(--ch-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+      }
+
+      .control-button:hover,
+      .control-button[aria-pressed="true"] {
+        color: var(--ch-text-primary, #212529);
+        border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
+        background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        display: grid;
+        gap: var(--ch-space-xs, 0.25rem);
+        font-size: var(--ch-text-xs, 0.75rem);
+      }
+
+      .sidebar-footer a {
+        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        text-decoration: none;
+      }
+
+      .sidebar-footer a:hover {
+        color: var(--ch-text-primary, #212529);
+      }
+
+      @media (max-width: 960px) {
+        .docs-sidebar {
+          gap: var(--ch-space-lg, 1rem);
+        }
+      }
+    </style>
+  </body>
+</html>

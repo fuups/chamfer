@@ -15,17 +15,27 @@
     "./preset": {
       "types": "./dist/preset.d.ts",
       "default": "./dist/preset.js"
-    }
+    },
+    "./css": "./dist/index.css",
+    "./theme.css": "./dist/theme.css",
+    "./utilities.css": "./dist/utilities.css"
   },
   "scripts": {
-    "build": "echo \"TODO: build tailwind preset\"",
-    "dev": "echo \"TODO: watch tailwind preset\"",
-    "lint": "echo \"TODO: lint tailwind preset\"",
+    "build": "tsc -p tsconfig.json && node scripts/build-css.mjs",
+    "dev": "pnpm run build -- --watch",
+    "lint": "pnpm run typecheck",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "tailwindcss": "^3.4.0",
-    "@chamfer/tokens": "workspace:*"
+    "@chamfer/core": "workspace:*",
+    "@chamfer/tokens": "workspace:*",
+    "tailwindcss": ">=4.1.16"
+  },
+  "dependencies": {
+    "@chamfer/core": "workspace:*"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.1.16"
   },
   "keywords": [
     "tailwindcss",

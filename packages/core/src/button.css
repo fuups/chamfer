@@ -1,0 +1,378 @@
+:is(.ch-button, [data-ch-component="button"]) {
+  --ch-button-bg: transparent;
+  --ch-button-fg: var(--ch-text-primary);
+  --ch-button-border-color: transparent;
+  --ch-button-hover-bg: var(--ch-button-bg);
+  --ch-button-active-bg: var(--ch-button-bg);
+  --ch-button-ripple-color: currentColor;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ch-button-gap-inline, var(--ch-space-sm));
+  min-height: var(--ch-pressable-height-md, 2.5rem);
+  padding-inline: var(--ch-button-padding-inline-md, var(--ch-space-lg));
+  padding-block: var(--ch-button-padding-block, 0);
+  border: var(--ch-border-width-sm, 1px) solid var(--ch-button-border-color);
+  border-radius: var(--ch-button-radius, var(--ch-radius-sm));
+  background-color: var(--ch-button-bg);
+  color: var(--ch-button-fg);
+  font-family: inherit;
+  font-size: var(--ch-text-md);
+  font-weight: var(--ch-button-font-weight, 500);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--ch-dur-medium) var(--ch-ease-standard),
+    color var(--ch-dur-medium) var(--ch-ease-standard),
+    border-color var(--ch-dur-medium) var(--ch-ease-standard),
+    box-shadow var(--ch-dur-medium) var(--ch-ease-standard);
+  user-select: none;
+  touch-action: manipulation;
+  outline: none;
+  overflow: hidden;
+}
+
+@supports (color: color-mix(in oklab, black 10%, white)) {
+  :is(.ch-button, [data-ch-component="button"]) {
+    --ch-button-ripple-color:
+      color-mix(in oklab, currentColor 18%, transparent);
+  }
+}
+
+:is(.ch-button, [data-ch-component="button"])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+:is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  background-color: var(--ch-button-ripple-color);
+  transform: scale(0);
+  opacity: 0.24;
+  pointer-events: none;
+  animation: ch-button-ripple 450ms var(--ch-ease-decelerate) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
+
+@media (forced-colors: active) {
+  :is(.ch-button, [data-ch-component="button"]) {
+    --ch-button-bg: var(--ch-button-hcm-bg, ButtonFace);
+    --ch-button-fg: var(--ch-button-hcm-fg, ButtonText);
+    --ch-button-border-color: var(--ch-button-hcm-border, ButtonText);
+    --ch-button-hover-bg: var(--ch-button-hcm-bg, ButtonFace);
+    --ch-button-active-bg: var(--ch-button-hcm-bg, ButtonFace);
+    color: var(--ch-button-fg);
+    forced-color-adjust: none;
+  }
+
+  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+    display: none;
+  }
+
+  :is(.ch-button, [data-ch-component="button"]):focus-visible {
+    outline: 2px solid var(--ch-button-hcm-focus, Highlight);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--ch-button-hcm-focus, Highlight);
+  }
+}
+
+@keyframes ch-button-ripple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+:is(.ch-button, [data-ch-component="button"]):disabled,
+:is(.ch-button, [data-ch-component="button"])[aria-disabled="true"] {
+  opacity: var(--ch-state-disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+:is(.ch-button, [data-ch-component="button"])[data-ch-loading="true"] {
+  cursor: progress;
+  pointer-events: none;
+}
+
+:is(.ch-button, [data-ch-component="button"])[data-ch-loading="true"] .ch-button__label,
+:is(.ch-button, [data-ch-component="button"])[data-ch-loading="true"] .ch-button__leading,
+:is(.ch-button, [data-ch-component="button"])[data-ch-loading="true"] .ch-button__trailing {
+  opacity: 0.85;
+}
+
+:is(.ch-button, [data-ch-component="button"]):focus-visible {
+  outline: var(--ch-focus-outline-width, 2px) solid var(--ch-focus-outer, currentColor);
+  outline-offset: var(--ch-focus-outline-offset, 2px);
+  box-shadow:
+    0 0 0 var(--ch-ring-inner-width, 2px) var(--ch-focus-accent, currentColor),
+    0 0 0 calc(var(--ch-ring-inner-width, 2px) + var(--ch-ring-outer-width, 4px))
+      var(--ch-focus-outer, currentColor);
+}
+
+:is(.ch-button, [data-ch-component="button"]):not(:disabled):hover {
+  background-color: var(--ch-button-hover-bg);
+}
+
+:is(.ch-button, [data-ch-component="button"]):not(:disabled):active {
+  background-color: var(--ch-button-active-bg);
+}
+
+.ch-button__leading,
+.ch-button__trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ch-button-icon-size-md);
+  min-height: var(--ch-button-icon-size-md);
+}
+
+.ch-button__leading:empty,
+.ch-button__trailing:empty {
+  display: none;
+}
+
+.ch-button__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  flex: 1 1 auto;
+}
+
+.ch-button--sm,
+[data-ch-component="button"].ch-button--sm {
+  min-height: var(--ch-pressable-height-sm);
+  padding-inline: var(--ch-button-padding-inline-sm, var(--ch-space-md));
+  font-size: var(--ch-text-sm);
+}
+
+.ch-button--sm .ch-button__leading,
+.ch-button--sm .ch-button__trailing,
+[data-ch-component="button"].ch-button--sm .ch-button__leading,
+[data-ch-component="button"].ch-button--sm .ch-button__trailing {
+  min-width: var(--ch-button-icon-size-sm);
+  min-height: var(--ch-button-icon-size-sm);
+}
+
+.ch-button--lg,
+[data-ch-component="button"].ch-button--lg {
+  min-height: var(--ch-pressable-height-lg);
+  padding-inline: var(--ch-button-padding-inline-lg, var(--ch-space-xl));
+  font-size: var(--ch-text-lg);
+  border-radius: var(--ch-button-radius-lg, var(--ch-radius-md));
+}
+
+.ch-button--lg .ch-button__leading,
+.ch-button--lg .ch-button__trailing,
+[data-ch-component="button"].ch-button--lg .ch-button__leading,
+[data-ch-component="button"].ch-button--lg .ch-button__trailing {
+  min-width: var(--ch-button-icon-size-lg);
+  min-height: var(--ch-button-icon-size-lg);
+}
+
+.ch-button--icon-only,
+[data-ch-component="button"].ch-button--icon-only {
+  padding-inline: 0;
+  min-width: var(--ch-pressable-height-md);
+}
+
+.ch-button--icon-only .ch-button__label,
+[data-ch-component="button"].ch-button--icon-only .ch-button__label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.ch-button--icon-only.ch-button--sm,
+[data-ch-component="button"].ch-button--icon-only.ch-button--sm {
+  min-width: var(--ch-pressable-height-sm);
+}
+
+.ch-button--icon-only.ch-button--lg,
+[data-ch-component="button"].ch-button--icon-only.ch-button--lg {
+  min-width: var(--ch-pressable-height-lg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid {
+  --ch-button-border-color: transparent;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--primary {
+  --ch-button-bg: var(--ch-action-primary-bg);
+  --ch-button-fg: var(--ch-action-primary-fg);
+  --ch-button-hover-bg: var(--ch-action-primary-bg-hover);
+  --ch-button-active-bg: var(--ch-action-primary-bg-active);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--secondary {
+  --ch-button-bg: var(--ch-action-secondary-bg);
+  --ch-button-fg: var(--ch-action-secondary-fg);
+  --ch-button-hover-bg: var(--ch-action-secondary-bg-hover);
+  --ch-button-active-bg: var(--ch-action-secondary-bg-active);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--success {
+  --ch-button-bg: var(--ch-action-success-bg);
+  --ch-button-fg: var(--ch-action-success-fg);
+  --ch-button-hover-bg: var(--ch-action-success-bg-hover);
+  --ch-button-active-bg: var(--ch-action-success-bg-active);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--warning {
+  --ch-button-bg: var(--ch-action-warning-bg);
+  --ch-button-fg: var(--ch-action-warning-fg);
+  --ch-button-hover-bg: var(--ch-action-warning-bg-hover);
+  --ch-button-active-bg: var(--ch-action-warning-bg-active);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger {
+  --ch-button-bg: var(--ch-action-danger-bg);
+  --ch-button-fg: var(--ch-action-danger-fg);
+  --ch-button-hover-bg: var(--ch-action-danger-bg-hover);
+  --ch-button-active-bg: var(--ch-action-danger-bg-active);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft {
+  --ch-button-border-color: transparent;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft.ch-button--primary {
+  --ch-button-bg: var(--ch-action-primary-soft-bg);
+  --ch-button-fg: var(--ch-action-primary-soft-fg);
+  --ch-button-border-color: var(--ch-action-primary-soft-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft.ch-button--secondary {
+  --ch-button-bg: var(--ch-action-secondary-soft-bg);
+  --ch-button-fg: var(--ch-action-secondary-soft-fg);
+  --ch-button-border-color: var(--ch-action-secondary-soft-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft.ch-button--success {
+  --ch-button-bg: var(--ch-action-success-soft-bg);
+  --ch-button-fg: var(--ch-action-success-soft-fg);
+  --ch-button-border-color: var(--ch-action-success-soft-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft.ch-button--warning {
+  --ch-button-bg: var(--ch-action-warning-soft-bg);
+  --ch-button-fg: var(--ch-action-warning-soft-fg);
+  --ch-button-border-color: var(--ch-action-warning-soft-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft.ch-button--danger {
+  --ch-button-bg: var(--ch-action-danger-soft-bg);
+  --ch-button-fg: var(--ch-action-danger-soft-fg);
+  --ch-button-border-color: var(--ch-action-danger-soft-border);
+}
+
+@supports (color: color-mix(in oklab, black 10%, white)) {
+  :is(.ch-button, [data-ch-component="button"]).ch-button--soft {
+    --ch-button-hover-bg: color-mix(in oklab, var(--ch-button-bg) 88%, var(--ch-text-primary) 12%);
+    --ch-button-active-bg: color-mix(in oklab, var(--ch-button-bg) 80%, var(--ch-text-primary) 20%);
+  }
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline {
+  --ch-button-bg: transparent;
+  --ch-button-border-color: var(--ch-action-outline-primary-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline.ch-button--primary {
+  --ch-button-fg: var(--ch-action-outline-primary-fg);
+  --ch-button-border-color: var(--ch-action-outline-primary-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline.ch-button--secondary {
+  --ch-button-fg: var(--ch-action-outline-secondary-fg);
+  --ch-button-border-color: var(--ch-action-outline-secondary-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline.ch-button--success {
+  --ch-button-fg: var(--ch-action-outline-success-fg);
+  --ch-button-border-color: var(--ch-action-outline-success-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline.ch-button--warning {
+  --ch-button-fg: var(--ch-action-outline-warning-fg);
+  --ch-button-border-color: var(--ch-action-outline-warning-border);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline.ch-button--danger {
+  --ch-button-fg: var(--ch-action-outline-danger-fg);
+  --ch-button-border-color: var(--ch-action-outline-danger-border);
+}
+
+@supports (color: color-mix(in oklab, black 10%, white)) {
+  :is(.ch-button, [data-ch-component="button"]).ch-button--outline {
+    --ch-button-hover-bg: color-mix(in oklab, var(--ch-button-border-color) 12%, transparent);
+    --ch-button-active-bg: color-mix(in oklab, var(--ch-button-border-color) 18%, transparent);
+  }
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
+  --ch-button-bg: transparent;
+  --ch-button-border-color: transparent;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost.ch-button--primary {
+  --ch-button-fg: var(--ch-action-primary-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost.ch-button--secondary {
+  --ch-button-fg: var(--ch-action-secondary-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost.ch-button--success {
+  --ch-button-fg: var(--ch-action-success-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost.ch-button--warning {
+  --ch-button-fg: var(--ch-action-warning-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost.ch-button--danger {
+  --ch-button-fg: var(--ch-action-danger-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost:not(:disabled):hover {
+  background-color: var(--ch-ghost-hover-base);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost:not(:disabled):active {
+  background-color: var(--ch-ghost-active-base);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--raised.ch-button--ghost:not(:disabled):hover {
+  background-color: var(--ch-ghost-hover-raised);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--raised.ch-button--ghost:not(:disabled):active {
+  background-color: var(--ch-ghost-active-raised);
+}
+:is(a.ch-button, a[data-ch-component="button"]) {
+  text-decoration: none;
+}
+
+:is(a.ch-button, a[data-ch-component="button"]):visited {
+  color: var(--ch-button-fg, var(--ch-text-primary));
+}

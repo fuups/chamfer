@@ -1,0 +1,67 @@
+---
+import DocsLayout from "@layouts/DocsLayout.astro";
+import { getCollection } from "astro:content";
+
+const docs = await getCollection("docs");
+const components = docs.filter(entry => entry.id.startsWith("components/"));
+---
+
+<DocsLayout title="Chamfer UI" description="Documentation hub for Chamfer UI components, tokens, and tooling.">
+  <div class="content-stack">
+    <section>
+      <h1>Chamfer UI Documentation</h1>
+      <p>
+        Explore design tokens, component specifications, and framework integrations for Chamfer UI. Each component page
+        pairs the canonical HTML/CSS implementation with framework guidance and accessibility notes.
+      </p>
+    </section>
+
+    <section>
+      <h2>Components</h2>
+      <ul class="docs-list">
+        {components.map(entry => (
+          <li>
+            <a href={entry.slug}>{entry.data.title}</a>
+            <p>{entry.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</DocsLayout>
+
+<style>
+.content-stack {
+  max-width: 960px;
+  display: grid;
+  gap: var(--ch-space-2xl, 2rem);
+}
+
+  h1 {
+    font-size: var(--ch-text-xl, 1.5rem);
+    margin-bottom: var(--ch-space-md, 1rem);
+  }
+
+  p {
+    margin: 0 0 var(--ch-space-lg, 1.5rem);
+    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+  }
+
+  .docs-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--ch-space-lg, 1.5rem);
+  }
+
+  .docs-list a {
+    font-weight: var(--ch-weight-semibold, 600);
+    text-decoration: none;
+    color: var(--ch-text-primary, #212529);
+  }
+
+  .docs-list p {
+    margin-top: var(--ch-space-xs, 0.25rem);
+  }
+</style>

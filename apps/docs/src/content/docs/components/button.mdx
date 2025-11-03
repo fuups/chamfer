@@ -1,0 +1,86 @@
+---
+title: Button
+description: Pressable control for primary and contextual actions.
+status: alpha
+updated: "2025-01-05"
+---
+
+import ButtonVariantGrid from "@components/ButtonVariantGrid.astro";
+
+Buttons expose Chamfer's action semantics (primary, secondary, success, warning, danger) across solid, soft, outline, and ghost emphasis styles. They rely entirely on semantic tokens—no primitive tokens are referenced directly—so theming stays consistent across frameworks.
+
+## Anatomy
+
+- Root `<button>` (or semantic equivalent such as `<a role="button">`)
+- Optional leading icon: `.ch-button__leading`
+- Label: `.ch-button__label`
+- Optional trailing icon: `.ch-button__trailing`
+
+## Tokens
+
+| Token | Description |
+| --- | --- |
+| `--ch-button-padding-inline-[sm\|md\|lg]` | Inline padding scale that respects `--ch-density-scale` |
+| `--ch-button-padding-block` | Vertical padding for baseline alignment |
+| `--ch-button-gap-inline` | Space between leading/label/trailing slots |
+| `--ch-button-radius`, `--ch-button-radius-lg` | Border radii per size tier |
+| `--ch-button-icon-size-[sm\|md\|lg]` | Icon dimensions mapped to the icon token scale |
+| `--ch-button-font-weight` | Label font weight |
+| `--ch-button-hcm-*` | Forced-color overrides (ButtonFace/ButtonText/Highlight) |
+
+Action colors (background/foreground/hover/active/soft/outline) are sourced from `--ch-action-*` semantic tokens.
+
+## HTML baseline
+
+```html
+<button
+  class="ch-button ch-button--md ch-button--solid ch-button--primary"
+  data-ch-component="button"
+  type="button"
+>
+  <span class="ch-button__leading" aria-hidden="true">✓</span>
+  <span class="ch-button__label">Save changes</span>
+  <span class="ch-button__trailing" hidden></span>
+</button>
+```
+
+Add `data-ch-loading="true"` (plus `disabled`/`aria-busy="true"`) while awaiting async operations. Anchors styled as buttons must include `role="button"` and manage `aria-disabled` + `tabindex` when inactive.
+
+## Variants & states
+
+<ButtonVariantGrid />
+
+## Accessibility
+
+- Provide an accessible name (`aria-label` for icon-only buttons).
+- Respect native disabled semantics (`disabled` or `aria-disabled="true"` with `tabindex="-1"`).
+- Loading buttons surface `aria-busy="true"` and block interaction.
+- Focus styles reach 3:1 contrast; verify Windows High Contrast with the toggle above.
+- Ripple enhancement automatically disables itself when `prefers-reduced-motion` is set.
+
+## Framework adapters
+
+Chamfer wrappers (`@chamfer/react`, `@chamfer/vue`, `@chamfer/angular`) render the same markup and forward props for `variant`, `size`, `tone`, `ripple`, `loading`, and slot content. Import `@chamfer/core/css` once in your app shell, then use the adapter component:
+
+```tsx
+import { Button } from "@chamfer/react";
+
+<Button variant="solid" tone="primary" size="md" leadingIcon="✓">
+  Save changes
+</Button>;
+```
+
+## Tailwind usage
+
+Design tokens map directly into the Tailwind preset shipped in `@chamfer/tailwind`. Combine the utility classes below to mirror the vanilla implementation.
+
+```html
+<button
+  class="min-h-ch-pressable-md px-ch-button-inline-md rounded-ch-button bg-ch-action-primary text-ch-action-primary-foreground focus-visible:focus-ring-ch transition"
+  type="button"
+>
+  Save changes
+</button>
+```
+
+Utilities are generated from the same semantic tokens, so theming stays in sync with the core CSS bundle.

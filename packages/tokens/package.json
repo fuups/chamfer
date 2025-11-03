@@ -13,8 +13,11 @@
       "default": "./dist/index.js"
     },
     "./css": "./dist/css/index.css",
+    "./css/index.css": "./dist/css/index.css",
     "./css/primitives": "./dist/css/primitives.css",
+    "./css/primitives.css": "./dist/css/primitives.css",
     "./css/semantic": "./dist/css/semantic.css",
+    "./css/semantic.css": "./dist/css/semantic.css",
     "./data": "./dist/json/tokens.json"
   },
   "scripts": {

@@ -1,0 +1,71 @@
+---
+title: Quick Start
+description: Install the core packages, run the playground, and render your first Chamfer component.
+status: draft
+updated: "2025-01-05"
+---
+
+The quickest way to see Chamfer UI in action is to install the core CSS bundle, spin up the HTML playground, and render the button component. The steps below assume you’re using pnpm, but the commands translate to npm/yarn.
+
+## 1. Install packages
+
+```bash
+pnpm add @chamfer/core @chamfer/behavior
+```
+
+Consumers using Tailwind can also install `@chamfer/tailwind` for utility classes mapped to the same tokens.
+
+## 2. Import baseline CSS
+
+```html
+<!-- app.html -->
+<link rel="stylesheet" href="/node_modules/@chamfer/core/dist/css/index.css" />
+```
+
+When bundling with Vite/Next/etc. you can import the module path directly:
+
+```ts
+// main.ts
+import "@chamfer/core/css";
+```
+
+## 3. Render a button
+
+```html
+<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
+  <span class="ch-button__label">Save changes</span>
+</button>
+```
+
+To enable ripple behavior, call the helper from `@chamfer/behavior`:
+
+```ts
+import { enhanceButton } from "@chamfer/behavior";
+
+document.querySelectorAll("[data-ch-component=\"button\"]").forEach(element => {
+  enhanceButton(element as HTMLButtonElement);
+});
+```
+
+## 4. Tailwind integration (optional)
+
+```ts
+// tailwind.config.ts
+import { chamferTailwindPreset } from "@chamfer/tailwind";
+
+export default {
+  presets: [chamferTailwindPreset]
+};
+```
+
+Now you can use utilities such as `bg-ch-action-primary`, `px-ch-button-inline-md`, and `focus-ring-ch` that stay in sync with the underlying tokens.
+
+## 5. Explore the playground
+
+The repo ships an HTML playground showcasing tokens and components. From the root of the monorepo:
+
+```bash
+pnpm --filter @chamfer/playground-html dev
+```
+
+The playground will recompile when tokens or core CSS change, giving immediate feedback while you iterate.

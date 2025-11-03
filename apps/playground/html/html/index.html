@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chamfer Playground · HTML</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+    />
+    <link rel="stylesheet" href="/src/playground.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-layout">
+        <div class="brand">
+          <h1><a href="./index.html">Chamfer Playground</a></h1>
+          <p>Vanilla HTML foundations</p>
+        </div>
+        <div class="header-controls">
+          <nav class="site-nav" aria-label="Playground navigation">
+            <a href="./index.html" aria-current="page">Foundations</a>
+            <a href="./components/button.html">Button</a>
+          </nav>
+          <div class="theme-switch">
+            <label class="sr-only" for="theme-select">Theme</label>
+            <select id="theme-select" aria-label="Theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="system" selected>System</option>
+            </select>
+            <button
+              id="hcm-toggle"
+              class="control-button"
+              type="button"
+              aria-pressed="false"
+            >
+              High contrast off
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <p id="status" class="sr-only" aria-live="polite">Theme: system</p>
+
+    <main class="container">
+      <section>
+        <h2>Color</h2>
+        <div class="swatches">
+          <div class="swatch" data-token="--ch-color-default" style="background: var(--ch-color-default)">
+            --ch-color-default
+          </div>
+          <div class="swatch" data-token="--ch-color-secondary" style="background: var(--ch-color-secondary)">
+            --ch-color-secondary
+          </div>
+          <div
+            class="swatch"
+            data-token="--ch-color-background"
+            style="
+              background: var(--ch-color-background);
+              border: 1px solid var(--ch-border-default);
+              color: var(--ch-color-default);
+            "
+          >
+            --ch-color-background
+          </div>
+          <div
+            class="swatch"
+            data-token="--ch-color-surface"
+            style="
+              background: var(--ch-color-surface);
+              border: 1px solid var(--ch-border-default);
+              color: var(--ch-color-default);
+            "
+          >
+            --ch-color-surface
+          </div>
+          <div class="swatch" data-token="--ch-border-default" style="background: var(--ch-border-default)">
+            --ch-border-default
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Actions</h2>
+        <div class="swatches">
+          <div
+            class="swatch"
+            data-token="primary"
+            style="background: var(--ch-action-primary-bg); color: var(--ch-action-primary-fg)"
+          >
+            primary
+          </div>
+          <div
+            class="swatch"
+            data-token="secondary"
+            style="background: var(--ch-action-secondary-bg); color: var(--ch-action-secondary-fg)"
+          >
+            secondary
+          </div>
+          <div
+            class="swatch"
+            data-token="success"
+            style="background: var(--ch-action-success-bg); color: var(--ch-action-success-fg)"
+          >
+            success
+          </div>
+          <div
+            class="swatch"
+            data-token="warning"
+            style="background: var(--ch-action-warning-bg); color: var(--ch-action-warning-fg)"
+          >
+            warning
+          </div>
+          <div
+            class="swatch"
+            data-token="danger"
+            style="background: var(--ch-action-danger-bg); color: var(--ch-action-danger-fg)"
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Soft</h2>
+        <div class="swatches">
+          <div
+            class="swatch"
+            data-token="primary"
+            style="
+              background: var(--ch-action-primary-soft-bg);
+              color: var(--ch-action-primary-soft-fg);
+              border: 1px solid var(--ch-action-primary-soft-border);
+            "
+          >
+            primary
+          </div>
+          <div
+            class="swatch"
+            data-token="secondary"
+            style="
+              background: var(--ch-action-secondary-soft-bg);
+              color: var(--ch-action-secondary-soft-fg);
+              border: 1px solid var(--ch-action-secondary-soft-border);
+            "
+          >
+            secondary
+          </div>
+          <div
+            class="swatch"
+            data-token="success"
+            style="
+              background: var(--ch-action-success-soft-bg);
+              color: var(--ch-action-success-soft-fg);
+              border: 1px solid var(--ch-action-success-soft-border);
+            "
+          >
+            success
+          </div>
+          <div
+            class="swatch"
+            data-token="warning"
+            style="
+              background: var(--ch-action-warning-soft-bg);
+              color: var(--ch-action-warning-soft-fg);
+              border: 1px solid var(--ch-action-warning-soft-border);
+            "
+          >
+            warning
+          </div>
+          <div
+            class="swatch"
+            data-token="danger"
+            style="
+              background: var(--ch-action-danger-soft-bg);
+              color: var(--ch-action-danger-soft-fg);
+              border: 1px solid var(--ch-action-danger-soft-border);
+            "
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Outline</h2>
+        <div class="swatches">
+          <div
+            class="swatch"
+            data-token="primary"
+            style="
+              background: transparent;
+              color: var(--ch-action-outline-primary-fg);
+              border: 1px solid var(--ch-action-outline-primary-border);
+            "
+          >
+            primary
+          </div>
+          <div
+            class="swatch"
+            data-token="secondary"
+            style="
+              background: transparent;
+              color: var(--ch-action-outline-secondary-fg);
+              border: 1px solid var(--ch-action-outline-secondary-border);
+            "
+          >
+            secondary
+          </div>
+          <div
+            class="swatch"
+            data-token="success"
+            style="
+              background: transparent;
+              color: var(--ch-action-outline-success-fg);
+              border: 1px solid var(--ch-action-outline-success-border);
+            "
+          >
+            success
+          </div>
+          <div
+            class="swatch"
+            data-token="warning"
+            style="
+              background: transparent;
+              color: var(--ch-action-outline-warning-fg);
+              border: 1px solid var(--ch-action-outline-warning-border);
+            "
+          >
+            warning
+          </div>
+          <div
+            class="swatch"
+            data-token="danger"
+            style="
+              background: transparent;
+              color: var(--ch-action-outline-danger-fg);
+              border: 1px solid var(--ch-action-outline-danger-border);
+            "
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Tones</h2>
+        <div class="swatches">
+          <div
+            class="swatch"
+            data-token="info"
+            style="
+              background: var(--ch-tone-info-soft-bg);
+              color: var(--ch-tone-info-soft-fg);
+              border: 1px solid var(--ch-tone-info-soft-border);
+            "
+          >
+            info
+          </div>
+          <div
+            class="swatch"
+            data-token="success"
+            style="
+              background: var(--ch-tone-success-soft-bg);
+              color: var(--ch-tone-success-soft-fg);
+              border: 1px solid var(--ch-tone-success-soft-border);
+            "
+          >
+            success
+          </div>
+          <div
+            class="swatch"
+            data-token="warning"
+            style="
+              background: var(--ch-tone-warning-soft-bg);
+              color: var(--ch-tone-warning-soft-fg);
+              border: 1px solid var(--ch-tone-warning-soft-border);
+            "
+          >
+            warning
+          </div>
+          <div
+            class="swatch"
+            data-token="danger"
+            style="
+              background: var(--ch-tone-danger-soft-bg);
+              color: var(--ch-tone-danger-soft-fg);
+              border: 1px solid var(--ch-tone-danger-soft-border);
+            "
+          >
+            danger
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Typography</h2>
+        <div class="text-samples">
+          <p class="sample" style="color: var(--ch-text-primary)">
+            Primary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="sample" style="color: var(--ch-text-secondary)">
+            Secondary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="sample" style="color: var(--ch-text-tertiary)">
+            Tertiary — The quick brown fox jumps over the lazy dog
+          </p>
+          <p class="sample" style="color: var(--ch-text-disabled)">
+            Disabled — The quick brown fox jumps over the lazy dog
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

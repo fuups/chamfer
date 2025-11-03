@@ -1,0 +1,62 @@
+---
+title: Tokens & Theming
+description: How Chamfer tokens are generated, layered, and customized.
+status: draft
+updated: "2025-01-05"
+---
+
+Chamfer’s design tokens flow through three layers so theming stays predictable and overrides stay scoped.
+
+## Layering model
+
+| Layer | Description | Example |
+| --- | --- | --- |
+| Primitives | Raw design decisions (colors, spacing, typography). Generated with OKLCH → HSLA → HEX fallback chain. | `--ch-color-default`, `--ch-space-md` |
+| Semantic | Contextual aliases used by components and utilities. Encodes meaning (“primary action hover”). | `--ch-action-primary-bg-hover` |
+| Components | Convenience tokens consumed inside component CSS for padding, radii, icon sizing. | `--ch-button-padding-inline-md` |
+
+Components only reference semantic/component tokens, never primitives, so a theme override simply updates the semantic layer.
+
+## Output formats
+
+`@chamfer/tokens` emits:
+
+- `dist/css/*.css` – primitives and semantic tokens as CSS custom properties.
+- `dist/json/*.json` – machine-readable token maps.
+- `dist/index.js` / `.d.ts` – typed exports for tooling.
+
+Import CSS directly for runtime theming:
+
+```ts
+import "@chamfer/tokens/css/semantic.css";
+```
+
+or load JSON/TS in build tooling to generate design reference docs.
+
+## Theme overrides
+
+Override tokens by redefining the custom properties under a selector. For example, to brand the primary action:
+
+```css
+:root {
+  --ch-action-primary-bg: #0f172a;
+  --ch-action-primary-fg: #ffffff;
+  --ch-action-primary-bg-hover: #1e293b;
+}
+```
+
+For dark themes, scope overrides to `.dark` / `[data-theme="dark"]`. Forced-color tokens (`--ch-*-hcm-*`) ensure Windows High Contrast remains legible even after overrides.
+
+## Density scaling
+
+Components reference density-aware tokens like `--ch-button-padding-inline-md`, which internally multiply the base spacing by `--ch-density-scale`. Adjust density globally by redefining that scale:
+
+```css
+:root {
+  --ch-density-scale: 0.9; /* compact mode */
+}
+```
+
+## Tailwind mapping
+
+The Tailwind preset consumes the same semantic tokens, exposing utilities like `bg-ch-action-primary`, `px-ch-button-inline-md`, and `rounded-ch-button`. Overriding tokens automatically updates both the vanilla CSS and the Tailwind utilities, keeping the system in sync regardless of styling approach.

@@ -8,7 +8,11 @@
   "scripts": {
     "build": "pnpm -r run build",
     "dev": "pnpm -r run dev",
-    "lint": "pnpm -r run lint",
+    "lint": "pnpm run lint:eslint && pnpm run lint:styles",
+    "lint:eslint": "eslint . --ext .ts,.tsx,.js,.jsx,.vue",
+    "lint:styles": "stylelint \"**/*.{css,scss}\" --allow-empty-input",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "typecheck": "pnpm -r run typecheck"
   },
   "engines": {
@@ -16,6 +20,28 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
+    "autoprefixer": "^10.4.18",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsonc": "^2.11.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "jsonc-eslint-parser": "^2.4.0",
+    "postcss": "^8.4.38",
+    "postcss-custom-media": "^10.0.5",
+    "postcss-import": "^15.1.0",
+    "postcss-nesting": "^12.0.1",
+    "postcss-preset-env": "^9.5.0",
+    "prettier": "^3.2.5",
+    "stylelint": "^16.5.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-order": "^6.0.4",
     "tsx": "^4.7.1",
     "typescript": "^5.4.5"
   }

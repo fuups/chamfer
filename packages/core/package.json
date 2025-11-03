@@ -13,7 +13,9 @@
       "default": "./dist/index.js"
     },
     "./css": "./dist/css/index.css",
-    "./css/base": "./dist/css/base.css"
+    "./css/index.css": "./dist/css/index.css",
+    "./css/base": "./dist/css/base.css",
+    "./css/base.css": "./dist/css/base.css"
   },
   "scripts": {
     "build": "pnpm run clean && pnpm run compile && pnpm run styles",
