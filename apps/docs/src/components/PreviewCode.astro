@@ -1,0 +1,205 @@
+---
+const {
+  code,
+  language = "html",
+  label = "Example",
+  copyLabel = "Copy"
+} = Astro.props;
+
+const previewHtml = await Astro.slots.render("preview");
+const hasPreview = previewHtml.trim().length > 0;
+const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
+---
+
+<div class="preview-code" data-active={hasPreview ? "preview" : "code"} id={id}>
+  <div class="preview-code__header">
+    <span class="preview-code__label">{label}</span>
+    <div class="preview-code__tabs" role="tablist">
+      {hasPreview && (
+        <button
+          type="button"
+          class="preview-code__tab"
+          data-tab="preview"
+          role="tab"
+          aria-selected="true"
+        >
+          Preview
+        </button>
+      )}
+      <button
+        type="button"
+        class="preview-code__tab"
+        data-tab="code"
+        role="tab"
+        aria-selected={!hasPreview ? "true" : "false"}
+      >
+        Code
+      </button>
+      <button type="button" class="preview-code__copy" data-copy aria-label={copyLabel}>
+        {copyLabel}
+      </button>
+    </div>
+  </div>
+
+  {hasPreview && (
+    <div class="preview-code__panel" data-panel="preview" role="tabpanel">
+      <div class="preview-code__preview" set:html={previewHtml} />
+    </div>
+  )}
+
+  <div class="preview-code__panel" data-panel="code" role="tabpanel">
+    <pre class="preview-code__pre">
+      <code class={`language-${language}`}>
+{code}
+      </code>
+    </pre>
+  </div>
+</div>
+
+<style>
+  .preview-code {
+    border: 1px solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
+    border-radius: var(--ch-radius-md, 0.75rem);
+    background: var(--ch-surface-base, #fff);
+    display: grid;
+    gap: var(--ch-space-sm, 0.75rem);
+  }
+
+  .preview-code__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ch-space-sm, 0.75rem);
+    padding: var(--ch-space-sm, 0.75rem) var(--ch-space-md, 1rem);
+    border-bottom: 1px solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
+  }
+
+  .preview-code__label {
+    font-size: var(--ch-text-sm, 0.875rem);
+    font-weight: var(--ch-weight-medium, 500);
+    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+  }
+
+  .preview-code__tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ch-space-xs, 0.35rem);
+  }
+
+  .preview-code__tab {
+    font: inherit;
+    font-size: var(--ch-text-xs, 0.78rem);
+    font-weight: var(--ch-weight-medium, 500);
+    padding: var(--ch-space-xs, 0.35rem) var(--ch-space-sm, 0.65rem);
+    border-radius: var(--ch-radius-pill, 999px);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.68));
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .preview-code__tab[aria-selected="true"] {
+    background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+    color: var(--ch-text-primary, #212529);
+    border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
+  }
+
+  .preview-code__copy {
+    font: inherit;
+    font-size: var(--ch-text-xs, 0.75rem);
+    padding: var(--ch-space-xs, 0.35rem) var(--ch-space-sm, 0.65rem);
+    border-radius: var(--ch-radius-pill, 999px);
+    border: 1px solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
+    background: transparent;
+    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+
+  .preview-code__copy:hover {
+    background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  .preview-code__panel {
+    display: none;
+    padding: 0 var(--ch-space-md, 1rem) var(--ch-space-md, 1rem);
+  }
+
+  .preview-code[data-active="preview"] .preview-code__panel[data-panel="preview"],
+  .preview-code[data-active="code"] .preview-code__panel[data-panel="code"] {
+    display: block;
+  }
+
+  .preview-code__preview {
+    padding: var(--ch-space-md, 1rem);
+    border-radius: var(--ch-radius-sm, 0.5rem);
+    border: 1px solid var(--ch-border-default, rgba(0, 0, 0, 0.1));
+    background: var(--ch-surface-raised, #fafafa);
+  }
+
+  .preview-code__pre {
+    margin: 0;
+    padding: var(--ch-space-md, 1rem);
+    border-radius: var(--ch-radius-sm, 0.5rem);
+    background: var(--ch-surface-raised, #0f172a);
+    color: #f8fafc;
+    overflow-x: auto;
+  }
+</style>
+
+<script is:inline data-target={id} data-copy-label={copyLabel}>
+  (() => {
+    const script = document.currentScript;
+    if (!script) return;
+
+    const targetId = script.dataset.target || "";
+    const defaultCopyLabel = script.dataset.copyLabel || "Copy";
+
+    const init = () => {
+      const container = targetId ? document.getElementById(targetId) : script.previousElementSibling;
+      if (!container) return;
+
+      const tabs = Array.prototype.slice.call(container.querySelectorAll(".preview-code__tab"));
+      const copyButton = container.querySelector(".preview-code__copy");
+      const pre = container.querySelector(".preview-code__pre");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          const target = tab.getAttribute("data-tab");
+          if (!target) return;
+          container.setAttribute("data-active", target);
+
+          tabs.forEach(btn => {
+            btn.setAttribute("aria-selected", btn === tab ? "true" : "false");
+          });
+        });
+      });
+
+      if (copyButton && pre) {
+        copyButton.addEventListener("click", async () => {
+          const code = pre.innerText.trim();
+          try {
+            await navigator.clipboard.writeText(code);
+            copyButton.textContent = "Copied";
+            setTimeout(() => {
+              copyButton.textContent = defaultCopyLabel;
+            }, 1500);
+          } catch (error) {
+            console.error(error);
+            copyButton.textContent = "Error";
+            setTimeout(() => {
+              copyButton.textContent = defaultCopyLabel;
+            }, 1500);
+          }
+        });
+      }
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>

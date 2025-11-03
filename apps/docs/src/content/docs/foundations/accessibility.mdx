@@ -1,0 +1,50 @@
+---
+title: Accessibility Baseline
+description: Expectations and checklist for accessible Chamfer UI components.
+status: draft
+updated: "2025-01-05"
+---
+
+Accessibility is non-negotiable for every Chamfer component. This baseline outlines the standards we apply before a component ships.
+
+## Contrast & theming
+
+- Targets WCAG 2.1 AA contrast by default (4.5:1 for text, 3:1 for UI indicators).
+- Light/dark tokens provide equivalent contrast; high-contrast tokens (`--ch-*-hcm-*`) keep Windows High Contrast legible.
+- Tailwind utilities mirror semantic tokens so contrast remains consistent regardless of styling approach.
+
+## Focus management
+
+- All focusable elements expose a visible focus ring using shared tokens: `--ch-focus-accent`, `--ch-focus-outer`, `--ch-ring-*`.
+- `:focus-visible` is the default; in environments lacking support, wrappers can polyfill via `focus-visible` ponyfill if needed.
+- Focus styles must not rely solely on color; outline and shadow ensure clarity.
+
+## Semantic structure
+
+- Components render semantic HTML by default (`<button>`, `<input>`, `<nav>`, etc.).
+- When alternative elements are used (e.g., `<a role="button">`), docs mandate appropriate `role`, `aria-*`, and `tabindex`.
+- Slots (`data-slot` / `.ch-button__leading`) avoid communicating meaning purely with anonymous spans.
+
+## Reduced motion & behaviors
+
+- Ripple/animation helpers respect `prefers-reduced-motion`, falling back to no animation when users opt out.
+- Behaviors are optional; disabling them should not break component semantics.
+
+## Assistive tech support
+
+- Icon-only controls require `aria-label` or `aria-labelledby`.
+- Loading states propagate `aria-busy` and suspend pointer/keyboard interaction.
+- Error states expose `aria-live` regions only when necessary to avoid announcement spam.
+
+## Checklist
+
+| Item | Status |
+| --- | --- |
+| Keyboard access (Tab/Shift+Tab/Space/Enter) | Required |
+| Visible focus on all interactive elements | Required |
+| Text & UI contrast meet AA | Required |
+| `prefers-reduced-motion` respected | Required |
+| Icon-only controls have accessible names | Required |
+| High-contrast mode (HCM) snapshot verified | Required |
+
+As new components ship, supplement this baseline with component-specific guidance (e.g., form error messaging, ARIA patterns) so teams can validate quickly.

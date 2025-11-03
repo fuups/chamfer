@@ -1,0 +1,96 @@
+---
+title: Typography
+description: Font families, size scale, and line-height tokens used across Chamfer UI.
+status: draft
+updated: "2025-01-05"
+---
+
+Chamfer ships a semantic typography scale built on design tokens so components can remain consistent across themes and frameworks. Override these tokens at the semantic layer to adapt font families, sizes, or line heights for your brand.
+
+## Font families
+
+| Token | Default |
+| --- | --- |
+| `--ch-font-sans` | `"Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif` |
+| `--ch-font-mono` | `"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace` |
+
+Apply them globally:
+
+```css
+body {
+  font-family: var(--ch-font-sans);
+}
+
+pre, code {
+  font-family: var(--ch-font-mono);
+}
+```
+
+## Font sizes
+
+| Token | CSS value | Example |
+| --- | --- | --- |
+| `--ch-text-xs` | `0.75rem` | <span style="font-size: var(--ch-text-xs);">Typography token sample</span> |
+| `--ch-text-sm` | `0.875rem` | <span style="font-size: var(--ch-text-sm);">Typography token sample</span> |
+| `--ch-text-md` | `1rem` | <span style="font-size: var(--ch-text-md);">Typography token sample</span> |
+| `--ch-text-lg` | `1.25rem` | <span style="font-size: var(--ch-text-lg);">Typography token sample</span> |
+| `--ch-text-xl` | `1.5rem` | <span style="font-size: var(--ch-text-xl);">Typography token sample</span> |
+
+Use the size tokens rather than raw `rem` values so density scaling and overrides propagate everywhere.
+
+## Font weights
+
+| Token | Value |
+| --- | --- |
+| `--ch-weight-normal` | `400` |
+| `--ch-weight-medium` | `500` |
+| `--ch-weight-semibold` | `600` |
+| `--ch-weight-bold` | `700` |
+
+Example:
+
+```css
+.ch-button__label {
+  font-weight: var(--ch-weight-medium);
+}
+```
+
+## Line height
+
+| Token | Value |
+| --- | --- |
+| `--ch-leading-tight` | `1.3` |
+| `--ch-leading-normal` | `1.5` |
+| `--ch-leading-loose` | `1.7` |
+
+Adjust per component:
+
+```css
+h1 {
+  font-size: var(--ch-text-xl);
+  line-height: var(--ch-leading-tight);
+}
+
+body {
+  line-height: var(--ch-leading-normal);
+}
+```
+
+## Overriding the scale
+
+Override tokens at the semantic layer to align with your brand typography:
+
+```css
+:root {
+  --ch-font-sans: "Roboto", "Helvetica Neue", sans-serif;
+  --ch-text-md: 1.0625rem;
+  --ch-weight-medium: 600;
+}
+
+.dark,
+[data-theme="dark"] {
+  --ch-text-md: 1.05rem;
+}
+```
+
+Because components reference these tokens, overrides automatically cascade through core CSS, behavior helpers, and the Tailwind preset.

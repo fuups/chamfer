@@ -10,17 +10,36 @@ interface Props {
 const { title, description } = Astro.props;
 const navGroups = [
   {
+    title: "Getting Started",
+    links: [
+      { href: "/", label: "Overview" },
+      { href: "/foundations/quick-start", label: "Quick Start" }
+    ]
+  },
+  {
     title: "Foundations",
     links: [
-      { href: "/foundations/introduction", label: "Introduction" },
-      { href: "/foundations/quick-start", label: "Quick Start" },
       { href: "/foundations/design-principles", label: "Design Principles" },
-      { href: "/foundations/tokens", label: "Tokens & Theming" }
+      { href: "/foundations/typography", label: "Typography" },
+      { href: "/foundations/tokens", label: "Tokens & Theming" },
+      { href: "/foundations/accessibility", label: "Accessibility" },
+      { href: "/foundations/tooling", label: "Tooling & Workflow" }
     ]
   },
   {
     title: "Components",
     links: [{ href: "/components/button", label: "Button" }]
+  },
+  {
+    title: "Guides",
+    links: [{ href: "#", label: "Theming Recipes", disabled: true }]
+  },
+  {
+    title: "Reference",
+    links: [
+      { href: "/reference/roadmap", label: "Roadmap" },
+      { href: "/reference/changelog", label: "Changelog" }
+    ]
   }
 ];
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
@@ -66,7 +85,13 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
                   const normalized = link.href === "/" ? "/" : link.href.replace(/\/+$/, "");
                   const isCurrent = normalized === currentPath;
                   return (
-                    <a href={link.href} class="nav-link" aria-current={isCurrent ? "page" : undefined}>
+                    <a
+                      href={link.disabled ? "#" : link.href}
+                      class={`nav-link${link.disabled ? " nav-link--disabled" : ""}`}
+                      aria-current={isCurrent ? "page" : undefined}
+                      aria-disabled={link.disabled ? "true" : undefined}
+                      tabindex={link.disabled ? -1 : undefined}
+                    >
                       {link.label}
                     </a>
                   );
@@ -186,7 +211,11 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       }
 
       document.querySelectorAll(".docs-sidebar .nav-link").forEach(link => {
-        link.addEventListener("click", () => {
+        link.addEventListener("click", event => {
+          if (link.getAttribute("aria-disabled") === "true") {
+            event.preventDefault();
+            return;
+          }
           if (window.innerWidth <= 960) {
             setSidebar(false);
           }
@@ -261,6 +290,19 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
         color: var(--ch-text-primary, #212529);
         border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
         background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+      }
+
+      .nav-link--disabled {
+        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.48));
+        cursor: not-allowed;
+        border-color: transparent;
+        background: transparent;
+      }
+
+      .nav-link--disabled:hover {
+        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.48));
+        border-color: transparent;
+        background: transparent;
       }
 
       .sidebar-controls {

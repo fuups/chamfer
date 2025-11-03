@@ -28,7 +28,7 @@ _Last update: tokens/core/playground updated for DESIGN_SYSTEM.md v1.1.0._
 - Component specs live under `components/` (Button spec drafted) to drive implementation + docs.
 - Framework wrappers (React/Vue/Angular) now stamp `ch-button` + `data-ch-component="button"` automatically and respect ripple options via the shared behavior helper.
 - HTML playground gains a shared navigation shell with component-specific pages (`components/button.html`), centralised theme/ripple bootstrapping, and a high-contrast preview toggle with raised-ripple demo coverage.
-- Astro docs app scaffolded with shared layout/theme controls, content collections, and initial button documentation sourced from the playground examples.
+- Astro docs app scaffolded with shared layout/theme controls, content collections, and initial foundations/roadmap content sourced from the playground and spec.
 - Button tokens now expose density-aware padding, forced-color fallbacks, and loading attributes; core CSS consumes the new aliases with focus/ripple fallbacks and `@media (forced-colors: active)` support.
 - `@chamfer/behavior` suppresses ripple when loading/disabled, works for anchors, and ships a Vitest suite covering keyboard activation + loading suppression.
 - Button playground showcases loading, raised ripple, anchor/input semantics, and RTL overflow scenarios; Tailwind preset exposes matching button spacing/radius tokens.
@@ -41,7 +41,7 @@ _Last update: tokens/core/playground updated for DESIGN_SYSTEM.md v1.1.0._
 4. Add SEO integrations (sitemap, structured data) + global navigation polish in Astro app.
 5. Decide whether to adopt a smaller interactive label size and update `--ch-text-sm` accordingly.
 6. Add automated smoke tests for the Tailwind preset/plugin (snapshot or fixture coverage).
-7. Expand docs coverage (tokens overview, Tailwind usage, accessibility checklist enforcement).
+7. Expand docs coverage (guides, package reference, theming recipes) and integrate live playground snippets.
 
 ## Upcoming Questions
 

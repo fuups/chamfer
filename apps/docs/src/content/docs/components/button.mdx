@@ -6,81 +6,214 @@ updated: "2025-01-05"
 ---
 
 import ButtonVariantGrid from "@components/ButtonVariantGrid.astro";
+import PreviewCode from "@components/PreviewCode.astro";
 
-Buttons expose Chamfer's action semantics (primary, secondary, success, warning, danger) across solid, soft, outline, and ghost emphasis styles. They rely entirely on semantic tokens—no primitive tokens are referenced directly—so theming stays consistent across frameworks.
+Chamfer buttons are the canonical call-to-action component. They lean entirely on semantic tokens (tone, emphasis, density) so brands can theme the system without rewriting CSS. Use them for form submissions, navigation actions, or contextual operations that need a visible affordance.
 
-## Anatomy
+## When to use
 
-- Root `<button>` (or semantic equivalent such as `<a role="button">`)
-- Optional leading icon: `.ch-button__leading`
-- Label: `.ch-button__label`
-- Optional trailing icon: `.ch-button__trailing`
+- Promote high-impact actions such as “Save”, “Publish”, or “Delete”.
+- Pair label text with optional leading/trailing icons while keeping an accessible name.
+- Reflect semantic meaning through the provided tones instead of inventing ad hoc utilities.
 
-## Tokens
+## Install & import
 
-| Token | Description |
-| --- | --- |
-| `--ch-button-padding-inline-[sm\|md\|lg]` | Inline padding scale that respects `--ch-density-scale` |
-| `--ch-button-padding-block` | Vertical padding for baseline alignment |
-| `--ch-button-gap-inline` | Space between leading/label/trailing slots |
-| `--ch-button-radius`, `--ch-button-radius-lg` | Border radii per size tier |
-| `--ch-button-icon-size-[sm\|md\|lg]` | Icon dimensions mapped to the icon token scale |
-| `--ch-button-font-weight` | Label font weight |
-| `--ch-button-hcm-*` | Forced-color overrides (ButtonFace/ButtonText/Highlight) |
+```
+# pnpm
+pnpm add @chamfer/core @chamfer/behavior
 
-Action colors (background/foreground/hover/active/soft/outline) are sourced from `--ch-action-*` semantic tokens.
+# npm
+npm install @chamfer/core @chamfer/behavior
 
-## HTML baseline
+# yarn
+yarn add @chamfer/core @chamfer/behavior
+```
 
-```html
-<button
-  class="ch-button ch-button--md ch-button--solid ch-button--primary"
-  data-ch-component="button"
-  type="button"
->
+```ts
+// main.ts
+import "@chamfer/core/css";
+```
+
+## Usage
+
+<PreviewCode label="HTML" code={`<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
   <span class="ch-button__leading" aria-hidden="true">✓</span>
   <span class="ch-button__label">Save changes</span>
   <span class="ch-button__trailing" hidden></span>
 </button>
-```
+`}> 
+  <div slot="preview">
+    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
+      <span class="ch-button__leading" aria-hidden="true">✓</span>
+      <span class="ch-button__label">Save changes</span>
+      <span class="ch-button__trailing" hidden></span>
+    </button>
+  </div>
+</PreviewCode>
 
-Add `data-ch-loading="true"` (plus `disabled`/`aria-busy="true"`) while awaiting async operations. Anchors styled as buttons must include `role="button"` and manage `aria-disabled` + `tabindex` when inactive.
+<PreviewCode
+  label="Enhancement"
+  language="ts"
+  code={`import { enhanceButton } from "@chamfer/behavior";
 
-## Variants & states
+document.querySelectorAll('[data-ch-component="button"]').forEach(element => {
+  enhanceButton(element as HTMLButtonElement);
+});
+`}
+>
+  <div slot="preview">
+    <button class="ch-button ch-button--md ch-button--soft ch-button--secondary" data-ch-component="button" data-ch-ripple="false">
+      <span class="ch-button__label">Ripple disabled</span>
+    </button>
+  </div>
+</PreviewCode>
 
-<ButtonVariantGrid />
+**React example**
 
-## Accessibility
+<PreviewCode
+  label="React"
+  language="tsx"
+  code={`import "@chamfer/core/css";
+import { useEffect, useRef } from "react";
+import { enhanceButton } from "@chamfer/behavior";
 
-- Provide an accessible name (`aria-label` for icon-only buttons).
-- Respect native disabled semantics (`disabled` or `aria-disabled="true"` with `tabindex="-1"`).
-- Loading buttons surface `aria-busy="true"` and block interaction.
-- Focus styles reach 3:1 contrast; verify Windows High Contrast with the toggle above.
-- Ripple enhancement automatically disables itself when `prefers-reduced-motion` is set.
+export function SaveButton() {
+  const ref = useRef<HTMLButtonElement>(null);
 
-## Framework adapters
+  useEffect(() => {
+    if (!ref.current) return;
+    const enhancement = enhanceButton(ref.current);
+    return enhancement.destroy;
+  }, []);
 
-Chamfer wrappers (`@chamfer/react`, `@chamfer/vue`, `@chamfer/angular`) render the same markup and forward props for `variant`, `size`, `tone`, `ripple`, `loading`, and slot content. Import `@chamfer/core/css` once in your app shell, then use the adapter component:
+  return (
+    <button
+      ref={ref}
+      data-ch-component="button"
+      className="ch-button ch-button--md ch-button--solid ch-button--primary"
+    >
+      <span className="ch-button__label">Save changes</span>
+    </button>
+  );
+}
+`}
+>
+  <div slot="preview">
+    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
+      <span class="ch-button__label">React wrapper output</span>
+    </button>
+  </div>
+</PreviewCode>
 
-```tsx
-import { Button } from "@chamfer/react";
+**Tailwind preset**
 
-<Button variant="solid" tone="primary" size="md" leadingIcon="✓">
-  Save changes
-</Button>;
-```
-
-## Tailwind usage
-
-Design tokens map directly into the Tailwind preset shipped in `@chamfer/tailwind`. Combine the utility classes below to mirror the vanilla implementation.
-
-```html
-<button
+<PreviewCode
+  label="Tailwind"
+  language="html"
+  code={`<button
   class="min-h-ch-pressable-md px-ch-button-inline-md rounded-ch-button bg-ch-action-primary text-ch-action-primary-foreground focus-visible:focus-ring-ch transition"
-  type="button"
 >
   Save changes
 </button>
+`}
+>
+  <div slot="preview">
+    <button
+      class="min-h-ch-pressable-md px-ch-button-inline-md rounded-ch-button bg-ch-action-primary text-ch-action-primary-foreground focus-visible:focus-ring-ch transition"
+      data-ch-component="button"
+    >
+      Tailwind preset
+    </button>
+  </div>
+</PreviewCode>
+
+Chamfer’s Tailwind preset maps directly to the same semantic tokens, so overrides stay in sync.
+
+## Anatomy & tokens
+
+- Root: `<button>` (or `<a role="button">`) with `data-ch-component="button"`.
+- Slots: `.ch-button__leading`, `.ch-button__label`, `.ch-button__trailing` align icon and text.
+- Loading state: set `data-ch-loading="true"` + `disabled` + `aria-busy="true"` to suspend interaction.
+
+| Token | Description |
+| --- | --- |
+| `--ch-button-padding-inline-[sm\|md\|lg]` | Density-aware inline padding |
+| `--ch-button-padding-block` | Baseline-aligned vertical padding |
+| `--ch-button-gap-inline` | Space between leading, label, and trailing slots |
+| `--ch-button-radius`, `--ch-button-radius-lg` | Radius scale per size tier |
+| `--ch-button-icon-size-[sm\|md\|lg]` | Icon dimensions mapped to semantic icon tokens |
+| `--ch-button-font-weight` | Label weight (defaults to `--ch-weight-medium`) |
+| `--ch-button-hcm-*` | Forced-color palette for Windows High Contrast |
+
+Emphasis colours come from `--ch-action-<tone>-*` tokens; ghost emphasis uses `--ch-ghost-hover` / `--ch-ghost-active` overlays.
+
+## Variants & sizes
+
+| Emphasis | Semantic tokens | Notes |
+| --- | --- | --- |
+| Solid | `--ch-action-<tone>-bg/fg/hover/active` | High-contrast primary CTA |
+| Soft | `--ch-action-<tone>-soft-*` | Subtle tone for secondary actions |
+| Outline | `--ch-action-outline-<tone>-*` | Transparent fill with tokenised borders |
+| Ghost | `--ch-ghost-hover(-base|raised)` | Overlay approach for neutral surfaces |
+
+| Size modifier | Height token | Inline padding | Font size |
+| --- | --- | --- | --- |
+| `ch-button--sm` | `--ch-pressable-height-sm` | `--ch-button-padding-inline-sm` | `--ch-text-sm` |
+| `ch-button--md` | `--ch-pressable-height-md` | `--ch-button-padding-inline-md` | `--ch-text-md` |
+| `ch-button--lg` | `--ch-pressable-height-lg` | `--ch-button-padding-inline-lg` | `--ch-text-lg` |
+
+Add `ch-button--icon-only` for square icon buttons and supply an `aria-label`.
+
+## Examples
+
+<ButtonVariantGrid />
+
+### States
+
+```html
+<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
+  <span class="ch-button__label">Default</span>
+</button>
+
+<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-demo-state="hover">
+  <span class="ch-button__label">Hover</span>
+</button>
+
+<button
+  class="ch-button ch-button--md ch-button--solid ch-button--primary"
+  data-ch-component="button"
+  data-ch-loading="true"
+  aria-busy="true"
+  disabled
+>
+  <span class="ch-button__label">Loading…</span>
+</button>
 ```
 
-Utilities are generated from the same semantic tokens, so theming stays in sync with the core CSS bundle.
+## API reference
+
+| Modifier | Purpose |
+| --- | --- |
+| `ch-button--{sm\|md\|lg}` | Adjusts density and typography |
+| `ch-button--{solid\|soft\|outline\|ghost}` | Sets emphasis style |
+| `ch-button--{primary\|secondary\|success\|warning\|danger}` | Applies semantic tone |
+| `ch-button--icon-only` | Hides visual label; supply `aria-label` |
+| `data-ch-ripple="false"` | Disables ripple enhancement |
+| `data-ch-ripple="raised"` | Uses raised-surface ripple overlay |
+| `data-ch-loading="true"` | Indicates loading/busy state |
+
+## Accessibility
+
+- Provide accessible names (`aria-label` for icon-only buttons).
+- Respect `disabled` or `aria-disabled="true"` + `tabindex="-1"` semantics.
+- Set `aria-busy="true"` when loading and keep the control disabled.
+- Focus styles use tokenised outlines ensuring 3:1 contrast; verify in high-contrast mode.
+- Ripple enhancement honours `prefers-reduced-motion` automatically.
+
+See the [Accessibility baseline](/foundations/accessibility) for the project-wide checklist.
+
+## Related guides
+
+- [Tokens & Theming](/foundations/tokens)
+- [Tooling & Workflow](/foundations/tooling)
+- [Roadmap](/reference/roadmap)

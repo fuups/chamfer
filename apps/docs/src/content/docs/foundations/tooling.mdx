@@ -1,0 +1,42 @@
+---
+title: Tooling & Workflow
+description: Development workflow, build tooling, and repository conventions.
+status: draft
+updated: "2025-01-05"
+---
+
+Chamfer UI is managed as a pnpm workspace so packages share configs while shipping independently. This page captures the essentials for local development and CI.
+
+## Workspace commands
+
+| Command | Description |
+| --- | --- |
+| `pnpm install` | Installs workspace dependencies with hoisting optimised for pnpm. |
+| `pnpm -r build` | Runs `build` in every package/app (tokens → core → docs/playgrounds). |
+| `pnpm --filter @chamfer/tokens build` | Generates CSS/JSON/TS token artifacts. Required before building `@chamfer/core`. |
+| `pnpm --filter @chamfer/playground-html dev` | Starts the vanilla HTML playground. |
+| `pnpm --filter @chamfer/docs dev` | Launches the Astro documentation site. |
+
+## Shared configuration
+
+All linting, formatting, and PostCSS configs live under `configs/` so packages can reuse them without duplication. Import them via relative paths (e.g., `module.exports = require("../../configs/postcss.config.cjs");`).
+
+## Build pipeline
+
+1. **Tokens** – generated via TypeScript scripts; outputs CSS/JSON/TS artifacts.
+2. **Core CSS** – composes semantic token CSS and component sources into `/dist/css`.
+3. **Behavior** – TypeScript compiled to ESM/CJS with declaration files.
+4. **Framework wrappers** – (future) wrap core CSS + behaviors and emit type-safe APIs.
+5. **Docs/Playgrounds** – import built artifacts to keep demos in sync with packages.
+
+CI will run lint/tests/build per package before release. SemVer tagging is planned per package once automation is configured.
+
+## Progressive enhancement
+
+Vanilla JS helpers live in `@chamfer/behavior`. They are optional but recommended for features like ripple, focus overlays, or keyboard guards. Wrappers re-export these helpers so framework consumers don’t touch the DOM directly.
+
+## Repository hygiene
+
+- Keep component specs (`components/*.md`) updated when behavior or tokens change.
+- Update `SESSION_PROGRESS.md` when large tasks land so long-running efforts remain traceable.
+- Document cross-cutting decisions in `AGENTS.md` to guide future contributors and automation.
