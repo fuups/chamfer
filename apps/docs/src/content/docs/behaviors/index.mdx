@@ -1,0 +1,56 @@
+---
+title: Behaviors
+description: Progressive enhancement helpers that layer interaction polish on top of Chamfer’s HTML and CSS.
+status: alpha
+updated: "2025-01-07"
+slug: /behaviors
+---
+
+Chamfer ships as HTML-first components. Behaviors are optional, framework-agnostic helpers that enhance those components when JavaScript is available. They wire up features such as ripple feedback, focus management, and async loading cues without leaking framework-specific assumptions into the core CSS.
+
+## How behaviors work
+
+- **Opt-in:** Import the helper you need (`@chamfer/behavior`) and call it on the element you rendered. No global bootstrapping is required.
+- **Progressive:** If JavaScript is disabled the component still renders and responds using native semantics.
+- **Composable:** Helpers add lightweight classes and data attributes (`ch-rippling`, `data-ch-loading`) so you can layer custom styling or theming on top.
+- **Accessible:** Every behavior respects user preferences like `prefers-reduced-motion` and the forced-colors media query.
+
+## Available helpers
+
+| Helper | Purpose | Status |
+| --- | --- | --- |
+| [`enhanceButton`](./ripple) | Adds ripple feedback, ensures keyboard parity, and normalises type defaults for buttons. | alpha |
+| Focus ring management | Dedicated helper coming soon for global focus stylings. | planned |
+| Async loading coordinator | Planned helper for coordinating busy/loading states across grouped controls. | planned |
+
+> Have a behavior request? Track it in the roadmap or file an issue in the `@chamfer/behavior` package.
+
+## Using a behavior
+
+1. Install `@chamfer/behavior` alongside `@chamfer/core`.
+2. Call the helper in the lifecycle that renders your element.
+3. Store the `destroy` function and clean it up when the element unmounts.
+
+```ts
+import { enhanceButton } from "@chamfer/behavior";
+
+const destroy = enhanceButton(buttonElement, {
+  ripple: true
+});
+
+// Later…
+destroy();
+```
+
+Each helper documents its own options and lifecycle hooks. See the [Ripple guide](./ripple) for a complete walkthrough.
+
+## Good citizens
+
+- Always pair behaviors with semantic markup. They assume you rendered the correct element (`<button>`, `<a role="button">`, etc.).
+- Keep the helper optional. Avoid breaking functionality if it isn’t initialised.
+- Clean up when you remove the element; every helper returns a `destroy()` function for this purpose.
+- Respect user settings. Helpers will already detect `prefers-reduced-motion`, but you can also toggle them via data attributes (`data-ch-ripple="false"`).
+
+## What’s next
+
+The behaviors layer will expand as components land. Upcoming work includes structured focus rings, async progress cues, and modal helpers. Track progress in the [roadmap](/reference/roadmap) or subscribe to release notes in the changelog.

@@ -1,0 +1,108 @@
+---
+title: Ripple
+description: Progressive enhancement that provides immediate visual feedback when users press Chamfer buttons.
+status: alpha
+updated: "2025-01-07"
+slug: /behaviors/ripple
+---
+
+import Callout from "@components/ui/Callout.astro";
+
+Chamfer’s ripple mirrors the press feedback used in the playground demos: a wave originates where the user presses, fills the component while the pointer or key is held, then fades when the press completes. The helper works with any element that exposes `data-ch-component="button"`—native `<button>`, anchors acting as buttons, or custom elements.
+
+## Lifecycle
+
+1. **Pointer or key down:** `enhanceButton` spawns a `.ch-ripple` span, adds `ch-rippling` to the host, and animates the wave using `ch-button-ripple-enter`. The element keeps its base background during this period.
+2. **Holding the press:** The ripple remains at full opacity until the user releases. Multiple simultaneous presses (e.g. touch points) receive unique ripples.
+3. **Pointer or key up:** The helper starts `ch-button-ripple-exit`. When the animation finishes the helper removes the span and clears `ch-rippling`.
+4. **Cancellation:** If the pointer is cancelled or keyboard focus moves away, the ripple exits immediately.
+
+The ripple automatically disables when `prefers-reduced-motion: reduce` is active or when the page is in forced-colors mode.
+
+## Usage
+
+```ts
+import { enhanceButton } from "@chamfer/behavior";
+
+const destroy = enhanceButton(myButton, {
+  ripple: true
+});
+
+// Optional clean-up when the button unmounts
+destroy();
+```
+
+```html
+<button data-ch-component="button">
+  Save changes
+</button>
+```
+
+### Options
+
+| Option | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `ripple` | `boolean` | `true` | Disable per element with `data-ch-ripple="false"` or in code with `{ ripple: false }`. |
+
+<Callout tone="tip">
+  `enhanceButton` also normalises `type="button"`, augments keyboard handling for anchors, and guards disabled/loading states. Ripple is only one part of the helper.
+</Callout>
+
+## Styling hooks
+
+- `ch-rippling` class marks the host while any ripple is active.
+- `.ch-ripple` spans are appended inside the host. When the user releases, the helper toggles `.ch-ripple--exit` to trigger the exit animation.
+- CSS variables:
+  - `--ch-button-ripple-color`
+  - `--ch-button-ripple-opacity`
+
+Solid buttons derive the ripple from their background tone, transparent variants mix with their foreground colour, and forced-colors users never see the effect.
+
+```css
+/* Scope a stronger wave to primary surfaces */
+.surface-dark .ch-button--solid.ch-button--primary {
+  --ch-button-ripple-color: color-mix(in oklab, #ffffff 85%, var(--ch-action-primary-bg) 15%);
+  --ch-button-ripple-opacity: 0.6;
+}
+
+/* Disable ripple entirely for secondary actions */
+.secondary-pane [data-ch-component="button"] {
+  data-ch-ripple: false;
+}
+```
+
+See the [Theming recipes guide](/guides/theming-recipes#adjust-ripple-strength) for more examples.
+
+## Accessibility
+
+- Respects `prefers-reduced-motion: reduce`. No ripple renders, and press feedback falls back to native active states.
+- Suppresses the effect for `@media (forced-colors: active)`.
+- Keyboard users trigger the same lifecycle—Space begins the ripple on keydown and releases it on keyup.
+- Works with buttons rendered as anchors (`role="button"`, `tabindex="0"`) as long as the correct semantics are applied.
+
+## Disabling ripple
+
+- Add `data-ch-ripple="false"` to an individual button.
+
+```html
+<button data-ch-component="button" data-ch-ripple="false">
+  Plain action
+</button>
+```
+
+- Pass `{ ripple: false }` when calling `enhanceButton`.
+- Toggle the attribute in code when specific surfaces or themes should opt out:
+
+```ts
+document
+  .querySelectorAll('[data-theme="low-motion"] [data-ch-component="button"]')
+  .forEach((button) => {
+    button.dataset.chRipple = "false";
+  });
+```
+
+## Related resources
+
+- [Behaviors overview](./index)
+- [Button component documentation](/components/button)
+- [Theming recipes guide](/guides/theming-recipes)

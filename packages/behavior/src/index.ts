@@ -57,22 +57,56 @@ function isElementLoading(element: HTMLElement): boolean {
   return ariaBusy === "true";
 }
 
-export function enhanceRipple(
-  element: HTMLElement
-): Enhancement {
-  const activeRipples = new Set<HTMLSpanElement>();
+export function enhanceRipple(element: HTMLElement): Enhancement {
+  const MAX_RIPPLES = 3;
+  const activeRipples = new Map<string, HTMLSpanElement>();
   const reducedMotion = prefersReducedMotion();
 
   const cleanup = (ripple: HTMLSpanElement) => {
-    if (!activeRipples.has(ripple)) {
+    ripple.remove();
+    delete ripple.dataset.enterDone;
+    delete ripple.dataset.pendingExit;
+    delete ripple.dataset.exiting;
+    if (activeRipples.size === 0) {
+      element.classList.remove("ch-rippling");
+    }
+  };
+
+  const startExit = (ripple: HTMLSpanElement) => {
+    if (ripple.dataset.exiting === "true") {
       return;
     }
-    activeRipples.delete(ripple);
-    ripple.remove();
+    ripple.dataset.exiting = "true";
+    delete ripple.dataset.pendingExit;
+    ripple.classList.add("ch-ripple--exit");
+  };
+
+  const releaseRipple = (key: string) => {
+    const ripple = activeRipples.get(key);
+    if (!ripple) {
+      return;
+    }
+
+    activeRipples.delete(key);
+
+    if (ripple.dataset.enterDone === "true") {
+      startExit(ripple);
+    } else {
+      ripple.dataset.pendingExit = "true";
+    }
   };
 
   const spawnRipple = (event: PointerEvent | KeyboardEvent) => {
     if (reducedMotion || isElementDisabled(element) || isElementLoading(element)) {
+      return;
+    }
+
+    const key =
+      typeof PointerEvent !== "undefined" && event instanceof PointerEvent
+        ? `pointer-${event.pointerId}`
+        : "keyboard";
+
+    if (activeRipples.has(key)) {
       return;
     }
 
@@ -89,31 +123,84 @@ export function enhanceRipple(
     }
 
     const ripple = createWave(element, { x, y });
+    ripple.dataset.rippleKey = key;
 
-    activeRipples.add(ripple);
+    ripple.addEventListener("animationend", () => {
+      if (ripple.dataset.exiting === "true") {
+        cleanup(ripple);
+        return;
+      }
+      ripple.dataset.enterDone = "true";
+      if (ripple.dataset.pendingExit === "true") {
+        startExit(ripple);
+      }
+    });
+
+    activeRipples.set(key, ripple);
+    element.classList.add("ch-rippling");
     element.appendChild(ripple);
 
-    ripple.addEventListener("animationend", () => cleanup(ripple), {
-      once: true
-    });
+    if (typeof PointerEvent !== "undefined" && event instanceof PointerEvent) {
+      element.setPointerCapture(event.pointerId);
+    }
+
+    if (activeRipples.size > MAX_RIPPLES) {
+      for (const existingKey of activeRipples.keys()) {
+        if (existingKey === key) {
+          continue;
+        }
+        releaseRipple(existingKey);
+        break;
+      }
+    }
   };
 
-  const pointerHandler = (event: PointerEvent) => spawnRipple(event);
-  const keyHandler = (event: KeyboardEvent) => {
+  const pointerDownHandler = (event: PointerEvent) => {
+    spawnRipple(event);
+  };
+
+  const pointerUpHandler = (event: PointerEvent) => {
+    if (element.hasPointerCapture(event.pointerId)) {
+      element.releasePointerCapture(event.pointerId);
+    }
+    releaseRipple(`pointer-${event.pointerId}`);
+  };
+
+  const pointerCancelHandler = (event: PointerEvent) => {
+    releaseRipple(`pointer-${event.pointerId}`);
+  };
+
+  const keyDownHandler = (event: KeyboardEvent) => {
+    if (event.repeat) {
+      return;
+    }
     if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
       spawnRipple(event);
     }
   };
 
-  element.addEventListener("pointerdown", pointerHandler);
-  element.addEventListener("keydown", keyHandler);
+  const keyUpHandler = (event: KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
+      releaseRipple("keyboard");
+    }
+  };
+
+  element.addEventListener("pointerdown", pointerDownHandler);
+  element.addEventListener("pointerup", pointerUpHandler);
+  element.addEventListener("pointercancel", pointerCancelHandler);
+  element.addEventListener("keydown", keyDownHandler);
+  element.addEventListener("keyup", keyUpHandler);
 
   return {
     destroy: () => {
-      element.removeEventListener("pointerdown", pointerHandler);
-      element.removeEventListener("keydown", keyHandler);
-      activeRipples.forEach(ripple => ripple.remove());
+      element.removeEventListener("pointerdown", pointerDownHandler);
+      element.removeEventListener("pointerup", pointerUpHandler);
+      element.removeEventListener("pointercancel", pointerCancelHandler);
+      element.removeEventListener("keydown", keyDownHandler);
+      element.removeEventListener("keyup", keyUpHandler);
+      activeRipples.forEach((ripple) => ripple.remove());
       activeRipples.clear();
+      element.classList.remove("ch-rippling");
     }
   };
 }

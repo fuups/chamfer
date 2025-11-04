@@ -32,6 +32,7 @@ _Last update: Docs ripple helper now bundles as a hashed asset (inline limit dis
 - Button tokens now expose density-aware padding, forced-color fallbacks, and loading attributes; core CSS consumes the new aliases with focus/ripple fallbacks and `@media (forced-colors: active)` support.
 - `@chamfer/behavior` suppresses ripple when loading/disabled, works for anchors, and ships a Vitest suite covering keyboard activation + loading suppression.
 - Button playground showcases loading, raised ripple, anchor/input semantics, and RTL overflow scenarios; Tailwind preset exposes matching button spacing/radius tokens.
+- Ripple entry animation eased to start from a smaller wave so presses feel less “poppy” while still covering the full control (`packages/core/src/button.css`).
 
 ## Active Todos
 
@@ -94,3 +95,8 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Added pre-paint theme script + localStorage persistence to stop light/dark flashes between page transitions in the docs layout (`data-theme`, `color-scheme`, and HCM stored under `ch-theme` / `ch-hcm`).
 - Restored true preformatted styling for code samples and made the PreviewCode panels horizontally scrollable with `min-width: 100%` so long snippets stay responsive without awkward wrapping.
 - Simplified code previews: removed the wrap toggle and default to wrapping on mobile viewports while keeping horizontal scroll on larger screens.
+- Simplified code previews: removed the wrap toggle and default to wrapping on mobile viewports while keeping horizontal scroll on larger screens.
+- High contrast toggle now re-colors the docs shell (tokens + controls) and disables decorative ripple for clarity; solid button ripple shading bumped to stay visible in light mode.
+- High contrast toggle now re-colors the docs shell (tokens + controls) and disables decorative ripple for clarity.
+- Ripple timing tweaks: solid buttons use foreground-derived blends, transparent variants lighten their waves, and buttons suppress active backgrounds while the ripple animation runs to avoid state clashes. Ripples now spawn on press down, stay filled until release, then fade via a dedicated exit animation.
+- Authored new documentation pages for Behaviors (overview + Ripple deep dive) and a Theming Recipes guide capturing ripple customisation snippets.

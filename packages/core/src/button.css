@@ -4,7 +4,8 @@
   --ch-button-border-color: transparent;
   --ch-button-hover-bg: var(--ch-button-bg);
   --ch-button-active-bg: var(--ch-button-bg);
-  --ch-button-ripple-color: currentColor;
+  --ch-button-ripple-color: color-mix(in oklab, currentColor 60%, transparent);
+  --ch-button-ripple-opacity: 0.4;
 
   position: relative;
   display: inline-flex;
@@ -38,8 +39,40 @@
 @supports (color: color-mix(in oklab, black 10%, white)) {
   :is(.ch-button, [data-ch-component="button"]) {
     --ch-button-ripple-color:
-      color-mix(in oklab, currentColor 18%, transparent);
+      color-mix(in oklab, var(--ch-button-fg) 60%, transparent);
   }
+
+  :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
+    --ch-button-ripple-color:
+      color-mix(in oklab, var(--ch-button-bg) 12%, white 88%);
+    --ch-button-ripple-opacity: 0.55;
+  }
+
+  .dark :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
+    --ch-button-ripple-color:
+      color-mix(in oklab, var(--ch-button-bg) 6%, white 94%);
+  }
+
+  :is(.ch-button, [data-ch-component="button"]).ch-button--soft,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--flat,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--outline,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
+    --ch-button-ripple-color:
+      color-mix(in oklab, var(--ch-button-fg) 68%, white 20%);
+    --ch-button-ripple-opacity: 0.38;
+  }
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid {
+  --ch-button-ripple-color: rgba(255, 255, 255, 0.55);
+  --ch-button-ripple-opacity: 0.55;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft,
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat,
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline,
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
+  --ch-button-ripple-opacity: 0.38;
 }
 
 :is(.ch-button, [data-ch-component="button"])::after {
@@ -55,16 +88,25 @@
   border-radius: 9999px;
   background-color: var(--ch-button-ripple-color);
   background-image: radial-gradient(circle at center, var(--ch-button-ripple-color) 0%, transparent 70%);
-  transform: scale(0);
-  opacity: 0.38;
+  transform: scale(0.01);
+  opacity: var(--ch-button-ripple-opacity, 0.38);
   pointer-events: none;
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
   will-change: transform, opacity;
-  animation: ch-button-ripple 520ms var(--ch-ease-emphasized) forwards;
+  animation: ch-button-ripple-enter 320ms cubic-bezier(0.30, 0.87, 0.5, 1) forwards;
+  animation-fill-mode: forwards;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid .ch-ripple {
+  mix-blend-mode: screen;
+}
+
+:is(.ch-button, [data-ch-component="button"]) .ch-ripple--exit {
+  animation: ch-button-ripple-exit 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-fill-mode: forwards;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger .ch-ripple {
-  mix-blend-mode: normal;
   opacity: 0.45;
 }
 
@@ -72,12 +114,10 @@
   color: inherit;
 }
 
-:is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
+ :is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
 :is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
 :is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
 :is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
-  mix-blend-mode: normal;
-  opacity: 0.5;
   background-color: var(--ch-button-ripple-color);
 }
 
@@ -86,7 +126,7 @@
   :is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
   :is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
   :is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
-    background-color: color-mix(in oklab, var(--ch-button-fg) 70%, white 20%);
+    background-color: color-mix(in oklab, var(--ch-button-fg) 55%, white 35%);
   }
 }
 
@@ -119,17 +159,24 @@
   }
 }
 
-@keyframes ch-button-ripple {
+@keyframes ch-button-ripple-enter {
   0% {
-    transform: scale(0.2);
-    opacity: 0.45;
-  }
-  55% {
-    transform: scale(0.95);
-    opacity: 0.25;
+    transform: scale(0.01);
+    opacity: 0;
   }
   100% {
-    transform: scale(1.15);
+    transform: scale(1.05);
+    opacity: var(--ch-button-ripple-opacity, 0.4);
+  }
+}
+
+@keyframes ch-button-ripple-exit {
+  0% {
+    transform: scale(1.05);
+    opacity: var(--ch-button-ripple-opacity, 0.4);
+  }
+  100% {
+    transform: scale(1.2);
     opacity: 0;
   }
 }
@@ -167,6 +214,14 @@
 
 :is(.ch-button, [data-ch-component="button"]):not(:disabled):active {
   background-color: var(--ch-button-active-bg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-rippling:not(:disabled) {
+  background-color: var(--ch-button-bg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-rippling:not(:disabled):hover {
+  background-color: var(--ch-button-hover-bg);
 }
 
 .ch-button__leading,

@@ -1,0 +1,98 @@
+---
+title: Theming Recipes
+description: Practical overrides for tailoring Chamfer tokens, ripple feedback, and surface styling to your product.
+status: draft
+updated: "2025-01-07"
+slug: /guides/theming-recipes
+---
+
+Chamfer’s tokens are deliberately semantic. You can rebrand or adjust interaction feedback by overriding CSS variables at the right scope instead of rewriting component CSS. This guide collects copy‑ready snippets for common scenarios. Each recipe targets a real component, explains which tokens are involved, and shows where to apply the overrides.
+
+> Looking for additional recipes? Open an issue in the docs repo and we’ll expand this page as components land.
+
+## Adjust ripple strength
+
+Chamfer buttons expose `--ch-button-ripple-color` and `--ch-button-ripple-opacity`. Increase the opacity on dark surfaces or dial it back for subtle cards.
+
+```css
+/* Brighter wave on primary solid buttons */
+.app-shell .ch-button--solid.ch-button--primary {
+  --ch-button-ripple-color: color-mix(in oklab, var(--ch-action-primary-bg) 18%, white 82%);
+  --ch-button-ripple-opacity: 0.55;
+}
+
+/* Very light ripple for tinted surfaces */
+.surface-soft [data-ch-component="button"] {
+  --ch-button-ripple-opacity: 0.22;
+}
+```
+
+See [Behaviors → Ripple](/behaviors/ripple) for lifecycle details and additional styling hooks.
+
+## Dark surface accents
+
+When you render buttons on a dark card, keep the semantic tokens but tweak local backgrounds and borders to match the surface tone.
+
+```css
+.dark-card {
+  --ch-surface-base: #121315;
+  --ch-action-primary-bg: color-mix(in oklab, #ffffff 12%, #255af6 88%);
+  --ch-action-primary-hover: color-mix(in oklab, #ffffff 18%, #255af6 82%);
+  --ch-action-primary-soft-bg: rgba(37, 90, 246, 0.16);
+  --ch-action-primary-soft-border: rgba(37, 90, 246, 0.38);
+}
+```
+
+Drop the overrides on a container (`.dark-card`) so other surfaces stay untouched.
+
+## Motion-reduced themes
+
+For dedicated low-motion themes you can disable ripple and smooth transitions while keeping the rest of the styling intact.
+
+```ts
+const root = document.documentElement;
+
+function enableLowMotion() {
+  root.dataset.motion = "reduced";
+  document
+    .querySelectorAll('[data-ch-component="button"]')
+    .forEach((button) => {
+      button.dataset.chRipple = "false";
+    });
+}
+```
+
+```css
+[data-motion="reduced"] * {
+  transition: none !important;
+  animation-duration: 0.01ms !important;
+}
+```
+
+You can expose the toggle in settings or detect OS preferences and apply it automatically.
+
+## Cross-surface brand accents
+
+Override semantic tokens once at the application root to propagate brand colours everywhere.
+
+```css
+:root {
+  --ch-action-primary-bg: #1550ff;
+  --ch-action-primary-fg: #ffffff;
+  --ch-action-primary-soft-bg: rgba(21, 80, 255, 0.12);
+  --ch-action-primary-soft-border: rgba(21, 80, 255, 0.32);
+  --ch-action-secondary-soft-bg: rgba(32, 210, 183, 0.16);
+  --ch-action-secondary-soft-border: rgba(32, 210, 183, 0.35);
+}
+```
+
+Those same tokens drive buttons, inputs, and future components, keeping your palette consistent.
+
+## Tips
+
+- Prefer overriding semantic tokens (`--ch-action-…`) over component-specific ones unless you’re targeting a single component.
+- Scope overrides narrowly (`.surface-dark`, `.settings-pane`) so other surfaces retain default contrast levels.
+- Combine recipes: you can adjust ripple strength on a surface that already overrides action tokens.
+- Keep reference docs handy: [Tokens & Theming](/foundations/tokens) enumerates every global token.
+
+Have a recipe to share? PRs welcome—we’ll keep this page growing alongside new components.
