@@ -156,3 +156,6 @@ a:visited {
     scroll-behavior: auto !important;
   }
 }
+
+/* Import component styles */
+@import "./spinner.css";

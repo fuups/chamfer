@@ -1,0 +1,84 @@
+/* Chamfer Spinner – Loading indicator with size variants and motion preferences */
+
+:is(.ch-spinner, [data-ch-component="spinner"]) {
+  --ch-spinner-color: currentColor;
+  --ch-spinner-size: var(--ch-icon-size-md, 1.5rem);
+  --ch-spinner-stroke-width: 2.5px;
+  --ch-spinner-animation-duration: var(--ch-dur-long, 800ms);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ch-spinner-size);
+  height: var(--ch-spinner-size);
+  color: var(--ch-spinner-color);
+  animation: ch-spinner-rotate var(--ch-spinner-animation-duration) linear infinite;
+}
+
+:is(.ch-spinner, [data-ch-component="spinner"]) svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+:is(.ch-spinner, [data-ch-component="spinner"]) circle {
+  stroke: currentColor;
+  stroke-linecap: round;
+}
+
+/* Size variants */
+.ch-spinner--sm,
+[data-ch-component="spinner"].ch-spinner--sm {
+  --ch-spinner-size: var(--ch-icon-size-sm, 1rem);
+  --ch-spinner-stroke-width: 2px;
+}
+
+.ch-spinner--md,
+[data-ch-component="spinner"].ch-spinner--md {
+  --ch-spinner-size: var(--ch-icon-size-md, 1.5rem);
+  --ch-spinner-stroke-width: 2.5px;
+}
+
+.ch-spinner--lg,
+[data-ch-component="spinner"].ch-spinner--lg {
+  --ch-spinner-size: var(--ch-icon-size-lg, 2rem);
+  --ch-spinner-stroke-width: 3px;
+}
+
+/* Rotation animation */
+@keyframes ch-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :is(.ch-spinner, [data-ch-component="spinner"]) {
+    animation: ch-spinner-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes ch-spinner-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  :is(.ch-spinner, [data-ch-component="spinner"]) {
+    forced-color-adjust: auto;
+  }
+
+  :is(.ch-spinner, [data-ch-component="spinner"]) circle {
+    stroke: CanvasText;
+  }
+}
