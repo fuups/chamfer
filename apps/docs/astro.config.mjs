@@ -10,6 +10,7 @@ export default defineConfig({
   srcDir: "./src",
   outDir: "./dist",
   site: "https://fuups.github.io/chamfer",
+  base: "/chamfer",
   server: {
     host: true
   },
