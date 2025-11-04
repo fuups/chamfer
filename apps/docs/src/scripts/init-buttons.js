@@ -1,9 +1,9 @@
 import { enhanceButton } from "@chamfer/behavior";
 
-const registry = new Map<HTMLElement, () => void>();
+const registry = new Map();
 
-function enhanceAll(root: ParentNode = document): void {
-  const buttons = root.querySelectorAll<HTMLButtonElement>(
+function enhanceAll(root = document) {
+  const buttons = root.querySelectorAll(
     '[data-ch-component="button"]:not([data-ch-ripple="false"])'
   );
 
@@ -17,7 +17,7 @@ function enhanceAll(root: ParentNode = document): void {
   });
 }
 
-function cleanupMissing(): void {
+function cleanupMissing() {
   for (const [button, destroy] of registry.entries()) {
     if (!document.contains(button)) {
       destroy();
@@ -26,7 +26,7 @@ function cleanupMissing(): void {
   }
 }
 
-function destroyAll(): void {
+function destroyAll() {
   for (const destroy of registry.values()) {
     destroy();
   }

@@ -1,22 +1,43 @@
 ---
-// Global footer component
+import Logo from "@components/layout/Logo.astro";
+
+interface Props {
+  basePath?: string;
+}
+
+const { basePath = "" } = Astro.props as Props;
+const withBase = (path: string) => {
+  if (!path) return path;
+  if (/^(https?:)?\/\//.test(path) || path.startsWith("mailto:") || path.startsWith("#")) {
+    return path;
+  }
+  if (path === "/") {
+    return basePath || "/";
+  }
+  return `${basePath}${path}`;
+};
 ---
 
 <footer class="footer">
   <div class="footer__container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <p class="footer__title">Chamfer UI</p>
-        <p class="footer__subtitle">Framework-agnostic design system</p>
+        <a href={withBase("/")} class="footer__logo-link" aria-label="Chamfer UI home">
+          <Logo size={28} />
+          <div>
+            <p class="footer__title">Chamfer UI</p>
+            <p class="footer__subtitle">Framework-agnostic design system</p>
+          </div>
+        </a>
       </div>
 
       <nav class="footer__section" aria-label="Resources">
         <h3>Resources</h3>
         <ul>
-          <li><a href="/foundations/quick-start">Quick Start</a></li>
-          <li><a href="/foundations/tokens">Tokens</a></li>
-          <li><a href="/foundations/accessibility">Accessibility</a></li>
-          <li><a href="/components/button">Components</a></li>
+          <li><a href={withBase("/foundations/quick-start")}>Quick Start</a></li>
+          <li><a href={withBase("/foundations/tokens")}>Tokens</a></li>
+          <li><a href={withBase("/foundations/accessibility")}>Accessibility</a></li>
+          <li><a href={withBase("/components/button")}>Components</a></li>
         </ul>
       </nav>
 
@@ -25,8 +46,8 @@
         <ul>
           <li><a href="https://github.com/chamfer-ui" target="_blank" rel="noreferrer">GitHub</a></li>
           <li><a href="https://www.npmjs.com/org/chamfer" target="_blank" rel="noreferrer">npm</a></li>
-          <li><a href="/reference/changelog">Changelog</a></li>
-          <li><a href="/reference/roadmap">Roadmap</a></li>
+          <li><a href={withBase("/reference/changelog")}>Changelog</a></li>
+          <li><a href={withBase("/reference/roadmap")}>Roadmap</a></li>
         </ul>
       </nav>
 
@@ -77,6 +98,18 @@
     gap: var(--ch-space-xs);
   }
 
+  .footer__logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ch-space-sm);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .footer__logo-link:visited {
+    color: inherit;
+  }
+
   .footer__title {
     margin: 0;
     font-size: var(--ch-text-lg);
@@ -113,6 +146,10 @@
     font-size: var(--ch-text-sm);
     color: var(--ch-text-secondary);
     transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .footer__section a:visited {
+    color: var(--ch-text-secondary);
   }
 
   .footer__section a:hover {

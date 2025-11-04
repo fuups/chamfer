@@ -3,7 +3,9 @@ import "@chamfer/core/css";
 import "@styles/global.css";
 import Logo from "@components/layout/Logo.astro";
 import Footer from "@components/layout/Footer.astro";
-import initButtonsScript from "../scripts/init-buttons.ts?url";
+import Hamburger from "@components/icons/Hamburger.astro";
+import Close from "@components/icons/Close.astro";
+import initButtonsScript from "../scripts/init-buttons.js?url";
 
 interface Props {
   title: string;
@@ -11,6 +13,23 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const basePath = Astro.site ? Astro.site.pathname.replace(/\/$/, "") : "";
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const relativePath =
+  basePath && currentPath.startsWith(basePath)
+    ? currentPath.slice(basePath.length) || "/"
+    : currentPath;
+
+const withBase = (path) => {
+  if (!path) return path;
+  if (/^(https?:)?\/\//.test(path) || path.startsWith("mailto:") || path.startsWith("#")) {
+    return path;
+  }
+  if (path === "/") {
+    return basePath || "/";
+  }
+  return `${basePath}${path}`;
+};
 const navGroups = [
   {
     title: "Getting Started",
@@ -45,7 +64,6 @@ const navGroups = [
     ]
   }
 ];
-const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 
 <!doctype html>
@@ -61,24 +79,41 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900"
     />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <slot name="head" />
   </head>
   <body class="docs-root">
     <header class="mobile-header">
-      <a href="/" class="mobile-brand">
+      <button
+        id="mobile-nav-toggle"
+        class="mobile-nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <Hamburger size={24} color="currentColor" />
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <a href={withBase("/")} class="mobile-brand">
         <Logo size={24} />
         <span>Chamfer UI</span>
       </a>
-      <button id="mobile-nav-toggle" class="mobile-nav-toggle" type="button" aria-expanded="false">
-        Menu
-      </button>
     </header>
 
     <div class="docs-shell">
       <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
       <aside class="docs-sidebar" id="docs-sidebar" data-open="false">
+        <button
+          id="mobile-nav-close"
+          class="sidebar-close"
+          type="button"
+          aria-label="Close navigation"
+        >
+          <Close size={22} color="currentColor" />
+          <span class="sr-only">Close navigation</span>
+        </button>
         <div class="brand">
-          <a href="/" class="brand__link">
+          <a href={withBase("/")} class="brand__link">
             <Logo size={32} />
             <div class="brand__text">
               <span class="brand__title">Chamfer UI</span>
@@ -94,10 +129,10 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
               <div class="nav-list">
                 {group.links.map(link => {
                   const normalized = link.href === "/" ? "/" : link.href.replace(/\/+$/, "");
-                  const isCurrent = normalized === currentPath;
+                  const isCurrent = normalized === relativePath;
                   return (
                     <a
-                      href={link.disabled ? "#" : link.href}
+                      href={link.disabled ? "#" : withBase(link.href)}
                       class={`nav-link${link.disabled ? " nav-link--disabled" : ""}`}
                       aria-current={isCurrent ? "page" : undefined}
                       aria-disabled={link.disabled ? "true" : undefined}
@@ -139,7 +174,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       </main>
     </div>
 
-    <Footer />
+    <Footer basePath={basePath} />
 
     <script is:inline>
       const root = document.documentElement;
@@ -147,6 +182,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       const hcmToggle = document.getElementById("hcm-toggle");
       const sidebar = document.getElementById("docs-sidebar");
       const mobileToggle = document.getElementById("mobile-nav-toggle");
+      const mobileClose = document.getElementById("mobile-nav-close");
       const sidebarBackdrop = document.getElementById("sidebar-backdrop");
       const prefersDark =
         typeof window !== "undefined" && "matchMedia" in window
@@ -217,6 +253,10 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
           const nextState = sidebar?.dataset.open !== "true";
           setSidebar(nextState);
         });
+      }
+
+      if (mobileClose instanceof HTMLButtonElement) {
+        mobileClose.addEventListener("click", () => setSidebar(false));
       }
 
       if (sidebarBackdrop) {
@@ -422,6 +462,6 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
         }
       }
     </style>
-    <script type="module" src={initButtonsScript}></script>
+    <script type="module" src={withBase(initButtonsScript)}></script>
   </body>
 </html>

@@ -6,7 +6,8 @@
   font-size: var(--ch-text-md);
   line-height: 1.7;
   color: var(--ch-text-primary);
-  max-width: 75ch; /* Optimal reading line length */
+  max-width: 75ch;
+  /* Optimal reading line length */
 }
 
 /* Headings */
@@ -88,7 +89,7 @@
   color: var(--ch-text-tertiary);
 }
 
-.prose ul > li {
+.prose ul>li {
   padding-left: var(--ch-space-xs);
 }
 
@@ -130,6 +131,8 @@
 
 /* Code blocks */
 .prose pre {
+  display: block;
+  width: 100%;
   font-family: var(--ch-font-mono);
   font-size: var(--ch-text-sm);
   line-height: 1.6;
@@ -141,6 +144,9 @@
   border: var(--ch-border-width-sm) solid var(--ch-elevation-border);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+
+
 }
 
 .prose pre code {
@@ -226,10 +232,10 @@
 
   .prose pre {
     padding: var(--ch-space-md) var(--ch-space-lg);
-    margin-left: calc(var(--ch-space-lg) * -1);
-    margin-right: calc(var(--ch-space-lg) * -1);
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: var(--ch-radius-md);
+    border-left: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+    border-right: var(--ch-border-width-sm) solid var(--ch-elevation-border);
   }
 }

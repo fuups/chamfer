@@ -18,6 +18,18 @@ const {
   status,
   updated
 } = Astro.props;
+
+const basePath = Astro.site ? Astro.site.pathname.replace(/\/$/, "") : "";
+const withBase = (path) => {
+  if (!path) return path;
+  if (/^(https?:)?\/\//.test(path) || path.startsWith("mailto:") || path.startsWith("#")) {
+    return path;
+  }
+  if (path === "/") {
+    return basePath || "/";
+  }
+  return `${basePath}${path}`;
+};
 ---
 
 <div class="content-grid">
@@ -25,9 +37,9 @@ const {
     <header class="article-header">
       {showBreadcrumb && breadcrumbSection && (
         <nav aria-label="Breadcrumb" class="breadcrumb">
-          <a href="/">Docs</a>
+          <a href={withBase("/")}>Docs</a>
           <span aria-hidden="true">/</span>
-          <a href={`/#${breadcrumbSection.toLowerCase()}`}>{breadcrumbSection}</a>
+          <a href={`${withBase("/")}#${breadcrumbSection.toLowerCase()}`}>{breadcrumbSection}</a>
           <span aria-hidden="true">/</span>
           <span>{title}</span>
         </nav>
@@ -64,7 +76,7 @@ const {
   </article>
 
   <aside class="toc">
-    <details class="toc-details" open>
+    <details class="toc-details" id="page-toc">
       <summary class="toc-summary">
         <h2>On this page</h2>
       </summary>
@@ -80,6 +92,23 @@ const {
     </details>
   </aside>
 </div>
+
+<script is:inline>
+  if (typeof window !== "undefined") {
+    const toc = document.getElementById("page-toc");
+    const syncTocState = () => {
+      if (!toc) return;
+      if (window.innerWidth > 1024) {
+        toc.setAttribute("open", "");
+      } else {
+        toc.removeAttribute("open");
+      }
+    };
+
+    syncTocState();
+    window.addEventListener("resize", syncTocState);
+  }
+</script>
 
 <style>
   .content-grid {
@@ -109,6 +138,52 @@ const {
     overflow-y: auto;
   }
 
+  .toc-details {
+    border: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+    border-radius: var(--ch-radius-md);
+    background: var(--ch-surface-subtle);
+    overflow: hidden;
+  }
+
+  .toc-summary {
+    margin: 0;
+    padding: var(--ch-space-md) var(--ch-space-lg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .toc-summary h2 {
+    margin: 0;
+    font-size: var(--ch-text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ch-text-tertiary);
+  }
+
+  .toc-details[open] .toc-summary {
+    border-bottom: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+  }
+
+  .toc-details ul {
+    margin: 0;
+    padding: var(--ch-space-md) var(--ch-space-lg) var(--ch-space-lg);
+    list-style: none;
+    display: grid;
+    gap: var(--ch-space-sm);
+  }
+
+  .toc-details a {
+    text-decoration: none;
+    font-size: var(--ch-text-sm);
+    color: var(--ch-text-secondary);
+    transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .toc-details a:hover {
+    color: var(--ch-text-primary);
+  }
+
   @media (max-width: 1024px) {
     .content-grid {
       flex-direction: column;
@@ -117,9 +192,11 @@ const {
     .toc {
       width: 100%;
       position: static;
-      border-top: var(--ch-border-width-sm) solid var(--ch-elevation-border);
-      padding-top: var(--ch-space-xl);
       margin-top: var(--ch-space-xl);
+    }
+
+    .toc-details ul {
+      padding: var(--ch-space-md) var(--ch-space-lg);
     }
   }
 

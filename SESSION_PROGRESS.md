@@ -84,3 +84,6 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Upgraded docs preview tooling (`PreviewCode`) for multi-tab HTML/Style/Script snippets, refactored button demos to supply structured sources, and removed inline styling/loose code blocks in the Button page.
 - Refreshed foundation docs (Introduction, Design Principles, Tokens, Quick Start, Typography, Tooling, Accessibility) with consistent structure, updated guidance, and next-step pointers.
 - Added GitHub Pages workflow (`.github/workflows/deploy-docs.yml`) and configured Astro site metadata so the docs site can deploy automatically from `main`.
+- Updated docs build to respect base paths (GitHub Pages) and prefixed internal links/navigation so asset and page URLs resolve when hosted under `/chamfer`.
+- Polished mobile docs UI (hamburger icon, dedicated favicon, full-screen drawer, ripple script inlined) and ensured footer links/logo ignore visited colors.
+- Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and switched the ripple initializer to a resolved module import so builds work locally and on GitHub Pages.

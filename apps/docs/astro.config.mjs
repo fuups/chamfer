@@ -2,19 +2,39 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { visit } from "unist-util-visit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const SITE_BASE = "/chamfer";
+
+const prefixInternalLinks = ({ basePath = "" } = {}) => {
+  const normalized = basePath === "/" ? "" : basePath;
+  return (tree) => {
+    visit(tree, ["link", "definition"], (node) => {
+      if (typeof node.url === "string" && node.url.startsWith("/") && !node.url.startsWith("//")) {
+        node.url = `${normalized}${node.url}`;
+      }
+    });
+  };
+};
 
 export default defineConfig({
   srcDir: "./src",
   outDir: "./dist",
   site: "https://fuups.github.io/chamfer",
-  base: "/chamfer",
+  base: SITE_BASE,
   server: {
     host: true
   },
-  integrations: [mdx()],
+  integrations: [
+    mdx({
+      remarkPlugins: [[prefixInternalLinks, { basePath: SITE_BASE }]]
+    })
+  ],
+  markdown: {
+    remarkPlugins: [[prefixInternalLinks, { basePath: SITE_BASE }]]
+  },
   vite: {
     css: {
       postcss: path.resolve(__dirname, "postcss.config.cjs")
