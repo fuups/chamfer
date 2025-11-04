@@ -1,70 +1,89 @@
 # Component Creation Guide
 
-Use this checklist to ship a new Chamfer component end‑to‑end. Each step keeps the implementation aligned with the system’s tokens, behavior, and documentation expectations.
+Use this checklist to deliver a production-ready component that stays faithful to the system spec, tokens, and documentation standards. Every box in each section should be ticked (or explicitly marked as “N/A”) before the component is considered review-ready.
 
 ---
 
-## 1. Capture the intent
+## 1. Align with the spec
 
-- Draft or update the component spec under `components/<component>.md`. Reference the latest decisions in [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md) so naming, semantics, and accessibility rules stay consistent.
-- Record the work in `SESSION_PROGRESS.md` (intent, todos, open questions).
+- [ ] **Read existing guidance:** Review [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md) and the component’s spec in `components/<component>.md`. If no spec exists, author one first.
+- [ ] **Clarify decisions:** Note open questions (naming, accessibility, variants) and capture them in `SESSION_PROGRESS.md`.
+- [ ] **Update spec if needed:** Document agreed behaviour, states, and tokens in `components/<component>.md` so future work has a single source of truth.
+- [ ] **Log intent:** Add a new entry to `SESSION_PROGRESS.md` summarising scope, todos, and owners.
 
-## 2. Update tokens
+## 2. Design tokens
 
-- Determine whether new primitive or semantic design tokens are required.
-- Add primitives in `packages/tokens/src/primitives*.ts` only if absolutely necessary; otherwise derive new semantic tokens in `packages/tokens/src/semantic/*.ts`.
-- Regenerate token outputs (`pnpm --filter @chamfer/tokens build`) and ensure CSS/JSON artifacts include OKLCH → HSLA → HSL → HEX fallbacks.
+- [ ] **Audit existing tokens:** Confirm whether current semantic tokens cover the new component.
+- [ ] **Add tokens if required:** Introduce new semantic tokens in `packages/tokens/src/semantic/…` (primitives only when absolutely necessary).
+- [ ] **Regenerate artifacts:** Run `pnpm --filter @chamfer/tokens build` to emit updated CSS/JSON/TS outputs.
+- [ ] **Verify fallbacks:** Ensure new colours follow the OKLCH → HSLA → HSL → HEX chain.
+- [ ] **Document tokens:** Reference new aliases in the component spec and planned docs.
 
-## 3. Core CSS
+## 3. Core CSS implementation
 
-- Author reusable styles in `packages/core/src/<component>.css`.
-- Keep selectors data-attribute driven (`[data-ch-component="..."]`) and depend only on semantic tokens.
-- Expose helper classes and CSS variables needed for wrappers or utilities.
-- Import the stylesheet from `packages/core/src/base.css` or the relevant component index so the bundle ships it.
+- [ ] **Create stylesheet:** Add `packages/core/src/<component>.css` and scope selectors with data attributes (e.g. `[data-ch-component="<name>"]`).
+- [ ] **Use semantic tokens:** Avoid referencing primitives directly; rely on semantic aliases or component-level CSS variables.
+- [ ] **Expose hooks:** Provide utility classes or CSS variables needed by wrappers, behaviors, or theming.
+- [ ] **Wire into bundle:** Import the stylesheet from the core entrypoint (`packages/core/src/base.css` or equivalent) so `@chamfer/core/css` ships it.
+- [ ] **Cross-browser sanity check:** Test in the playground (light/dark/HCM) to confirm visual parity.
 
-## 4. Optional behavior
+## 4. Progressive behavior (if applicable)
 
-- If the component needs progressive enhancement, implement helpers in `packages/behavior/src/<component>.ts`.
-- Export typed APIs through `packages/behavior/src/index.ts`.
-- Add unit tests (Vitest) covering keyboard/interaction paths.
+- [ ] **Decide necessity:** Confirm whether the component requires JavaScript enhancement (ripple, keyboard guards, async states).
+- [ ] *If yes*:  
+  - [ ] Implement helper(s) in `packages/behavior/src/<component>.ts` and export them via `packages/behavior/src/index.ts`.  
+  - [ ] Add unit tests (Vitest) covering keyboard and pointer paths.  
+  - [ ] Ensure helpers clean up listeners and support `prefers-reduced-motion`.  
+- [ ] *If no behavior needed*: note this in the spec and `SESSION_PROGRESS.md`.
 
 ## 5. Framework wrappers
 
-- Map the core CSS + behavior into each wrapper package (React, Vue, Angular) under `packages/<framework>/src/`.
-- Keep props API thin and reflect the spec. Wrap enhancements with lifecycle hooks.
-- Update wrapper type tests or storybook playgrounds as needed.
+- [ ] **React / Vue / Angular:** Update each wrapper package in `packages/<framework>/src/` to render the core markup, apply classes, and invoke behaviors where available.
+- [ ] **Type safety:** Extend or adjust component prop types to expose public API without leaking HTML attributes unintentionally.
+- [ ] **Lifecycle integration:** Ensure wrappers mount/unmount behavior helpers correctly and forward refs/slots as needed.
+- [ ] **Testing:** Run wrapper typecheck (and runtime tests where applicable).
 
-## 6. Tailwind utilities
+## 6. Tailwind integration (if the component exposes utilities)
 
-- Map relevant tokens to Tailwind classes in `packages/tailwind/src`.
-- Generate CSS utilities (`pnpm --filter @chamfer/tailwind build`) and update documentation snippets if new utilities ship.
+- [ ] Map relevant tokens or class shortcuts inside `packages/tailwind/src`.
+- [ ] Rebuild utilities with `pnpm --filter @chamfer/tailwind build`.
+- [ ] Update Tailwind documentation/examples if new utilities were added.
+- [ ] Confirm utilities render correctly in the Tailwind playground (HTML + React variants).
 
-## 7. Playground updates
+## 7. Playground demos
 
-- Add component demos to the HTML and React playgrounds in `apps/playground/*`.
-- Include theme toggles, ripple/behavior demos, and edge cases (RTL, density, loading states).
+- [ ] Add demos to each relevant playground (`apps/playground/html`, `apps/playground/react`, Tailwind variants).  
+- [ ] Include states: default, hover, focus, pressed, disabled, loading, size/variant permutations.  
+- [ ] Provide toggles for theme, density, RTL, and High Contrast to validate responsive behaviour.  
+- [ ] Ensure imports point to built bundles (`@chamfer/core/css`, wrappers, behaviors).
 
 ## 8. Documentation
 
-- Author the docs page under `apps/docs/src/content/docs/components/<component>.mdx`, following [`COMPONENT_DOCUMENTATION_GUIDELINES.md`](COMPONENT_DOCUMENTATION_GUIDELINES.md).
-- Wire the page to Astro via `/apps/docs/src/pages/components/<component>.astro`.
-- Ensure the doc covers: overview, usage, anatomy, variants, states, behavior, theming tokens, API/data attributes, accessibility, testing, performance, i18n/RTL, examples, and related links.
-- If the component interacts with behaviors, crosslink to the appropriate guide in `apps/docs/src/content/docs/behaviors/`.
+- [ ] **MDX content:** Author `apps/docs/src/content/docs/components/<component>.mdx` following [`COMPONENT_DOCUMENTATION_GUIDELINES.md`](COMPONENT_DOCUMENTATION_GUIDELINES.md).
+- [ ] **Astro page:** Create `/apps/docs/src/pages/components/<component>.astro` that loads the MDX entry via content collections.
+- [ ] **Coverage checklist:** Confirm docs include overview, quick start, usage, when to use vs. avoid, anatomy, variants/sizes, states, behavior notes, accessibility guidance, theming tokens, API/data attributes, testing advice, performance tips, i18n/RTL considerations, examples, related links, and next steps.
+- [ ] **Crosslinks:** Link to relevant behavior guides, design principles, and tokens documentation.
+- [ ] **Navigation:** Add the component to docs navigation (if not already present).
+- [ ] **SEO metadata:** Provide frontmatter descriptions, status badge, updated timestamp.
 
-## 9. Testing & QA
+## 9. Testing & quality assurance
 
-- Run relevant tests: typecheck, lint, unit tests, and playground smoke checks (`pnpm --filter ...`).
-- Validate visual regressions manually (light/dark/HCM, hover/press states).
-- Update `SESSION_PROGRESS.md` with delivered changes and remaining risks.
+- [ ] **Package builds:** `pnpm --filter @chamfer/core build`, `@chamfer/behavior build`, wrappers, Tailwind, and docs as necessary.
+- [ ] **Type/lint:** Run `pnpm lint`, `pnpm typecheck`, and any behavior/unit tests.
+- [ ] **Visual pass:** Manually review demos in the playground and docs (light/dark/HCM/RTL, small screens).
+- [ ] **Accessibility sweep:** Check focus order, keyboard mechanics, ARIA usage; document any known limitations.
+- [ ] **Record status:** Update `SESSION_PROGRESS.md` with completed work, remaining risks, and todo items for follow-up.
 
-## 10. Ready-to-ship checklist
+## 10. Ready-to-ship summary
 
-- [ ] Tokens regenerated and committed (`packages/tokens/dist`).
-- [ ] Core CSS referenced by the bundle (`@chamfer/core/css`).
-- [ ] Behavior helper implemented (or confirmed unnecessary).
-- [ ] Wrapper packages updated/typed.
-- [ ] Tailwind utilities mapped (if applicable).
-- [ ] Playgrounds demonstrate the component.
-- [ ] Docs page aligned to guidelines and linked in navigation.
-- [ ] Tests/builds pass (`pnpm --filter @chamfer/*` as needed).
-- [ ] `SESSION_PROGRESS.md` documents the outcome and follow-ups.
+- [ ] Tokens regenerated (if needed) and committed.
+- [ ] Core CSS bundled through `@chamfer/core/css`.
+- [ ] Behaviors implemented or explicitly scoped out.
+- [ ] Wrapper packages updated and typechecked.
+- [ ] Tailwind utilities published or marked N/A.
+- [ ] Playground demos verified.
+- [ ] Docs (MDX + Astro) merged and linked in navigation.
+- [ ] Tests/builds pass without local modifications.
+- [ ] `SESSION_PROGRESS.md` reflects final state and signals any outstanding work.
+
+> Tip: When opening a PR, link back to the spec in `components/<component>.md` and the relevant section in `DESIGN_SYSTEM.md` so reviewers can validate the component against agreed rules.
