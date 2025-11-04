@@ -1,24 +1,65 @@
 ---
 title: Button
-description: Pressable control for primary and contextual actions.
+description: Pressable control for primary and contextual actions across surfaces.
 status: alpha
+since: 0.1.0
 updated: "2025-01-05"
+a11y_audit: "Manual plus axe pass, 2025-01-05"
+owners:
+  - "@design-systems"
+slug: /components/button
+aliases:
+  - /docs/button
+package_ids:
+  - "@chamfer/core"
+labels:
+  - component
+  - pressable
+  - action
+related:
+  - /components/icon-button
+  - /components/button-group
+  - /foundations/tokens
+  - /foundations/accessibility
+seo:
+  keywords:
+    - "ui button"
+    - "primary action"
+    - "call to action"
+source_of_truth:
+  code: https://github.com/chamfer-ui/chamfer-ui/tree/main/packages
+  design: https://figma.com/file/placeholder
 ---
 
-import ButtonVariantGrid from "@components/ButtonVariantGrid.astro";
-import PreviewCode from "@components/PreviewCode.astro";
+import Callout from "@components/ui/Callout.astro";
+import DemoBlock from "@components/demos/DemoBlock.astro";
+import ButtonBaselineExample, { demo as buttonBaselineExample } from "@components/demos/button/ButtonBaselineExample.astro";
+import ButtonEmphasisGallery, { demo as buttonEmphasisGallery } from "@components/demos/button/ButtonEmphasisGallery.astro";
+import ButtonInteractiveDemo, { demo as buttonInteractiveDemo } from "@components/demos/button/ButtonInteractiveDemo.astro";
+import ButtonSizeScale, { demo as buttonSizeScale } from "@components/demos/button/ButtonSizeScale.astro";
+import ButtonStateMatrix, { demo as buttonStateMatrix } from "@components/demos/button/ButtonStateMatrix.astro";
+import ButtonThemeOverride, { demo as buttonThemeOverride } from "@components/demos/button/ButtonThemeOverride.astro";
+import ButtonToneMatrix, { demo as buttonToneMatrix } from "@components/demos/button/ButtonToneMatrix.astro";
+import RippleDemo, { demo as rippleDemo } from "@components/demos/button/RippleDemo.astro";
 
-Chamfer buttons are the canonical call-to-action component. They lean entirely on semantic tokens (tone, emphasis, density) so brands can theme the system without rewriting CSS. Use them for form submissions, navigation actions, or contextual operations that need a visible affordance.
+## Overview
 
-## When to use
+Buttons trigger immediate actions in the current view. Chamfer exposes semantic tone tokens and a density scale so the same CSS covers interactive elements across surfaces.
 
-- Promote high-impact actions such as “Save”, “Publish”, or “Delete”.
-- Pair label text with optional leading/trailing icons while keeping an accessible name.
-- Reflect semantic meaning through the provided tones instead of inventing ad hoc utilities.
+**Do**
+- Drive a primary outcome such as Save, Publish, or Confirm with the solid primary tone.
+- Pair a leading or trailing icon to clarify meaning while keeping a visible text label.
+- Use the `flat` emphasis on tinted or elevated surfaces where `soft` feels too heavy.
+- Disable or show a loading state while asynchronous work is pending.
 
-## Install & import
+**Do not**
+- Use buttons for navigation that changes location; prefer an anchor styled as a button.
+- Invent custom colors that bypass semantic tokens; map to an existing tone instead.
+- Hide focus indicators or rely on color alone to indicate destructive actions.
 
-```
+## Quick start
+
+```bash
 # pnpm
 pnpm add @chamfer/core @chamfer/behavior
 
@@ -30,190 +71,217 @@ yarn add @chamfer/core @chamfer/behavior
 ```
 
 ```ts
-// main.ts
+// app entry
 import "@chamfer/core/css";
 ```
 
+> `@chamfer/behavior` is optional but recommended when ripple or keyboard refinements are needed.
+
 ## Usage
 
-<PreviewCode label="HTML" code={`<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
-  <span class="ch-button__leading" aria-hidden="true">✓</span>
-  <span class="ch-button__label">Save changes</span>
-  <span class="ch-button__trailing" hidden></span>
+Chamfer ships buttons as plain HTML and CSS first. Use the interactive preview to see default styling, then copy the minimal markup to adapt it to your surface.
+
+<DemoBlock demo={buttonInteractiveDemo} component={ButtonInteractiveDemo} />
+
+### Minimal HTML
+
+<DemoBlock demo={buttonBaselineExample} component={ButtonBaselineExample} />
+
+## Anatomy
+
+```html
+<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+  <span class="ch-button__leading" aria-hidden="true"></span>
+  <span class="ch-button__label">Label</span>
+  <span class="ch-button__trailing" aria-hidden="true"></span>
 </button>
-`}> 
-  <div slot="preview">
-    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
-      <span class="ch-button__leading" aria-hidden="true">✓</span>
-      <span class="ch-button__label">Save changes</span>
-      <span class="ch-button__trailing" hidden></span>
-    </button>
-  </div>
-</PreviewCode>
+```
 
-<PreviewCode
-  label="Enhancement"
-  language="ts"
-  code={`import { enhanceButton } from "@chamfer/behavior";
-
-document.querySelectorAll('[data-ch-component="button"]').forEach(element => {
-  enhanceButton(element as HTMLButtonElement);
-});
-`}
->
-  <div slot="preview">
-    <button class="ch-button ch-button--md ch-button--soft ch-button--secondary" data-ch-component="button" data-ch-ripple="false">
-      <span class="ch-button__label">Ripple disabled</span>
-    </button>
-  </div>
-</PreviewCode>
-
-**React example**
-
-<PreviewCode
-  label="React"
-  language="tsx"
-  code={`import "@chamfer/core/css";
-import { useEffect, useRef } from "react";
-import { enhanceButton } from "@chamfer/behavior";
-
-export function SaveButton() {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const enhancement = enhanceButton(ref.current);
-    return enhancement.destroy;
-  }, []);
-
-  return (
-    <button
-      ref={ref}
-      data-ch-component="button"
-      className="ch-button ch-button--md ch-button--solid ch-button--primary"
-    >
-      <span className="ch-button__label">Save changes</span>
-    </button>
-  );
-}
-`}
->
-  <div slot="preview">
-    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
-      <span class="ch-button__label">React wrapper output</span>
-    </button>
-  </div>
-</PreviewCode>
-
-**Tailwind preset**
-
-<PreviewCode
-  label="Tailwind"
-  language="html"
-  code={`<button
-  class="min-h-ch-pressable-md px-ch-button-inline-md rounded-ch-button bg-ch-action-primary text-ch-action-primary-foreground focus-visible:focus-ring-ch transition"
->
-  Save changes
-</button>
-`}
->
-  <div slot="preview">
-    <button
-      class="min-h-ch-pressable-md px-ch-button-inline-md rounded-ch-button bg-ch-action-primary text-ch-action-primary-foreground focus-visible:focus-ring-ch transition"
-      data-ch-component="button"
-    >
-      Tailwind preset
-    </button>
-  </div>
-</PreviewCode>
-
-Chamfer’s Tailwind preset maps directly to the same semantic tokens, so overrides stay in sync.
-
-## Anatomy & tokens
-
-- Root: `<button>` (or `<a role="button">`) with `data-ch-component="button"`.
-- Slots: `.ch-button__leading`, `.ch-button__label`, `.ch-button__trailing` align icon and text.
-- Loading state: set `data-ch-loading="true"` + `disabled` + `aria-busy="true"` to suspend interaction.
-
-| Token | Description |
+| Element or attribute | Purpose |
 | --- | --- |
-| `--ch-button-padding-inline-[sm\|md\|lg]` | Density-aware inline padding |
-| `--ch-button-padding-block` | Baseline-aligned vertical padding |
-| `--ch-button-gap-inline` | Space between leading, label, and trailing slots |
-| `--ch-button-radius`, `--ch-button-radius-lg` | Radius scale per size tier |
-| `--ch-button-icon-size-[sm\|md\|lg]` | Icon dimensions mapped to semantic icon tokens |
-| `--ch-button-font-weight` | Label weight (defaults to `--ch-weight-medium`) |
-| `--ch-button-hcm-*` | Forced-color palette for Windows High Contrast |
+| `<button>` | Preferred host element; use `<a role="button">` when navigation is required. |
+| `data-ch-component="button"` | Required for styling hooks and automated tests. |
+| `.ch-button__leading` | Optional icon or badge slot; hide with `hidden` when unused. |
+| `.ch-button__label` | Visible text that forms the accessible name. |
+| `.ch-button__trailing` | Optional icon or status indicator. |
 
-Emphasis colours come from `--ch-action-<tone>-*` tokens; ghost emphasis uses `--ch-ghost-hover` / `--ch-ghost-active` overlays.
+## Variants
 
-## Variants & sizes
+### Emphasis
 
-| Emphasis | Semantic tokens | Notes |
+| Emphasis | Token family | Typical use |
 | --- | --- | --- |
-| Solid | `--ch-action-<tone>-bg/fg/hover/active` | High-contrast primary CTA |
-| Soft | `--ch-action-<tone>-soft-*` | Subtle tone for secondary actions |
-| Outline | `--ch-action-outline-<tone>-*` | Transparent fill with tokenised borders |
-| Ghost | `--ch-ghost-hover(-base|raised)` | Overlay approach for neutral surfaces |
+| `ch-button--solid` | `--ch-action-<tone>-*` | Primary calls to action with maximum contrast. |
+| `ch-button--soft` | `--ch-action-<tone>-soft-*` | Secondary emphasis on light backgrounds. |
+| `ch-button--flat` | `--ch-ghost-hover-base` | Subtle fill derived from ghost overlay tokens. |
+| `ch-button--outline` | `--ch-action-outline-<tone>-*` | Transparent fill, high contrast border. |
+| `ch-button--ghost` | `--ch-ghost-hover-base` | Transparent background that only changes on interaction. |
 
-| Size modifier | Height token | Inline padding | Font size |
+<DemoBlock demo={buttonEmphasisGallery} component={ButtonEmphasisGallery} />
+
+### Size scale
+
+| Size modifier | Height token | Inline padding | Typography |
 | --- | --- | --- | --- |
 | `ch-button--sm` | `--ch-pressable-height-sm` | `--ch-button-padding-inline-sm` | `--ch-text-sm` |
 | `ch-button--md` | `--ch-pressable-height-md` | `--ch-button-padding-inline-md` | `--ch-text-md` |
 | `ch-button--lg` | `--ch-pressable-height-lg` | `--ch-button-padding-inline-lg` | `--ch-text-lg` |
 
-Add `ch-button--icon-only` for square icon buttons and supply an `aria-label`.
+Add `ch-button--icon-only` when the label is visually hidden and provide an explicit `aria-label`.
 
-## Examples
+<DemoBlock demo={buttonSizeScale} component={ButtonSizeScale} />
 
-<ButtonVariantGrid />
+### Tone matrix
 
-### States
+<DemoBlock demo={buttonToneMatrix} component={ButtonToneMatrix} />
 
-```html
-<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
-  <span class="ch-button__label">Default</span>
-</button>
+## States
 
-<button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-demo-state="hover">
-  <span class="ch-button__label">Hover</span>
-</button>
+- Hover and active states derive from emphasis tokens; the preview below uses `data-demo-state` helpers.
+- Focus visible uses Chamfer focus ring tokens; never remove focus outlines.
+- Disabled state relies on the native `disabled` attribute or `aria-disabled="true"` for anchors.
+- Loading uses `data-ch-loading="true"`, `aria-busy="true"`, and blocks double submits. A spinner will ship as a separate component.
+- High contrast (forced colors) uses `--ch-button-hcm-bg` and `--ch-button-hcm-fg`.
 
-<button
-  class="ch-button ch-button--md ch-button--solid ch-button--primary"
-  data-ch-component="button"
-  data-ch-loading="true"
-  aria-busy="true"
-  disabled
->
-  <span class="ch-button__label">Loading…</span>
-</button>
+<DemoBlock demo={buttonStateMatrix} component={ButtonStateMatrix} />
+
+## Behavior
+
+### Using `enhanceButton`
+
+Chamfer buttons work with pure HTML and CSS. When you need animated feedback or keyboard polish, import `enhanceButton` and apply it to the elements you render. The helper stamps required data attributes, ensures a `type="button"` default on native buttons, and wires up the ripple effect when enabled.
+
+<DemoBlock demo={rippleDemo} component={RippleDemo} />
+
+```ts
+import { enhanceButton } from "@chamfer/behavior";
+
+const buttons = document.querySelectorAll<HTMLButtonElement>('[data-ch-component="button"]');
+buttons.forEach((element) => {
+  const enhancement = enhanceButton(element);
+  element.addEventListener("disconnected", enhancement.destroy, { once: true });
+});
 ```
 
-## API reference
+### Options
 
-| Modifier | Purpose |
-| --- | --- |
-| `ch-button--{sm\|md\|lg}` | Adjusts density and typography |
-| `ch-button--{solid\|soft\|outline\|ghost}` | Sets emphasis style |
-| `ch-button--{primary\|secondary\|success\|warning\|danger}` | Applies semantic tone |
-| `ch-button--icon-only` | Hides visual label; supply `aria-label` |
-| `data-ch-ripple="false"` | Disables ripple enhancement |
-| `data-ch-ripple="raised"` | Uses raised-surface ripple overlay |
-| `data-ch-loading="true"` | Indicates loading/busy state |
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ripple` | `boolean` | `true` (unless `data-ch-ripple="false"` is present) | Toggles the ripple wave. Set to `false` when motion should be suppressed or the surface already provides feedback. |
+
+### Guidelines
+
+- Disable ripple with `data-ch-ripple="false"` when visual feedback is undesirable or when rendering inside motion-reduced contexts.
+- Always keep native focus outlines; enhanceButton augments keyboard handling but does not remove focus rings.
+- For anchors, keep `role="button"` and `tabindex=0` so the helper can apply the same semantics.
+- The helper is progressive enhancement; if JavaScript is unavailable the button remains fully usable.
 
 ## Accessibility
 
-- Provide accessible names (`aria-label` for icon-only buttons).
-- Respect `disabled` or `aria-disabled="true"` + `tabindex="-1"` semantics.
-- Set `aria-busy="true"` when loading and keep the control disabled.
-- Focus styles use tokenised outlines ensuring 3:1 contrast; verify in high-contrast mode.
-- Ripple enhancement honours `prefers-reduced-motion` automatically.
+| Interaction | Expectation |
+| --- | --- |
+| Tab or Shift+Tab | Moves focus in and out of buttons following DOM order. |
+| Enter or Space | Activates the button; Space triggers press sequence on keyup. |
+| Escape | Dismisses enclosing dialogs when the button closes them. |
 
-See the [Accessibility baseline](/foundations/accessibility) for the project-wide checklist.
+Best practices:
 
-## Related guides
+- Icon only buttons must set `aria-label` or `aria-labelledby`.
+- Use `aria-live` or toast patterns to announce results of asynchronous actions.
+- Ensure disabled and loading states are communicated with `disabled`, `aria-disabled`, and `aria-busy`.
+- Test with screen readers (VoiceOver, NVDA) and automated tools (axe, Pa11y).
 
-- [Tokens & Theming](/foundations/tokens)
-- [Tooling & Workflow](/foundations/tooling)
-- [Roadmap](/reference/roadmap)
+## Theming
+
+Chamfer buttons draw their appearance from semantic action tokens so surfaces stay consistent across components. Override tokens at the theme root or under `[data-theme]` scopes to rebrand without editing component CSS. See the Reference section for a complete token table.
+
+<DemoBlock demo={buttonThemeOverride} component={ButtonThemeOverride} />
+
+## Reference
+
+### Classes
+
+| Class | Purpose |
+| --- | --- |
+| `ch-button` | Base styling and layout. |
+| `ch-button--{sm\|md\|lg}` | Density and typography scale. |
+| `ch-button--{solid\|soft\|flat\|outline\|ghost}` | Emphasis variants. |
+| `ch-button--{primary\|secondary\|success\|warning\|danger}` | Semantic tone. |
+| `ch-button--icon-only` | Icon only layout with hidden label. |
+
+### Data attributes
+
+| Attribute | Values | Effect |
+| --- | --- | --- |
+| `data-ch-component` | `"button"` | Required identifier for styling and testing hooks. |
+| `data-ch-loading` | `"true"` | Applies loading visuals and pointer suppression. |
+| `data-ch-ripple` | `"false"` | Disables ripple for specific buttons. |
+| `data-demo-state` | `hover`, `active`, `focus` | Documentation helper only. |
+
+### Tokens
+
+| Token | Description |
+| --- | --- |
+| `--ch-action-<tone>-bg` | Solid background for each semantic tone. |
+| `--ch-action-<tone>-foreground` | Text color that satisfies contrast targets. |
+| `--ch-button-padding-inline-[sm\|md\|lg]` | Density based horizontal padding. |
+| `--ch-pressable-height-[sm\|md\|lg]` | Control height per size tier. |
+| `--ch-button-radius` | Corner radius shared across pressables. |
+| `--ch-ghost-hover-base` and `--ch-ghost-active-base` | Overlay strengths used by flat and ghost. |
+| `--ch-focus-ring-inner` and `--ch-focus-ring-outer` | Focus halo colors. |
+
+## Content guidelines
+
+- Use concise imperative verbs (Save, Publish, Delete).
+- Keep labels under 24 characters; allow wrapping rather than truncation.
+- Pair icons with text except when space constrained; icon only buttons must include `aria-label`.
+- For destructive actions, use danger tone plus explicit copy (Delete project).
+
+## Examples
+
+_Coming soon — once multiple components ship we will showcase composite UI blocks and edge-case patterns here._
+
+## Testing
+
+Selectors:
+
+- Root: `[data-ch-component="button"]`
+- Loading: `[data-ch-component="button"][data-ch-loading="true"]`
+
+Playwright:
+
+```ts
+await page.getByRole("button", { name: "Save changes" }).click();
+await expect(page.getByRole("button", { name: "Save changes" })).toHaveAttribute("aria-busy", "true");
+```
+
+Axe smoke test:
+
+```ts
+const results = await axe(document.body);
+expect(results.violations).toHaveLength(0);
+```
+
+## Performance
+
+- Base button is zero JavaScript; core CSS covers all states.
+- Avoid excessive drop shadows or blur filters on mobile to keep GPU compositing light.
+
+## Internationalization and RTL
+
+- Labels wrap by default; confirm long translations (for example German) do not overflow containers.
+- Icon slots automatically mirror in RTL because flexbox reverses direction; verify custom trailing content.
+- Use sentence case and avoid all caps to keep readability in languages without casing.
+
+## Related
+
+- [Icon Button](/components/icon-button)
+- [Button Group](/components/button-group)
+- [Accessibility baseline](/foundations/accessibility)
+- [Tokens and theming](/foundations/tokens)
+
+## Next steps
+
+- Ship the loading spinner accessory so `data-ch-loading` can render progress.
+- Add automated Playwright coverage for ripple interactions and disabled anchors.
+- Publish framework wrappers that mirror the core contract.

@@ -1,6 +1,6 @@
 # Chamfer UI – Session Progress
 
-_Last update: tokens/core/playground updated for DESIGN_SYSTEM.md v1.1.0._
+_Last update: React wrapper typecheck resolved (behavior exports + forwarded ref alignment)._
 
 ## Current Status
 
@@ -63,5 +63,21 @@ _Last update: tokens/core/playground updated for DESIGN_SYSTEM.md v1.1.0._
 - React app migration for the core playground completed; Vite config updated with React plugin.
 - Reorganized playgrounds into `apps/playground/html|react/(html|tailwind)` with unique workspace names.
 - Drafted `components/button.md` spec to formalize tokens, variants, and accessibility requirements.
+- Fixed `@chamfer/react` typecheck by routing behavior imports to built declarations and refactoring forwarded refs to use a callback setter.
+- Authored `COMPONENT_DOCUMENTATION_GUIDELINES.md` to standardize component page authoring outside the public docs site.
+- Button examples now exercise every tone/emphasis combo, grouped demos (semantics, content, states), and document ripple usage directly.
+- Rewrote `apps/docs/src/content/docs/components/button.mdx` to align with the internal documentation guidelines and provide complete coverage.
+- Trimmed the Button doc to core-only guidance (HTML, tokens, states) pending separate wrapper pages.
+- Added flat emphasis and removed the undocumented raised ghost variant to keep docs and core CSS aligned.
+- Simplified ripple helper/docs to a boolean toggle (no surface options).
+- Improved ripple animation sizing/visuals so the wave fills the entire button (diagonal radius).
+- Reorganized docs components into layout/ui/demos folders, componentized button previews for reusable code snippets, and verified Astro build.
+- Reorganized the Button docs flow to include demo-first previews, richer variant/state code samples, and explicit theming overrides.
 
 Keep this file updated as tasks progress to avoid context loss across long-running sessions.
+
+- Introduced demo metadata helper + consistent PreviewCode styling, refreshed button docs (merged usage guidance, added tone matrix, ripple demo) with passing Astro build.
+- Added global ripple initializer, refreshed hero/state demos (explicit "No ripple" opt-outs), tightened ripple color for soft/outline/ghost/danger variants, and trimmed extra padding in the ripple showcase.
+- Simplified Button state matrix demo (static code export + balanced grid) and verified `@chamfer/docs` builds cleanly.
+- Captured the heading depth template in `COMPONENT_DOCUMENTATION_GUIDELINES.md` and restructured the Button page to follow the new H2/H3 hierarchy for a cleaner ToC.
+- Documented `enhanceButton` usage/options and parked the Examples section behind a “coming soon” placeholder until multi-component UI blocks are ready.

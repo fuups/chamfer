@@ -2,10 +2,6 @@ export interface Enhancement {
   destroy: () => void;
 }
 
-export interface RippleOptions {
-  surface?: "base" | "raised";
-}
-
 function prefersReducedMotion(): boolean {
   return typeof window !== "undefined"
     ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -20,12 +16,15 @@ function createWave(
   ripple.className = "ch-ripple";
 
   const rect = container.getBoundingClientRect();
-  const radius = Math.max(rect.width, rect.height) * 1.2;
+  const offsetX = Math.max(position.x, rect.width - position.x);
+  const offsetY = Math.max(position.y, rect.height - position.y);
+  const radius = Math.sqrt(offsetX ** 2 + offsetY ** 2);
+  const size = radius * 2;
 
-  ripple.style.width = `${radius}px`;
-  ripple.style.height = `${radius}px`;
-  ripple.style.left = `${position.x - radius / 2}px`;
-  ripple.style.top = `${position.y - radius / 2}px`;
+  ripple.style.width = `${size}px`;
+  ripple.style.height = `${size}px`;
+  ripple.style.left = `${position.x - radius}px`;
+  ripple.style.top = `${position.y - radius}px`;
 
   return ripple;
 }
@@ -59,8 +58,7 @@ function isElementLoading(element: HTMLElement): boolean {
 }
 
 export function enhanceRipple(
-  element: HTMLElement,
-  options: RippleOptions = {}
+  element: HTMLElement
 ): Enhancement {
   const activeRipples = new Set<HTMLSpanElement>();
   const reducedMotion = prefersReducedMotion();
@@ -92,10 +90,6 @@ export function enhanceRipple(
 
     const ripple = createWave(element, { x, y });
 
-    if (options.surface === "raised") {
-      ripple.dataset.surface = "raised";
-    }
-
     activeRipples.add(ripple);
     element.appendChild(ripple);
 
@@ -125,7 +119,7 @@ export function enhanceRipple(
 }
 
 export interface ButtonEnhancementOptions {
-  ripple?: boolean | RippleOptions;
+  ripple?: boolean;
 }
 
 export const enhanceButton = (
@@ -143,22 +137,13 @@ export const enhanceButton = (
   let rippleOption = options.ripple;
   if (typeof rippleOption === "undefined") {
     const attr = element.getAttribute("data-ch-ripple");
-    if (attr === "false") {
-      rippleOption = false;
-    } else if (attr === "raised") {
-      rippleOption = { surface: "raised" };
-    } else {
-      rippleOption = true;
-    }
+    rippleOption = attr === "false" ? false : true;
   }
 
-  const shouldAttachRipple = rippleOption !== false;
   let ripple: Enhancement | null = null;
 
-  if (shouldAttachRipple) {
-    const rippleOptions =
-      rippleOption && typeof rippleOption === "object" ? rippleOption : {};
-    ripple = enhanceRipple(element, rippleOptions);
+  if (rippleOption !== false) {
+    ripple = enhanceRipple(element);
   }
 
   return {

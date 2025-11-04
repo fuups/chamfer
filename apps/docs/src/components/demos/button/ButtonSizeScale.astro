@@ -1,0 +1,64 @@
+---
+import Notification from "@components/icons/Notification.astro";
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Size scale",
+  code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  <button class="ch-button ch-button--sm ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Small</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Medium</span>
+  </button>
+  <button class="ch-button ch-button--lg ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Large</span>
+  </button>
+  <button class="ch-button ch-button--sm ch-button--ghost ch-button--primary ch-button--icon-only" data-ch-component="button" type="button" aria-label="Notifications">
+    <span class="ch-button__leading" aria-hidden="true">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        aria-hidden="true"
+      >
+        <title>Notification</title>
+        <g stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(3.500000, 2.000000)" stroke="currentColor" stroke-width="1.5">
+            <path d="M8.5,15.8476424 C14.13923,15.8476424 16.7480515,15.1242108 17,12.220506 C17,9.31879687 15.1811526,9.50539234 15.1811526,5.94511102 C15.1811526,3.16414015 12.5452291,0 8.5,0 C4.4547709,0 1.81884743,3.16414015 1.81884743,5.94511102 C1.81884743,9.50539234 0,9.31879687 0,12.220506 C0.252952291,15.135187 2.86177374,15.8476424 8.5,15.8476424 Z"></path>
+            <path d="M10.8887931,18.8572176 C9.52465753,20.3719337 7.3966462,20.3898948 6.0194615,18.8572176"></path>
+          </g>
+        </g>
+      </svg>
+    </span>
+    <span class="ch-button__label">Notifications</span>
+  </button>
+</div>`
+});
+---
+
+<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  <button class="ch-button ch-button--sm ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Small</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Medium</span>
+  </button>
+  <button class="ch-button ch-button--lg ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Large</span>
+  </button>
+  <button
+    class="ch-button ch-button--sm ch-button--ghost ch-button--primary ch-button--icon-only"
+    data-ch-component="button"
+    type="button"
+    aria-label="Notifications"
+  >
+    <span class="ch-button__leading" aria-hidden="true">
+      <Notification size={18} />
+    </span>
+    <span class="ch-button__label">Notifications</span>
+  </button>
+</div>

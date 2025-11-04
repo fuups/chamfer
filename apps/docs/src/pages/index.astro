@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "@layouts/DocsLayout.astro";
+import Logo from "@components/layout/Logo.astro";
 import { getCollection } from "astro:content";
 
 const docs = await getCollection("docs");
@@ -9,144 +10,430 @@ const foundations = docs
 const components = docs.filter(entry => entry.id.startsWith("components/"));
 ---
 
-<DocsLayout title="Chamfer UI" description="Framework-agnostic components, tokens, and guides.">
-  <section class="hero">
-    <div class="hero__content">
-      <h1>Chamfer UI Documentation</h1>
-      <p>
-        Build accessible, token-driven interfaces with Chamfer’s framework-agnostic components. Start with the quick
-        start guide or explore the component library.
-      </p>
-      <div class="hero__cta">
-        <a class="primary" href="/foundations/quick-start">Get Started</a>
-        <a class="secondary" href="/components/button">Browse Components</a>
+<DocsLayout title="Chamfer UI" description="Framework-agnostic design system for building accessible, token-driven interfaces.">
+  <div class="homepage">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero__container">
+        <div class="hero__brand">
+          <Logo size={64} />
+          <div class="hero__text">
+            <h1 class="hero__title">Chamfer UI</h1>
+            <p class="hero__subtitle">Framework-agnostic design system</p>
+          </div>
+        </div>
+        <p class="hero__description">
+          Build accessible, token-driven interfaces with semantic design tokens, minimal HTML, and zero runtime dependencies. Works with any framework or vanilla JavaScript.
+        </p>
+        <div class="hero__actions">
+          <a class="ch-button ch-button--solid ch-button--primary" data-ch-component="button" href="/foundations/quick-start">
+            <span class="ch-button__label">Get Started</span>
+          </a>
+          <a class="ch-button ch-button--outline ch-button--secondary" data-ch-component="button" href="/components/button">
+            <span class="ch-button__label">Components</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="grid" id="components">
-    <article class="card">
-      <header>
-        <h2>Foundations</h2>
-        <p>Principles, tokens, accessibility, and tooling guidance.</p>
-      </header>
-      <ul>
-        {foundations.map(entry => (
-          <li>
-            <a href={entry.slug}>{entry.data.title}</a>
-            <p>{entry.data.description}</p>
-          </li>
-        ))}
-      </ul>
-    </article>
+    <!-- Features -->
+    <section class="features">
+      <div class="features__container">
+        <div class="feature">
+          <h3 class="feature__title">Token-Driven</h3>
+          <p class="feature__description">
+            100% semantic design tokens. No hardcoded values. Theme your entire system by swapping token values.
+          </p>
+        </div>
 
-    <article class="card">
-      <header>
-        <h2>Components</h2>
-        <p>HTML baselines, behavior notes, and framework adapters for each component.</p>
-      </header>
-      <ul>
-        {components.map(entry => (
-          <li>
-            <a href={entry.slug}>{entry.data.title}</a>
-            <p>{entry.data.description}</p>
-          </li>
-        ))}
-      </ul>
-    </article>
-  </section>
+        <div class="feature">
+          <h3 class="feature__title">Accessible First</h3>
+          <p class="feature__description">
+            WCAG 2.1 AA compliant. Keyboard navigation, screen readers, and high contrast mode supported out of the box.
+          </p>
+        </div>
+
+        <div class="feature">
+          <h3 class="feature__title">Framework Agnostic</h3>
+          <p class="feature__description">
+            Use with React, Vue, Svelte, or vanilla JS. Minimal HTML baselines that work anywhere. No lock-in.
+          </p>
+        </div>
+
+        <div class="feature">
+          <h3 class="feature__title">Zero Runtime</h3>
+          <p class="feature__description">
+            Pure CSS components. No JavaScript required for styling. Optional progressive enhancement for interactions.
+          </p>
+        </div>
+
+        <div class="feature">
+          <h3 class="feature__title">Minimal Footprint</h3>
+          <p class="feature__description">
+            Ship only what you use. Tree-shakeable tokens, modular components, optimized for modern build tools.
+          </p>
+        </div>
+
+        <div class="feature">
+          <h3 class="feature__title">Dark Mode Ready</h3>
+          <p class="feature__description">
+            Semantic color tokens automatically adapt. Light, dark, and high contrast modes work without extra code.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Documentation Links -->
+    <section class="documentation">
+      <div class="documentation__container">
+        <h2 class="documentation__title">Documentation</h2>
+
+        <div class="doc-cards">
+          <article class="doc-card">
+            <div class="doc-card__header">
+              <h3 class="doc-card__title">Foundations</h3>
+              <span class="doc-card__meta">{foundations.length} guides</span>
+            </div>
+            <p class="doc-card__description">
+              Design principles, typography, tokens, accessibility standards, and tooling guidance.
+            </p>
+            <ul class="doc-card__links">
+              {foundations.slice(0, 4).map(entry => (
+                <li>
+                  <a href={entry.slug}>{entry.data.title}</a>
+                </li>
+              ))}
+            </ul>
+            <a href="/foundations/quick-start" class="doc-card__more">View all foundations →</a>
+          </article>
+
+          <article class="doc-card">
+            <div class="doc-card__header">
+              <h3 class="doc-card__title">Components</h3>
+              <span class="doc-card__meta">{components.length} components</span>
+            </div>
+            <p class="doc-card__description">
+              HTML baselines, behavior notes, and framework adapters for production-ready components.
+            </p>
+            <ul class="doc-card__links">
+              {components.slice(0, 4).map(entry => (
+                <li>
+                  <a href={entry.slug}>{entry.data.title}</a>
+                </li>
+              ))}
+            </ul>
+            <a href="/components/button" class="doc-card__more">View all components →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
 </DocsLayout>
 
 <style>
+  .homepage {
+    display: grid;
+    gap: var(--ch-space-2xl);
+  }
+
+  /* Hero */
   .hero {
-    padding: var(--ch-space-4xl, 3rem) var(--ch-space-xl, 1.5rem) var(--ch-space-3xl, 2.5rem);
+    padding: calc(var(--ch-space-2xl) * 2) var(--ch-space-xl) var(--ch-space-2xl);
+    border-bottom: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+  }
+
+  .hero__container {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    gap: var(--ch-space-2xl);
+    justify-items: center;
     text-align: center;
   }
 
-  .hero__content {
-    max-width: 760px;
+  .hero__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ch-space-lg);
+  }
+
+  .hero__text {
+    display: grid;
+    gap: var(--ch-space-xs);
+  }
+
+  .hero__title {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: var(--ch-weight-semibold);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--ch-text-primary);
+  }
+
+  .hero__subtitle {
+    margin: 0;
+    font-size: var(--ch-text-sm);
+    font-weight: var(--ch-weight-medium);
+    color: var(--ch-text-tertiary);
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .hero__description {
+    margin: 0;
+    font-size: var(--ch-text-lg);
+    line-height: 1.6;
+    color: var(--ch-text-secondary);
+    max-width: 640px;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ch-space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero__actions .ch-button {
+    --ch-button-radius: var(--ch-radius-pill);
+    padding: var(--ch-space-md) var(--ch-space-2xl);
+  }
+
+  /* Features */
+  .features {
+    padding: var(--ch-space-2xl) var(--ch-space-xl);
+  }
+
+  .features__container {
+    max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    gap: var(--ch-space-lg, 1.5rem);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ch-space-2xl);
   }
 
-  .hero__content h1 {
-    margin: 0;
-    font-size: clamp(2rem, 4vw, 2.5rem);
-  }
-
-  .hero__content p {
-    margin: 0;
-    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
-  }
-
-  .hero__cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ch-space-md, 1rem);
-    flex-wrap: wrap;
-  }
-
-  .hero__cta a {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ch-space-xs, 0.35rem);
-    padding: var(--ch-space-sm, 0.65rem) var(--ch-space-lg, 1.5rem);
-    border-radius: var(--ch-radius-pill, 999px);
-    font-weight: var(--ch-weight-medium, 500);
-    text-decoration: none;
-  }
-
-  .hero__cta .primary {
-    background: var(--ch-action-primary-bg, #212529);
-    color: var(--ch-action-primary-fg, #ffffff);
-  }
-
-  .hero__cta .secondary {
-    border: var(--ch-border-width-sm, 1px) solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
-    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
-  }
-
-  .grid {
+  .feature {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--ch-space-2xl, 2rem);
-    max-width: 1100px;
-    margin: 0 auto var(--ch-space-4xl, 3rem);
-    padding: 0 var(--ch-space-xl, 1.5rem);
+    gap: var(--ch-space-sm);
   }
 
-  .card {
-    display: grid;
-    gap: var(--ch-space-lg, 1.5rem);
-  }
-
-  .card header h2 {
-    margin: 0 0 var(--ch-space-xs, 0.25rem);
-  }
-
-  .card header p {
+  .feature__title {
     margin: 0;
-    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+    font-size: var(--ch-text-md);
+    font-weight: var(--ch-weight-semibold);
+    color: var(--ch-text-primary);
+    letter-spacing: -0.01em;
   }
 
-  .card ul {
+  .feature__description {
+    margin: 0;
+    font-size: var(--ch-text-sm);
+    line-height: 1.6;
+    color: var(--ch-text-secondary);
+  }
+
+  /* Documentation */
+  .documentation {
+    padding: 0 var(--ch-space-xl) calc(var(--ch-space-2xl) * 2);
+  }
+
+  .documentation__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: var(--ch-space-2xl);
+  }
+
+  .documentation__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: var(--ch-weight-semibold);
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: var(--ch-text-primary);
+  }
+
+  .doc-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--ch-space-2xl);
+  }
+
+  .doc-card {
+    display: grid;
+    gap: var(--ch-space-lg);
+    padding: var(--ch-space-2xl);
+    border-radius: var(--ch-radius-md);
+    background: var(--ch-surface-raised);
+    border: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+    transition: all var(--ch-dur-medium) var(--ch-ease-standard);
+  }
+
+  .doc-card:hover {
+    box-shadow: var(--ch-shadow-md);
+    border-color: var(--ch-border-default);
+  }
+
+  .doc-card:focus-visible {
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+  }
+
+  .doc-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ch-space-md);
+  }
+
+  .doc-card__title {
+    margin: 0;
+    font-size: var(--ch-text-lg);
+    font-weight: var(--ch-weight-semibold);
+    letter-spacing: -0.01em;
+    color: var(--ch-text-primary);
+  }
+
+  .doc-card__meta {
+    font-size: var(--ch-text-xs);
+    font-weight: var(--ch-weight-medium);
+    color: var(--ch-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .doc-card__description {
+    margin: 0;
+    font-size: var(--ch-text-sm);
+    line-height: 1.6;
+    color: var(--ch-text-secondary);
+  }
+
+  .doc-card__links {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: var(--ch-space-md, 1rem);
+    gap: var(--ch-space-sm);
   }
 
-  .card li a {
-    font-weight: var(--ch-weight-semibold, 600);
-    color: var(--ch-text-primary, #212529);
+  .doc-card__links li {
+    display: flex;
+  }
+
+  .doc-card__links a {
+    font-size: var(--ch-text-sm);
+    font-weight: var(--ch-weight-medium);
+    color: var(--ch-text-secondary);
     text-decoration: none;
+    transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+    position: relative;
+    padding-left: var(--ch-space-md);
   }
 
-  .card li p {
-    margin: var(--ch-space-xs, 0.25rem) 0 0;
-    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+  .doc-card__links a::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--ch-text-tertiary);
+    opacity: 0;
+    transition: opacity var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .doc-card__links a:hover {
+    color: var(--ch-text-primary);
+  }
+
+  .doc-card__links a:hover::before {
+    opacity: 1;
+  }
+
+  .doc-card__links a:focus-visible {
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+    border-radius: var(--ch-radius-sm);
+  }
+
+  .doc-card__more {
+    font-size: var(--ch-text-sm);
+    font-weight: var(--ch-weight-semibold);
+    color: var(--ch-action-primary-bg);
+    text-decoration: none;
+    transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+    margin-top: var(--ch-space-sm);
+  }
+
+  .doc-card__more:hover {
+    color: var(--ch-action-primary-bg-hover);
+  }
+
+  .doc-card__more:focus-visible {
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+    border-radius: var(--ch-radius-sm);
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .features__container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--ch-space-xl);
+    }
+
+    .doc-cards {
+      grid-template-columns: 1fr;
+      gap: var(--ch-space-xl);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: var(--ch-space-2xl) var(--ch-space-lg);
+    }
+
+    .hero__container {
+      gap: var(--ch-space-xl);
+    }
+
+    .hero__title {
+      font-size: 2rem;
+    }
+
+    .hero__description {
+      font-size: var(--ch-text-md);
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero__actions .ch-button {
+      width: 100%;
+    }
+
+    .features {
+      padding: var(--ch-space-xl) var(--ch-space-lg);
+    }
+
+    .features__container {
+      grid-template-columns: 1fr;
+      gap: var(--ch-space-xl);
+    }
+
+    .documentation {
+      padding: 0 var(--ch-space-lg) var(--ch-space-2xl);
+    }
+
+    .documentation__title {
+      font-size: 1.75rem;
+    }
+
+    .doc-card {
+      padding: var(--ch-space-xl);
+    }
   }
 </style>

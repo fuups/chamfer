@@ -1,0 +1,41 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Ripple opt in",
+  code: String.raw`<div class="ripple-demo">
+  <div class="ripple-demo__row">
+    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+      <span class="ch-button__label">Ripple on</span>
+    </button>
+    <button class="ch-button ch-button--md ch-button--soft ch-button--secondary" data-ch-component="button" data-ch-ripple="false" type="button">
+      <span class="ch-button__label">Ripple off</span>
+    </button>
+  </div>
+</div>`
+});
+---
+
+<div class="ripple-demo">
+  <div class="ripple-demo__row">
+    <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+      <span class="ch-button__label">Ripple on</span>
+    </button>
+    <button class="ch-button ch-button--md ch-button--soft ch-button--secondary" data-ch-component="button" data-ch-ripple="false" type="button">
+      <span class="ch-button__label">Ripple off</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .ripple-demo {
+    display: grid;
+    gap: var(--ch-space-md);
+  }
+
+  .ripple-demo__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ch-space-md);
+  }
+</style>

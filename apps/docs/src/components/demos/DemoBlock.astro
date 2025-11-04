@@ -1,0 +1,16 @@
+---
+import PreviewCode from "@components/ui/PreviewCode.astro";
+import type { DemoDefinition } from "./createDemo";
+
+const {
+  demo,
+  component: Component
+} = Astro.props as {
+  demo: DemoDefinition;
+  component: any;
+};
+---
+
+<PreviewCode label={demo.label} language={demo.language} code={demo.code}>
+  <Component slot="preview" />
+</PreviewCode>

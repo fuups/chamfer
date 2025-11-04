@@ -106,13 +106,13 @@ const toneSwatches = [
 ];
 
 const textSamples = [
-  { label: "Primary — The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-primary" },
+  { label: "Primary - The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-primary" },
   {
-    label: "Secondary — The quick brown fox jumps over the lazy dog",
+    label: "Secondary - The quick brown fox jumps over the lazy dog",
     classes: "text-ch-md text-ch-text-secondary"
   },
-  { label: "Tertiary — The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-tertiary" },
-  { label: "Disabled — The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-disabled" }
+  { label: "Tertiary - The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-tertiary" },
+  { label: "Disabled - The quick brown fox jumps over the lazy dog", classes: "text-ch-md text-ch-text-disabled" }
 ];
 
 const buttonExamples = [

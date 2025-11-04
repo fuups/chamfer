@@ -1,0 +1,40 @@
+---
+interface Props {
+  size?: number;
+}
+
+const { size = 32 } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 32 32"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <!-- Outer chamfered square outline -->
+  <path
+    d="M8 2L2 8V24L8 30H24L30 24V8L24 2H8Z"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linejoin="bevel"
+  />
+
+  <!-- Inner circle -->
+  <circle
+    cx="16"
+    cy="16"
+    r="7"
+    stroke="currentColor"
+    stroke-width="2"
+  />
+</svg>
+
+<style>
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
+</style>

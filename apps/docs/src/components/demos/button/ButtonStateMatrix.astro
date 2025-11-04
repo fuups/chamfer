@@ -1,0 +1,176 @@
+---
+import { createDemo } from "../createDemo";
+
+const baseVariant = {
+  label: "Solid • Primary",
+  classes: "ch-button--md ch-button--solid ch-button--primary",
+  text: "Save changes"
+};
+
+const states = [
+  {
+    key: "default",
+    label: "Default",
+    description: "Idle appearance.",
+    attributes: {},
+    text: baseVariant.text
+  },
+  {
+    key: "hover",
+    label: "Hover",
+    description: "Pointer hover styling.",
+    attributes: {
+      "data-demo-state": "hover",
+      "aria-pressed": "false"
+    },
+    text: baseVariant.text
+  },
+  {
+    key: "active",
+    label: "Active",
+    description: "Pressed feedback.",
+    attributes: {
+      "data-demo-state": "active",
+      "aria-pressed": "true"
+    },
+    text: baseVariant.text
+  },
+  {
+    key: "focus",
+    label: "Focus-visible",
+    description: "Keyboard focus halo.",
+    attributes: {
+      "data-demo-state": "focus"
+    },
+    text: baseVariant.text
+  },
+  {
+    key: "disabled",
+    label: "Disabled",
+    description: "Non-interactive state.",
+    attributes: {
+      disabled: true,
+      "aria-disabled": "true"
+    },
+    text: "Can't click"
+  },
+  {
+    key: "loading",
+    label: "Loading",
+    description: "Async in progress.",
+    attributes: {
+      "data-ch-loading": "true",
+      "aria-busy": "true",
+      disabled: true
+    },
+    text: "Saving..."
+  }
+];
+
+export const matrixCode = String.raw`<section class="state-matrix">
+  <div class="state-matrix__grid">
+    <div class="state-matrix__cell" data-state="default">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+        <span class="ch-button__label">Save changes</span>
+      </button>
+      <p>Idle appearance.</p>
+    </div>
+    <div class="state-matrix__cell" data-state="hover">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-demo-state="hover" aria-pressed="false" type="button">
+        <span class="ch-button__label">Save changes</span>
+      </button>
+      <p>Pointer hover styling.</p>
+    </div>
+    <div class="state-matrix__cell" data-state="active">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-demo-state="active" aria-pressed="true" type="button">
+        <span class="ch-button__label">Save changes</span>
+      </button>
+      <p>Pressed feedback.</p>
+    </div>
+    <div class="state-matrix__cell" data-state="focus">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-demo-state="focus" type="button">
+        <span class="ch-button__label">Save changes</span>
+      </button>
+      <p>Keyboard focus halo.</p>
+    </div>
+    <div class="state-matrix__cell" data-state="disabled">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" disabled aria-disabled="true" type="button">
+        <span class="ch-button__label">Can't click</span>
+      </button>
+      <p>Non-interactive state.</p>
+    </div>
+    <div class="state-matrix__cell" data-state="loading">
+      <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" data-ch-loading="true" aria-busy="true" disabled type="button">
+        <span class="ch-button__label">Saving...</span>
+      </button>
+      <p>Async in progress.</p>
+    </div>
+  </div>
+</section>`;
+
+export const demo = createDemo({
+  label: "State matrix",
+  code: matrixCode
+});
+---
+
+<section class="state-matrix">
+  <div class="state-matrix__grid">
+    {states.map(state => (
+      <div class="state-matrix__cell" data-state={state.key}>
+        <button
+          class={`ch-button ${baseVariant.classes}`}
+          data-ch-component="button"
+          {...state.attributes}
+          type="button"
+        >
+          <span class="ch-button__label">{state.text}</span>
+        </button>
+        <p>{state.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .state-matrix {
+    display: grid;
+    gap: var(--ch-space-md);
+  }
+
+  .state-matrix__grid {
+    display: grid;
+    gap: var(--ch-space-sm);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .state-matrix__cell {
+    display: grid;
+    gap: var(--ch-space-xs);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .state-matrix__cell p {
+    margin: 0;
+    font-size: var(--ch-text-xs);
+    color: var(--ch-text-tertiary);
+  }
+
+  .state-matrix__cell [data-demo-state="hover"] {
+    background-color: var(--ch-button-hover-bg);
+  }
+
+  .state-matrix__cell [data-demo-state="active"] {
+    background-color: var(--ch-button-active-bg);
+  }
+
+  .state-matrix__cell [data-demo-state="focus"] {
+    outline: var(--ch-focus-outline-width, 2px) solid var(--ch-focus-outer, currentColor);
+    outline-offset: var(--ch-focus-outline-offset, 2px);
+    box-shadow:
+      0 0 0 var(--ch-ring-inner-width, 2px) var(--ch-focus-accent, currentColor),
+      0 0 0 calc(var(--ch-ring-inner-width, 2px) + var(--ch-ring-outer-width, 4px))
+        var(--ch-focus-outer, currentColor);
+  }
+</style>

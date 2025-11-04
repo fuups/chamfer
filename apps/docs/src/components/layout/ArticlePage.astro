@@ -1,0 +1,416 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  headings: Array<{ depth: number; slug: string; text: string }>;
+  showBreadcrumb?: boolean;
+  breadcrumbSection?: string;
+  status?: string;
+  updated?: string;
+}
+
+const {
+  title,
+  description,
+  headings,
+  showBreadcrumb = false,
+  breadcrumbSection,
+  status,
+  updated
+} = Astro.props;
+---
+
+<div class="content-grid">
+  <article>
+    <header class="article-header">
+      {showBreadcrumb && breadcrumbSection && (
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="/">Docs</a>
+          <span aria-hidden="true">/</span>
+          <a href={`/#${breadcrumbSection.toLowerCase()}`}>{breadcrumbSection}</a>
+          <span aria-hidden="true">/</span>
+          <span>{title}</span>
+        </nav>
+      )}
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+      {(status || updated) && (
+        <dl class="meta">
+          {status && (
+            <div>
+              <dt>Status</dt>
+              <dd class={`status status--${status}`}>{status}</dd>
+            </div>
+          )}
+          {updated && (
+            <div>
+              <dt>Last updated</dt>
+              <dd>{updated}</dd>
+            </div>
+          )}
+        </dl>
+      )}
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    {Astro.slots.has('footer') && (
+      <footer class="article-footer">
+        <slot name="footer" />
+      </footer>
+    )}
+  </article>
+
+  <aside class="toc">
+    <details class="toc-details" open>
+      <summary class="toc-summary">
+        <h2>On this page</h2>
+      </summary>
+      <ul>
+        {headings
+          .filter(heading => heading.depth === 2 || heading.depth === 3)
+          .map(heading => (
+            <li class={heading.depth === 3 ? 'toc-item--nested' : ''}>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+            </li>
+          ))}
+      </ul>
+    </details>
+  </aside>
+</div>
+
+<style>
+  .content-grid {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ch-space-2xl);
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--ch-space-xl);
+  }
+
+  article {
+    flex: 1 1 0;
+    max-width: 1080px;
+    display: grid;
+    gap: var(--ch-space-2xl);
+  }
+
+  .toc {
+    flex: 0 0 280px;
+    min-width: 280px;
+    position: sticky;
+    top: var(--ch-space-2xl);
+    align-self: flex-start;
+    max-height: calc(100vh - var(--ch-space-2xl) * 2);
+    overflow-y: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .content-grid {
+      flex-direction: column;
+    }
+
+    .toc {
+      width: 100%;
+      position: static;
+      border-top: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+      padding-top: var(--ch-space-xl);
+      margin-top: var(--ch-space-xl);
+    }
+  }
+
+  .breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ch-space-xs);
+    font-size: var(--ch-text-xs);
+    color: var(--ch-text-tertiary);
+    margin-bottom: var(--ch-space-md);
+  }
+
+  .breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--ch-dur-fast);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--ch-text-secondary);
+  }
+
+  .article-header > h1 {
+    margin: 0 0 var(--ch-space-sm) 0;
+    font-size: 2rem;
+    font-weight: var(--ch-weight-semibold);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .article-header > p {
+    margin: 0;
+    font-size: var(--ch-text-lg);
+    line-height: 1.6;
+    color: var(--ch-text-secondary);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ch-space-lg);
+    margin: var(--ch-space-md) 0 0;
+  }
+
+  .meta dt {
+    font-size: var(--ch-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ch-text-tertiary);
+  }
+
+  .meta dd {
+    margin: 0;
+    font-weight: var(--ch-weight-medium);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ch-space-xs);
+    padding: 0.125rem var(--ch-space-sm);
+    border-radius: var(--ch-radius-pill);
+    font-size: var(--ch-text-xs);
+    background: var(--ch-action-secondary-soft-bg);
+    color: var(--ch-action-secondary-soft-fg);
+  }
+
+  .status--alpha {
+    background: var(--ch-action-warning-soft-bg);
+    color: var(--ch-action-warning-soft-fg);
+  }
+
+  .status--beta {
+    background: var(--ch-action-secondary-soft-bg);
+    color: var(--ch-action-secondary-soft-fg);
+  }
+
+  .status--stable {
+    background: var(--ch-action-success-soft-bg);
+    color: var(--ch-action-success-soft-fg);
+  }
+
+  .toc-details {
+    border: none;
+  }
+
+  .toc-summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-summary h2 {
+    font-size: var(--ch-text-sm);
+    font-weight: var(--ch-weight-semibold);
+    margin: 0 0 var(--ch-space-sm) 0;
+    display: inline-block;
+  }
+
+  @media (max-width: 1024px) {
+    .toc-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--ch-space-sm) 0;
+      margin-bottom: var(--ch-space-sm);
+    }
+
+    .toc-summary::after {
+      content: "▼";
+      font-size: var(--ch-text-xs);
+      color: var(--ch-text-tertiary);
+      transition: transform var(--ch-dur-fast) var(--ch-ease-standard);
+    }
+
+    .toc-details[open] .toc-summary::after {
+      transform: rotate(-180deg);
+    }
+
+    .toc-summary h2 {
+      margin: 0;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .toc-summary {
+      pointer-events: none;
+    }
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var(--ch-space-lg) 0;
+    display: grid;
+    gap: var(--ch-space-xs);
+  }
+
+  .toc a {
+    text-decoration: none;
+    font-size: var(--ch-text-sm);
+    color: var(--ch-text-secondary);
+    transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .toc a:hover {
+    color: var(--ch-text-primary);
+  }
+
+  .toc a:focus-visible {
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+    border-radius: var(--ch-radius-sm);
+  }
+
+  .toc-item--nested {
+    padding-left: var(--ch-space-md);
+  }
+
+  .toc-item--nested a {
+    font-size: var(--ch-text-xs);
+    color: var(--ch-text-tertiary);
+  }
+
+  .toc-item--nested a:hover {
+    color: var(--ch-text-secondary);
+  }
+
+  .article-footer {
+    border-top: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+    padding-top: var(--ch-space-xl);
+    display: grid;
+    gap: var(--ch-space-md);
+  }
+
+  .article-footer :global(h2) {
+    font-size: var(--ch-text-lg);
+    margin: 0 0 var(--ch-space-sm) 0;
+  }
+
+  .article-footer :global(ul) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--ch-space-sm);
+  }
+
+  .article-footer :global(a) {
+    text-decoration: none;
+    color: var(--ch-action-primary-bg);
+    font-weight: var(--ch-weight-medium);
+    transition: color var(--ch-dur-fast);
+  }
+
+  .article-footer :global(a:hover) {
+    color: var(--ch-text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .article-header > h1 {
+      font-size: var(--ch-text-xl);
+    }
+
+    .article-header > p {
+      font-size: var(--ch-text-md);
+    }
+  }
+
+  /* Heading anchors */
+  .prose :global(:is(h2, h3, h4, h5, h6)) {
+    position: relative;
+  }
+
+  .prose :global(.heading-anchor) {
+    position: absolute;
+    left: -1.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--ch-text-tertiary);
+    text-decoration: none;
+    opacity: 0;
+    transition: all var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .prose :global(:is(h2, h3, h4, h5, h6):hover .heading-anchor) {
+    opacity: 1;
+  }
+
+  .prose :global(.heading-anchor:hover) {
+    color: var(--ch-action-primary-bg);
+  }
+
+  .prose :global(.heading-anchor:focus-visible) {
+    opacity: 1;
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+  }
+
+  @media (max-width: 768px) {
+    .prose :global(.heading-anchor) {
+      left: auto;
+      right: 0;
+      position: relative;
+      opacity: 1;
+      margin-left: var(--ch-space-xs);
+      transform: none;
+      top: auto;
+    }
+  }
+</style>
+
+<script>
+  // Add heading anchor links
+  document.addEventListener('DOMContentLoaded', () => {
+    const proseContainer = document.querySelector('.prose');
+    if (!proseContainer) return;
+
+    const headings = proseContainer.querySelectorAll('h2[id], h3[id], h4[id], h5[id], h6[id]');
+
+    // Link icon SVG from @components/icons/Link.astro
+    const linkIconSvg = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M5.88475 9.70703L4.73775 10.854C2.42075 13.171 2.42075 16.948 4.73775 19.265C7.04675 21.574 10.8317 21.582 13.1487 19.265L14.2957 18.118" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M18.1152 14.3008L19.2623 13.1538C21.5792 10.8368 21.5792 7.05977 19.2623 4.74277C16.9533 2.43377 13.1683 2.42577 10.8513 4.74277L9.70427 5.88977" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.6367 9.45703L9.4043 14.6894" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    headings.forEach(heading => {
+      const id = heading.getAttribute('id');
+      if (!id) return;
+
+      const anchor = document.createElement('a');
+      anchor.href = `#${id}`;
+      anchor.className = 'heading-anchor';
+      anchor.setAttribute('aria-label', `Link to ${heading.textContent}`);
+      anchor.innerHTML = linkIconSvg;
+
+      heading.style.display = 'flex';
+      heading.style.alignItems = 'center';
+      heading.insertBefore(anchor, heading.firstChild);
+    });
+  });
+</script>

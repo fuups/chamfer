@@ -1,0 +1,139 @@
+---
+// Global footer component
+---
+
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__title">Chamfer UI</p>
+        <p class="footer__subtitle">Framework-agnostic design system</p>
+      </div>
+
+      <nav class="footer__section" aria-label="Resources">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="/foundations/quick-start">Quick Start</a></li>
+          <li><a href="/foundations/tokens">Tokens</a></li>
+          <li><a href="/foundations/accessibility">Accessibility</a></li>
+          <li><a href="/components/button">Components</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__section" aria-label="Community">
+        <h3>Community</h3>
+        <ul>
+          <li><a href="https://github.com/chamfer-ui" target="_blank" rel="noreferrer">GitHub</a></li>
+          <li><a href="https://www.npmjs.com/org/chamfer" target="_blank" rel="noreferrer">npm</a></li>
+          <li><a href="/reference/changelog">Changelog</a></li>
+          <li><a href="/reference/roadmap">Roadmap</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__section" aria-label="Legal">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="https://github.com/chamfer-ui/chamfer-ui/blob/main/LICENSE" target="_blank" rel="noreferrer">License</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">© {new Date().getFullYear()} Chamfer UI. Open source under MIT License.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: auto;
+    background: var(--ch-surface-raised);
+    border-top: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+  }
+
+  .footer__container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--ch-space-2xl) var(--ch-space-xl);
+    display: grid;
+    gap: var(--ch-space-2xl);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3, 1fr);
+    gap: var(--ch-space-2xl);
+  }
+
+  @media (max-width: 768px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      gap: var(--ch-space-xl);
+    }
+  }
+
+  .footer__brand {
+    display: grid;
+    gap: var(--ch-space-xs);
+  }
+
+  .footer__title {
+    margin: 0;
+    font-size: var(--ch-text-lg);
+    font-weight: var(--ch-weight-semibold);
+    color: var(--ch-text-primary);
+  }
+
+  .footer__subtitle {
+    margin: 0;
+    font-size: var(--ch-text-sm);
+    color: var(--ch-text-secondary);
+    line-height: 1.5;
+  }
+
+  .footer__section h3 {
+    margin: 0 0 var(--ch-space-md) 0;
+    font-size: var(--ch-text-xs);
+    font-weight: var(--ch-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ch-text-tertiary);
+  }
+
+  .footer__section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--ch-space-sm);
+  }
+
+  .footer__section a {
+    text-decoration: none;
+    font-size: var(--ch-text-sm);
+    color: var(--ch-text-secondary);
+    transition: color var(--ch-dur-fast) var(--ch-ease-standard);
+  }
+
+  .footer__section a:hover {
+    color: var(--ch-text-primary);
+  }
+
+  .footer__section a:focus-visible {
+    outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+    outline-offset: var(--ch-focus-outline-offset);
+    border-radius: var(--ch-radius-sm);
+  }
+
+  .footer__bottom {
+    padding-top: var(--ch-space-xl);
+    border-top: var(--ch-border-width-sm) solid var(--ch-elevation-border);
+  }
+
+  .footer__copyright {
+    margin: 0;
+    font-size: var(--ch-text-xs);
+    color: var(--ch-text-tertiary);
+    text-align: center;
+  }
+</style>

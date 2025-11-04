@@ -1,6 +1,9 @@
 ---
 import "@chamfer/core/css";
 import "@styles/global.css";
+import Logo from "@components/layout/Logo.astro";
+import Footer from "@components/layout/Footer.astro";
+import initButtonsScript from "../scripts/init-buttons.ts?url";
 
 interface Props {
   title: string;
@@ -56,13 +59,16 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900"
     />
     <slot name="head" />
   </head>
   <body class="docs-root">
     <header class="mobile-header">
-      <a href="/" class="mobile-brand">Chamfer UI</a>
+      <a href="/" class="mobile-brand">
+        <Logo size={24} />
+        <span>Chamfer UI</span>
+      </a>
       <button id="mobile-nav-toggle" class="mobile-nav-toggle" type="button" aria-expanded="false">
         Menu
       </button>
@@ -72,8 +78,13 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
       <aside class="docs-sidebar" id="docs-sidebar" data-open="false">
         <div class="brand">
-          <a href="/" class="brand__title">Chamfer UI</a>
-          <p class="brand__subtitle">Framework-agnostic component system</p>
+          <a href="/" class="brand__link">
+            <Logo size={32} />
+            <div class="brand__text">
+              <span class="brand__title">Chamfer UI</span>
+              <p class="brand__subtitle">Framework-agnostic component system</p>
+            </div>
+          </a>
         </div>
 
         <nav aria-label="Primary" class="nav-sections">
@@ -127,6 +138,8 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
         <slot />
       </main>
     </div>
+
+    <Footer />
 
     <script is:inline>
       const root = document.documentElement;
@@ -233,153 +246,182 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
       .brand {
         display: flex;
         flex-direction: column;
-        gap: var(--ch-space-xs, 0.25rem);
+      }
+
+      .brand__link {
+        display: flex;
+        align-items: center;
+        gap: var(--ch-space-md);
+        text-decoration: none;
+        transition: opacity var(--ch-dur-fast) var(--ch-ease-standard);
+      }
+
+      .brand__link:hover {
+        opacity: 0.8;
+      }
+
+      .brand__text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ch-space-xs);
       }
 
       .brand__title {
-        font-size: var(--ch-text-lg, 1.25rem);
-        font-weight: var(--ch-weight-semibold, 600);
-        text-decoration: none;
+        font-size: var(--ch-text-lg);
+        font-weight: var(--ch-weight-semibold);
+        color: var(--ch-text-primary);
       }
 
       .brand__subtitle {
         margin: 0;
-        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
-        font-size: var(--ch-text-sm, 0.875rem);
+        color: var(--ch-text-secondary);
+        font-size: var(--ch-text-sm);
+        line-height: 1.4;
       }
 
       .nav-sections {
         display: grid;
-        gap: var(--ch-space-xl, 1.5rem);
+        gap: var(--ch-space-2xl);
       }
 
       .nav-section {
         display: grid;
-        gap: var(--ch-space-sm, 0.5rem);
+        gap: var(--ch-space-xs);
       }
 
       .nav-section__title {
         margin: 0;
-        font-size: var(--ch-text-xs, 0.75rem);
+        font-size: var(--ch-text-xs);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.68));
+        color: var(--ch-text-tertiary);
       }
 
       .nav-list {
         display: grid;
-        gap: var(--ch-space-xs, 0.25rem);
+        gap: var(--ch-space-xs);
       }
 
       .nav-link {
         display: inline-flex;
         align-items: center;
-        gap: var(--ch-space-xs, 0.25rem);
-        padding: var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
-        border-radius: var(--ch-radius-sm, 0.375rem);
-        border: var(--ch-border-width-sm, 1px) solid transparent;
+        gap: var(--ch-space-xs);
+        padding: var(--ch-space-sm) var(--ch-space-md);
+        border-radius: var(--ch-radius-sm);
         text-decoration: none;
-        font-size: var(--ch-text-sm, 0.875rem);
-        font-weight: var(--ch-weight-medium, 500);
-        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
-        transition: all var(--ch-dur-medium, 180ms) var(--ch-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+        font-size: var(--ch-text-sm);
+        font-weight: var(--ch-weight-medium);
+        color: var(--ch-text-secondary);
+        transition: all var(--ch-dur-fast) var(--ch-ease-standard);
+        position: relative;
       }
 
-      .nav-link:hover,
+      .nav-link:hover {
+        color: var(--ch-text-primary);
+        background: var(--ch-hover-on-base);
+      }
+
       .nav-link[aria-current="page"] {
-        color: var(--ch-text-primary, #212529);
-        border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
-        background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+        color: var(--ch-text-primary);
+        background: var(--ch-active-on-base);
+        font-weight: var(--ch-weight-semibold);
       }
 
       .nav-link--disabled {
-        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.48));
+        color: var(--ch-text-tertiary);
         cursor: not-allowed;
         border-color: transparent;
         background: transparent;
       }
 
       .nav-link--disabled:hover {
-        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.48));
+        color: var(--ch-text-tertiary);
         border-color: transparent;
         background: transparent;
       }
 
       .sidebar-controls {
         display: grid;
-        gap: var(--ch-space-xs, 0.25rem);
+        gap: var(--ch-space-xs);
       }
 
       .control-label {
-        font-size: var(--ch-text-xs, 0.75rem);
+        font-size: var(--ch-text-xs);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: var(--ch-text-tertiary, rgba(90, 97, 105, 0.68));
+        color: var(--ch-text-tertiary);
       }
 
       #theme-select {
         width: 100%;
         font: inherit;
-        font-size: var(--ch-text-sm, 0.875rem);
-        padding: var(--ch-space-sm, 0.5rem) calc(var(--ch-space-xl, 2rem) + var(--ch-space-sm, 0.5rem))
-          var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
-        border: var(--ch-border-width-sm, 1px) solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
-        border-radius: var(--ch-radius-sm, 0.375rem);
-        background: var(--ch-surface-base, #fff);
-        color: var(--ch-text-primary, #212529);
+        font-size: var(--ch-text-sm);
+        padding: var(--ch-space-sm) calc(var(--ch-space-xl) + var(--ch-space-sm))
+          var(--ch-space-sm) var(--ch-space-md);
+        border: var(--ch-border-width-sm) solid var(--ch-border-default);
+        border-radius: var(--ch-radius-sm);
+        background: transparent;
+        color: var(--ch-text-primary);
         cursor: pointer;
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
-        background-position: right var(--ch-space-sm, 0.5rem) center;
+        background-position: right var(--ch-space-sm) center;
       }
 
       #theme-select:focus-visible {
-        outline: var(--ch-focus-outline-width, 2px) solid var(--ch-focus-outer, currentColor);
-        outline-offset: var(--ch-focus-outline-offset, 2px);
+        outline: var(--ch-focus-outline-width) solid var(--ch-focus-outer);
+        outline-offset: var(--ch-focus-outline-offset);
       }
 
       .control-button {
         font: inherit;
-        font-size: var(--ch-text-sm, 0.875rem);
-        font-weight: var(--ch-weight-medium, 500);
-        padding: var(--ch-space-sm, 0.5rem) var(--ch-space-md, 0.75rem);
-        border-radius: var(--ch-radius-sm, 0.375rem);
-        border: var(--ch-border-width-sm, 1px) solid var(--ch-border-default, rgba(0, 0, 0, 0.12));
-        background: var(--ch-surface-base, #fff);
-        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        font-size: var(--ch-text-sm);
+        font-weight: var(--ch-weight-medium);
+        padding: var(--ch-space-sm) var(--ch-space-md);
+        border-radius: var(--ch-radius-sm);
+        border: var(--ch-border-width-sm) solid var(--ch-border-default);
+        background: transparent;
+        color: var(--ch-text-secondary);
         cursor: pointer;
-        transition: all var(--ch-dur-medium, 180ms) var(--ch-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+        transition: all var(--ch-dur-medium) var(--ch-ease-standard);
       }
 
-      .control-button:hover,
+      .control-button:hover {
+        color: var(--ch-text-primary);
+        border-color: var(--ch-border-default);
+        background: var(--ch-hover-on-raised);
+      }
+
       .control-button[aria-pressed="true"] {
-        color: var(--ch-text-primary, #212529);
-        border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
-        background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
+        color: var(--ch-text-primary);
+        border-color: var(--ch-action-primary-soft-border);
+        background: var(--ch-action-primary-soft-bg);
+        font-weight: var(--ch-weight-semibold);
       }
 
       .sidebar-footer {
         margin-top: auto;
         display: grid;
-        gap: var(--ch-space-xs, 0.25rem);
-        font-size: var(--ch-text-xs, 0.75rem);
+        gap: var(--ch-space-xs);
+        font-size: var(--ch-text-xs);
       }
 
       .sidebar-footer a {
-        color: var(--ch-text-secondary, rgba(90, 97, 105, 0.88));
+        color: var(--ch-text-secondary);
         text-decoration: none;
       }
 
       .sidebar-footer a:hover {
-        color: var(--ch-text-primary, #212529);
+        color: var(--ch-text-primary);
       }
 
       @media (max-width: 960px) {
         .docs-sidebar {
-          gap: var(--ch-space-lg, 1rem);
+          gap: var(--ch-space-lg);
         }
       }
     </style>
+    <script type="module" src={initButtonsScript}></script>
   </body>
 </html>

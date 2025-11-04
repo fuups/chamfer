@@ -54,10 +54,40 @@
   position: absolute;
   border-radius: 9999px;
   background-color: var(--ch-button-ripple-color);
+  background-image: radial-gradient(circle at center, var(--ch-button-ripple-color) 0%, transparent 70%);
   transform: scale(0);
-  opacity: 0.24;
+  opacity: 0.38;
   pointer-events: none;
-  animation: ch-button-ripple 450ms var(--ch-ease-decelerate) forwards;
+  mix-blend-mode: multiply;
+  will-change: transform, opacity;
+  animation: ch-button-ripple 520ms var(--ch-ease-emphasized) forwards;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger .ch-ripple {
+  mix-blend-mode: normal;
+  opacity: 0.45;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger :is(.ch-button__leading, .ch-button__trailing) {
+  color: inherit;
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
+:is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
+:is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
+  mix-blend-mode: normal;
+  opacity: 0.5;
+  background-color: var(--ch-button-ripple-color);
+}
+
+@supports (color: color-mix(in oklab, white 0%, black 0%)) {
+  :is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
+  :is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
+    background-color: color-mix(in oklab, var(--ch-button-fg) 70%, white 20%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -90,8 +120,16 @@
 }
 
 @keyframes ch-button-ripple {
-  to {
-    transform: scale(1);
+  0% {
+    transform: scale(0.2);
+    opacity: 0.45;
+  }
+  55% {
+    transform: scale(0.95);
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(1.15);
     opacity: 0;
   }
 }
@@ -362,13 +400,42 @@
   background-color: var(--ch-ghost-active-base);
 }
 
-:is(.ch-button, [data-ch-component="button"]).ch-button--raised.ch-button--ghost:not(:disabled):hover {
-  background-color: var(--ch-ghost-hover-raised);
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat {
+  --ch-button-bg: var(--ch-ghost-hover-base);
+  --ch-button-hover-bg: var(--ch-ghost-active-base);
+  --ch-button-active-bg: var(--ch-ghost-active-base);
+  --ch-button-border-color: transparent;
 }
 
-:is(.ch-button, [data-ch-component="button"]).ch-button--raised.ch-button--ghost:not(:disabled):active {
-  background-color: var(--ch-ghost-active-raised);
+@supports (color: color-mix(in oklab, black 10%, white)) {
+  :is(.ch-button, [data-ch-component="button"]).ch-button--flat {
+    --ch-button-bg: color-mix(in oklab, var(--ch-ghost-hover-base) 70%, transparent);
+    --ch-button-hover-bg: color-mix(in oklab, var(--ch-ghost-hover-base) 90%, transparent);
+    --ch-button-active-bg: color-mix(in oklab, var(--ch-ghost-active-base) 85%, #000000 15%);
+  }
 }
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat.ch-button--primary {
+  --ch-button-fg: var(--ch-action-primary-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat.ch-button--secondary {
+  --ch-button-fg: var(--ch-action-secondary-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat.ch-button--success {
+  --ch-button-fg: var(--ch-action-success-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat.ch-button--warning {
+  --ch-button-fg: var(--ch-action-warning-soft-fg);
+}
+
+:is(.ch-button, [data-ch-component="button"]).ch-button--flat.ch-button--danger {
+  --ch-button-fg: var(--ch-action-danger-soft-fg);
+}
+
 :is(a.ch-button, a[data-ch-component="button"]) {
   text-decoration: none;
 }

@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "description": "Progressive enhancement helpers for Chamfer UI components.",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "src"

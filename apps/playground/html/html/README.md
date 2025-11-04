@@ -2,7 +2,7 @@
 
 Static HTML + vanilla JS showcase for Chamfer tokens and core CSS.
 
-- Uses the generated CSS variables directly—no framework bundling.
+- Uses the generated CSS variables directly-no framework bundling.
 - Theme switcher keeps `data-theme`, `color-scheme`, and the `.dark` class in sync.
 - Mirrors the token sections from the React playground for easy visual comparison.
 

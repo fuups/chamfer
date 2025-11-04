@@ -1,4 +1,4 @@
-# **Chamfer Design System — v1.1.0 (Stable)**
+# **Chamfer Design System - v1.1.0 (Stable)**
 
 > **Scope:** Single source of truth for tokens, theming, patterns, accessibility, and governance (system-level; no component specs)
 > **Version:** **1.1.0** • **Last updated:** **2025-11-03** • **License:** MIT
@@ -8,7 +8,7 @@
 ## Core decisions (v1.1.0)
 
 - **Two axes for styling:** **Emphasis** (how loud) × **Meaning** (what it means).
-- **Emphasis:** `solid` _(default)_, `soft`, `outline`, `ghost` (omitting the emphasis implies **solid**).
+- **Emphasis:** `solid` _(default)_, `soft`, `flat`, `outline`, `ghost` (omitting the emphasis implies **solid**).
 - **Meaning is namespaced:**
   **Actions** → `--ch-action-*` (`primary | secondary | success | warning | danger`)
   **Messaging (Tones)** → `--ch-tone-*` (`info | success | warning | danger`)
@@ -43,11 +43,11 @@
 
 ## 2.1 Three-Layer System
 
-1. **Primitives** — raw values (colors, spacing, radii, type, motion)
+1. **Primitives** - raw values (colors, spacing, radii, type, motion)
    _Authored as HEX/HSL + OKLCH siblings; canonical variables upgrade via `@supports` with sRGB fallbacks/clamping for exports._
-2. **Semantics** — intent/meaning-based tokens (**actions**, **tones**, text hierarchy, surfaces, borders, states)
+2. **Semantics** - intent/meaning-based tokens (**actions**, **tones**, text hierarchy, surfaces, borders, states)
    _Component-agnostic; all prefixed with `--ch-…`._
-3. **Component tokens** — **aliases** of semantics bound by grammar
+3. **Component tokens** - **aliases** of semantics bound by grammar
    _Never reference primitives directly. No raw color in components._
 
 ## 2.2 Naming Grammar (contracts only)
@@ -437,12 +437,10 @@ Additional delivery policies:
 :root {
   --ch-ghost-hover-base: var(--ch-hover-on-base);
   --ch-ghost-active-base: var(--ch-active-on-base);
-  --ch-ghost-hover-raised: var(--ch-hover-on-raised);
-  --ch-ghost-active-raised: var(--ch-active-on-raised);
 }
 ```
 
-## 5.5 **Actions** — `--ch-action-*` (solid = default)
+## 5.5 **Actions** - `--ch-action-*` (solid = default)
 
 **Primary (monochrome action channel):**
 
@@ -591,7 +589,7 @@ Additional delivery policies:
 }
 ```
 
-## 5.6 **Messaging / Tones** — `--ch-tone-*` (blue lives here)
+## 5.6 **Messaging / Tones** - `--ch-tone-*` (blue lives here)
 
 ```css
 /* SOFT defaults for alerts/banners/tooltips/notices */
@@ -1048,7 +1046,7 @@ test("ESC closes transient and returns focus", () => {
 
 ---
 
-# 14) Changelog — **v1.1.0**
+# 14) Changelog - **v1.1.0**
 
 - **Removed:** Generic primitive `--ch-color-contrast`. All usages replaced with **context-specific** tokens (`--ch-focus-outer`, `--ch-divider-color`, `--ch-on-inverse-fg`).
 - **Refactor:** Inverse semantics → `--ch-surface-inverse`, `--ch-on-inverse-fg`, `--ch-surface-inverse-border` (≥3:1 in both modes).

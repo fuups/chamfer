@@ -1,0 +1,19 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Anchor styled as button",
+  code: String.raw`<a class="ch-button ch-button--md ch-button--soft ch-button--secondary" data-ch-component="button" href="/docs" role="button">
+  <span class="ch-button__label">View docs</span>
+</a>`
+});
+---
+
+<a
+  class="ch-button ch-button--md ch-button--soft ch-button--secondary"
+  data-ch-component="button"
+  href="/docs"
+  role="button"
+>
+  <span class="ch-button__label">View docs</span>
+</a>

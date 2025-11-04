@@ -1,4 +1,4 @@
-# Chamfer Button — Component Specification
+# Chamfer Button - Component Specification
 
 > **Status:** Draft ✓ ready for implementation  
 > **Ownership:** Design tokens & UX (spec), Platform team (implementation), Docs (content)  
@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-Chamfer’s button is the canonical pressable control for actions. It supports five semantic meanings (primary, secondary, success, warning, danger), four emphasis styles (solid, soft, outline, ghost), three sizes (sm, md, lg), icon adornments, and theming (light/dark/high-contrast). Buttons rely exclusively on semantic tokens; component CSS must never reference primitives directly.
+Chamfer’s button is the canonical pressable control for actions. It supports five semantic meanings (primary, secondary, success, warning, danger), five emphasis styles (solid, soft, flat, outline, ghost), three sizes (sm, md, lg), icon adornments, and theming (light/dark/high-contrast). Buttons rely exclusively on semantic tokens; component CSS must never reference primitives directly.
 
 ---
 
@@ -33,14 +33,15 @@ Icon-only buttons (no text) must declare `aria-label`.
 
 ### 3.2 Emphasis
 
-| Emphasis | Description                                                     | Tokens prefix                                    |
+| Emphasis | Description                                                     | Token families                                   |
 |----------|-----------------------------------------------------------------|--------------------------------------------------|
 | solid    | Default, opaque backgrounds                                      | `--ch-action-<meaning>-*`                       |
 | soft     | Translucent background, tonally lighter                          | `--ch-action-<meaning>-soft-*`                  |
+| flat     | Subtle translucent fill (ghost overlay as base)                  | `--ch-ghost-hover-base`, `--ch-action-<meaning>-soft-*` |
 | outline  | Transparent fill, stroked border                                | `--ch-action-outline-<meaning>-*`               |
-| ghost    | Transparent fill, hover/active overlays (shares tone semantics) | `--ch-action-<meaning>-soft-*`, `--ch-ghost-*`  |
+| ghost    | Fully transparent at rest; only hover/active overlays visible   | `--ch-ghost-hover-base`, `--ch-ghost-active-base` |
 
-Ghost is semi-abstract (overlay mix); rely on soft tokens for colors and `--ch-ghost-*` for overlay strengths.
+Flat sits between soft and ghost: it keeps the button “present” on tinted or raised surfaces without adding a border. Ghost remains the lowest-emphasis option, appearing only on interaction. Rely on soft tokens for tone-specific foreground colors and on `--ch-ghost-*` overlays for surface blending.
 
 ### 3.3 Sizes
 
@@ -57,11 +58,11 @@ Icon-only buttons reuse the same heights; width reduces to `height` with spacing
 ## 4. States
 
 - **Default**
-- **Hover:** use `--ch-action-*-bg-hover`, `--ch-hover-on-base` overlays for ghost.
+- **Hover:** use `--ch-action-*-bg-hover`; flat and ghost rely on `--ch-ghost-hover-base`.
 - **Active / Pressed:** `--ch-action-*-bg-active`, `--ch-active-on-base`.
 - **Focus-visible:** adopt shared focus tokens (`--ch-focus-accent`, `--ch-focus-outer`, `--ch-ring-*`). Ghost soft overlay remains visible beneath focus.
 - **Disabled:** reduce opacity to `--ch-state-disabled-opacity`, suppress pointer events, maintain accessible contrast for label (use `--ch-text-disabled` when needed).
-- **Loading:** reserved; component should allow visual indicator slot but internal spinner component will ship later.
+- **Loading:** reserved (spinner component will ship later).
 
 All states must respect dark theme parity and forced-color (HCM) variants. `hcm:` utilities will be added once the shared high-contrast pattern is defined.
 
@@ -69,11 +70,11 @@ All states must respect dark theme parity and forced-color (HCM) variants. `hcm:
 
 ## 5. Content & layout rules
 
-- Leading/trailing content must be wrapped in `span[data-slot="leading"]` / `span[data-slot="trailing"]` (or class equivalent) to manage gap tokens.
-- Default spacing between icon and label: `--ch-space-sm`; adjust per size scale.
-- Icon-only variant: apply `data-has-icon-only` (or `ch-button--icon-only`) so CSS can enforce square layout, center alignment, and accessible label requirements.
-- Buttons should align to inline flex baseline for easy alignment in toolbars/forms.
-- Text labels may wrap across lines; ensure enough inline space or use short labels for horizontal toolbars.
+- Wrap leading/trailing content in `.ch-button__leading` / `.ch-button__trailing` (or equivalent) to keep spacing tokens intact.
+- Keep icons and label separated by `--ch-button-gap-inline` (defaults to `--ch-space-sm`).
+- Use `ch-button--icon-only` when the label is visually hidden; provide `aria-label`.
+- Align buttons on the inline flex baseline to play nicely in forms and toolbars.
+- Allow labels to wrap; prefer concise copy to avoid overly tall buttons.
 
 ---
 
@@ -144,7 +145,7 @@ Anchor example:
 ## 8. Behavior (progressive enhancement)
 
 - **Focus management:** rely on native focus; style via `:focus-visible` only.
-- **Ripple effect:** `enhanceButton(element, { ripple })` from `@chamfer/behavior` auto-attaches ripple. Opt out with `data-ch-ripple="false"` or `ripple: false`. Raised surfaces can set `data-ch-ripple="raised"`.
+- **Ripple effect:** call `enhanceButton(element)` from `@chamfer/behavior` to add ripple feedback. Opt out with `data-ch-ripple="false"` or `ripple: false`.
 - **Loading state:** `data-ch-loading="true"` (plus `aria-busy="true"`) disables ripple, pointer events, and updates cursor. Wrappers should map `loading` props to these attributes.
 - **Pointer/keyboard events:** helper listens for `pointerdown` and `Enter`/`Space`, ignoring interactions when the element is `disabled`, `aria-disabled="true"`, or loading.
 - **Non-button elements:** helper sets `data-ch-component="button"` automatically and leaves the `type` attribute untouched on anchors; for real `<button>` elements it defaults `type="button"` if omitted.
@@ -199,7 +200,36 @@ Wrappers do **not** redefine styles; they compose the vanilla artifacts.
 
 ---
 
-## 12. QA checklist
+## 12. Documentation flow
+
+Public documentation for the Button component follows this ordered structure to match the intuitive experience across the docs site:
+
+1. **Title and summary** - one or two sentences describing purpose.
+2. **Demo** - interactive preview of primary and secondary buttons.
+3. **Quick start** - install and import command set.
+4. **Usage** - minimal copy-paste HTML baseline with preview/code tabs.
+5. **When to use** - do/don’t guidance.
+6. **Anatomy** - DOM tree and slot descriptions.
+7. **Variants and sizes** - tables plus preview/code showing emphasis and size scales.
+8. **States** - preview/code matrix for hover, focus, loading, disabled.
+9. **Behavior** - ripple helper demo and integration snippet.
+10. **Accessibility** - keyboard table and best practices.
+11. **Theming tokens** - token table plus preview/code showing overrides.
+12. **API contract** - class documentation.
+13. **Data attributes** - attribute reference table.
+14. **Guidelines** - content and usage guidance.
+15. **Examples** - real-world scenarios with preview/code pairs.
+16. **Testing** - selectors and sample automation snippets.
+17. **Performance** - optimization notes.
+18. **Internationalization and RTL** - localization guidance.
+19. **Related** - linked resources/components.
+20. **Next steps** - future enhancements and tracking notes.
+
+This flow must be maintained as additional frameworks or behaviors are documented.
+
+---
+
+## 13. QA checklist
 
 - [ ] Token references only (no primitives).
 - [ ] Light/dark snapshots (solid, soft, outline, ghost) for each meaning.
@@ -216,7 +246,7 @@ Wrappers do **not** redefine styles; they compose the vanilla artifacts.
 
 ---
 
-## 13. Open questions
+## 14. Open questions
 
 - Do we need a dedicated “link” style (text button) beyond ghost?
 - Should density scaling adjust padding automatically or be opt-in?

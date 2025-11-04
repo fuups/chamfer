@@ -408,7 +408,7 @@ export default function App(): JSX.Element {
           <div className="text-samples">
             {textSamples.map(({ label, style }) => (
               <p key={label} className="sample" style={style}>
-                {label} — The quick brown fox jumps over the lazy dog
+                {label} - The quick brown fox jumps over the lazy dog
               </p>
             ))}
           </div>

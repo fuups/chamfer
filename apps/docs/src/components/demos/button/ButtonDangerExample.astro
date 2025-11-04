@@ -1,0 +1,20 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Danger confirmation",
+  code: String.raw`<button class="ch-button ch-button--md ch-button--solid ch-button--danger" data-ch-component="button" type="button">
+  <span class="ch-button__leading" aria-hidden="true">!</span>
+  <span class="ch-button__label">Delete project</span>
+</button>`
+});
+---
+
+<button
+  class="ch-button ch-button--md ch-button--solid ch-button--danger"
+  data-ch-component="button"
+  type="button"
+>
+  <span class="ch-button__leading" aria-hidden="true">!</span>
+  <span class="ch-button__label">Delete project</span>
+</button>

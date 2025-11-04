@@ -1,0 +1,42 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Emphasis gallery",
+  code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Solid</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--soft ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Soft</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--flat ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Flat</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--outline ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Outline</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--ghost ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Ghost</span>
+  </button>
+</div>`
+});
+---
+
+<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Solid</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--soft ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Soft</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--flat ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Flat</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--outline ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Outline</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--ghost ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Ghost</span>
+  </button>
+</div>

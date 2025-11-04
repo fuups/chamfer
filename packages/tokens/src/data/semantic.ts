@@ -290,9 +290,7 @@ const ghostOverlayBlock: SimpleTokenBlock = {
   tokens: [
     { name: "ch-ghost-hover-base", value: "var(--ch-hover-on-base)" },
     { name: "ch-ghost-active-base", value: "var(--ch-active-on-base)" },
-    { name: "ch-ghost-hover-raised", value: "var(--ch-hover-on-raised)" },
-    { name: "ch-ghost-active-raised", value: "var(--ch-active-on-raised)" }
-  ]
+      ]
 };
 
 const buttonComponentBlock: SimpleTokenBlock = {

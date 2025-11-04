@@ -1,0 +1,27 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Theme override",
+  code: String.raw`<div class="button-theme-demo" style="--ch-action-primary-bg: oklch(65% 0.15 260); --ch-action-primary-foreground: oklch(98% 0.01 260); display: flex; gap: var(--ch-space-sm); flex-wrap: wrap;">
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Brand primary</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--soft ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Brand soft</span>
+  </button>
+</div>`
+});
+---
+
+<div
+  class="button-theme-demo"
+  style="--ch-action-primary-bg: oklch(65% 0.15 260); --ch-action-primary-foreground: oklch(98% 0.01 260); display: flex; gap: var(--ch-space-sm); flex-wrap: wrap;"
+>
+  <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Brand primary</span>
+  </button>
+  <button class="ch-button ch-button--md ch-button--soft ch-button--primary" data-ch-component="button" type="button">
+    <span class="ch-button__label">Brand soft</span>
+  </button>
+</div>

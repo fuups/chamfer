@@ -1,0 +1,18 @@
+---
+import { createDemo } from "../createDemo";
+
+export const demo = createDemo({
+  label: "Localized label",
+  code: String.raw`<button class="ch-button ch-button--lg ch-button--solid ch-button--primary" data-ch-component="button" type="button">
+  <span class="ch-button__label">Aktualisiere Zahlungsdaten jetzt</span>
+</button>`
+});
+---
+
+<button
+  class="ch-button ch-button--lg ch-button--solid ch-button--primary"
+  data-ch-component="button"
+  type="button"
+>
+  <span class="ch-button__label">Aktualisiere Zahlungsdaten jetzt</span>
+</button>

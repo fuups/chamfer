@@ -7,17 +7,17 @@ import {
   type PropType
 } from "vue";
 
-import { enhanceButton, type RippleOptions } from "@chamfer/behavior";
+import { enhanceButton } from "@chamfer/behavior";
 
 export interface ChamferButtonProps {
-  ripple?: boolean | RippleOptions;
+  ripple?: boolean;
 }
 
 export const ChamferButton = defineComponent<ChamferButtonProps>({
   name: "ChamferButton",
   props: {
     ripple: {
-      type: [Boolean, Object] as PropType<boolean | RippleOptions>,
+      type: Boolean as PropType<boolean>,
       default: true
     }
   },
@@ -26,8 +26,8 @@ export const ChamferButton = defineComponent<ChamferButtonProps>({
     let enhancement: ReturnType<typeof enhanceButton> | undefined;
 
     onMounted(() => {
-      if (element.value && props.ripple) {
-        enhancement = enhanceButton(element.value, { ripple: props.ripple });
+      if (element.value && props.ripple !== false) {
+        enhancement = enhanceButton(element.value);
       }
     });
 
