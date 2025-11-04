@@ -3,7 +3,11 @@ import { createDemo } from "../createDemo";
 
 export const demo = createDemo({
   label: "Theme override",
-  code: String.raw`<div class="button-theme-demo" style="--ch-action-primary-bg: oklch(65% 0.15 260); --ch-action-primary-foreground: oklch(98% 0.01 260); display: flex; gap: var(--ch-space-sm); flex-wrap: wrap;">
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: String.raw`<div class="button-theme-demo">
   <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
     <span class="ch-button__label">Brand primary</span>
   </button>
@@ -11,13 +15,26 @@ export const demo = createDemo({
     <span class="ch-button__label">Brand soft</span>
   </button>
 </div>`
+    },
+    {
+      label: "CSS",
+      language: "css",
+      code: String.raw`.button-theme-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ch-space-sm);
+  --ch-action-primary-bg: oklch(65% 0.15 260);
+  --ch-action-primary-foreground: oklch(98% 0.01 260);
+  --ch-action-primary-soft-bg: color-mix(in oklch, oklch(65% 0.15 260) 18%, transparent);
+  --ch-action-primary-soft-border: color-mix(in oklch, oklch(65% 0.15 260) 32%, transparent);
+  --ch-action-primary-soft-foreground: oklch(35% 0.06 260);
+}`
+    }
+  ]
 });
 ---
 
-<div
-  class="button-theme-demo"
-  style="--ch-action-primary-bg: oklch(65% 0.15 260); --ch-action-primary-foreground: oklch(98% 0.01 260); display: flex; gap: var(--ch-space-sm); flex-wrap: wrap;"
->
+<div class="button-theme-demo">
   <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
     <span class="ch-button__label">Brand primary</span>
   </button>
@@ -25,3 +42,16 @@ export const demo = createDemo({
     <span class="ch-button__label">Brand soft</span>
   </button>
 </div>
+
+<style>
+  .button-theme-demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ch-space-sm);
+    --ch-action-primary-bg: oklch(65% 0.15 260);
+    --ch-action-primary-foreground: oklch(98% 0.01 260);
+    --ch-action-primary-soft-bg: color-mix(in oklch, oklch(65% 0.15 260) 18%, transparent);
+    --ch-action-primary-soft-border: color-mix(in oklch, oklch(65% 0.15 260) 32%, transparent);
+    --ch-action-primary-soft-foreground: oklch(35% 0.06 260);
+  }
+</style>

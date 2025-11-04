@@ -1,17 +1,20 @@
+export interface DemoSource {
+  label: string;
+  language: string;
+  code: string;
+}
+
 export interface DemoConfig {
   label: string;
-  code: string;
-  language?: string;
+  sources: DemoSource[];
 }
 
 export interface DemoDefinition {
   label: string;
-  code: string;
-  language: string;
+  sources: DemoSource[];
 }
 
-export const createDemo = ({ label, code, language = "html" }: DemoConfig): DemoDefinition => ({
+export const createDemo = ({ label, sources }: DemoConfig): DemoDefinition => ({
   label,
-  code,
-  language
+  sources
 });

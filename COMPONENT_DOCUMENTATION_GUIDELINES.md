@@ -100,7 +100,7 @@ Frontmatter rules:
 
 Use our Astro MDX helpers for previews and tables:
 
-- `<PreviewCode>` for paired preview and code tabs. Always supply `label`, `language`, and a `code` prop. Render the live markup inside a `<div slot="preview">`.
+- `<PreviewCode>` for paired preview and code tabs. Supply `label`, a `sources` array (for example HTML, CSS, JavaScript), and render the live markup inside a `<div slot="preview">`.
 - `<ComponentVariantGrid>` or a component specific variant grid. Keep HTML fallback available even when you embed React demos.
 - `<Callout type="info|warning|success|danger">` for admonitions.
 - `<SpecTable>` (or plain Markdown tables) for contracts.

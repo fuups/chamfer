@@ -4,7 +4,11 @@ import { createDemo } from "../createDemo";
 
 export const demo = createDemo({
   label: "Size scale",
-  code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
   <button class="ch-button ch-button--sm ch-button--solid ch-button--primary" data-ch-component="button" type="button">
     <span class="ch-button__label">Small</span>
   </button>
@@ -37,6 +41,8 @@ export const demo = createDemo({
     <span class="ch-button__label">Notifications</span>
   </button>
 </div>`
+    }
+  ]
 });
 ---
 

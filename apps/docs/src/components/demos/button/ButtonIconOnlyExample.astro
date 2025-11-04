@@ -4,7 +4,11 @@ import { createDemo } from "../createDemo";
 
 export const demo = createDemo({
   label: "Icon only",
-  code: String.raw`<button
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: String.raw`<button
   class="ch-button ch-button--sm ch-button--ghost ch-button--primary ch-button--icon-only"
   data-ch-component="button"
   type="button"
@@ -31,6 +35,8 @@ export const demo = createDemo({
   </span>
   <span class="ch-button__label">Notifications</span>
 </button>`
+    }
+  ]
 });
 ---
 

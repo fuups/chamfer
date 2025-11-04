@@ -3,7 +3,11 @@ import { createDemo } from "../createDemo";
 
 export const demo = createDemo({
   label: "Tone matrix",
-  code: String.raw`<section class="button-tone-matrix">
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: String.raw`<section class="button-tone-matrix">
   <div class="tone-grid">
     <figure>
       <figcaption>Primary</figcaption>
@@ -107,6 +111,8 @@ export const demo = createDemo({
     </figure>
   </div>
 </section>`
+    }
+  ]
 });
 ---
 

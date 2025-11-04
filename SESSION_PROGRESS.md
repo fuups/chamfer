@@ -81,3 +81,4 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Simplified Button state matrix demo (static code export + balanced grid) and verified `@chamfer/docs` builds cleanly.
 - Captured the heading depth template in `COMPONENT_DOCUMENTATION_GUIDELINES.md` and restructured the Button page to follow the new H2/H3 hierarchy for a cleaner ToC.
 - Documented `enhanceButton` usage/options and parked the Examples section behind a “coming soon” placeholder until multi-component UI blocks are ready.
+- Upgraded docs preview tooling (`PreviewCode`) for multi-tab HTML/Style/Script snippets, refactored button demos to supply structured sources, and removed inline styling/loose code blocks in the Button page.

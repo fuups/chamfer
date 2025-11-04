@@ -1,17 +1,31 @@
 ---
+interface Source {
+  label: string;
+  language: string;
+  code: string;
+}
+
 const {
-  code,
-  language = "html",
-  label = "Example",
+  label,
+  sources,
   copyLabel = "Copy"
-} = Astro.props;
+} = Astro.props as {
+  label: string;
+  sources: Source[];
+  copyLabel?: string;
+};
+
+if (!Array.isArray(sources) || sources.length === 0) {
+  throw new Error(`PreviewCode "${label}" requires at least one source entry.`);
+}
 
 const previewHtml = await Astro.slots.render("preview");
 const hasPreview = previewHtml.trim().length > 0;
+const initialTab = hasPreview ? "preview" : `code-0`;
 const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
 ---
 
-<div class="preview-code" data-active={hasPreview ? "preview" : "code"} id={id}>
+<div class="preview-code" data-active={initialTab} id={id}>
   <div class="preview-code__header">
     <span class="preview-code__label">{label}</span>
     <div class="preview-code__tabs" role="tablist">
@@ -26,18 +40,21 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
           Preview
         </button>
       )}
-      <button
-        type="button"
-        class="preview-code__tab"
-        data-tab="code"
-        role="tab"
-        aria-selected={!hasPreview ? "true" : "false"}
-      >
-        Code
-      </button>
-      <button type="button" class="preview-code__copy" data-copy aria-label={copyLabel}>
-        {copyLabel}
-      </button>
+      {sources.map((source, index) => {
+        const tabId = `code-${index}`;
+        const selected = !hasPreview && index === 0 ? "true" : "false";
+        return (
+          <button
+            type="button"
+            class="preview-code__tab"
+            data-tab={tabId}
+            role="tab"
+            aria-selected={selected}
+          >
+            {source.label}
+          </button>
+        );
+      })}
     </div>
   </div>
 
@@ -47,13 +64,29 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     </div>
   )}
 
-  <div class="preview-code__panel" data-panel="code" role="tabpanel">
-    <pre class="preview-code__pre">
-      <code class={`language-${language}`}>
-{code}
-      </code>
-    </pre>
-  </div>
+  {sources.map((source, index) => {
+    const panelId = `code-${index}`;
+    return (
+      <div class="preview-code__panel" data-panel={panelId} role="tabpanel">
+        <div class="preview-code__panel-toolbar">
+          <span class="preview-code__panel-title">{source.label}</span>
+          <button
+            type="button"
+            class="preview-code__copy"
+            data-copy={index}
+            aria-label={`${copyLabel} ${source.label}`}
+          >
+            {copyLabel}
+          </button>
+        </div>
+        <pre class="preview-code__pre">
+          <code class={`language-${source.language}`} data-code={index}>
+{source.code}
+          </code>
+        </pre>
+      </div>
+    );
+  })}
 </div>
 
 <style>
@@ -63,7 +96,7 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     background: var(--ch-surface-raised);
     display: flex;
     flex-direction: column;
-    margin: 0 0 var(--ch-space-lg, 1.5rem);
+    margin-bottom: var(--ch-space-lg, 1.5rem);
   }
 
   .preview-code__header {
@@ -106,6 +139,36 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     border-color: var(--ch-action-primary-soft-border, rgba(0, 0, 0, 0.24));
   }
 
+  .preview-code__panel {
+    display: none;
+    padding: var(--ch-space-md, 1rem);
+    gap: var(--ch-space-sm);
+    flex-direction: column;
+  }
+
+  .preview-code__panel.is-active {
+    display: flex;
+  }
+
+  .preview-code__preview {
+    width: 100%;
+  }
+
+  .preview-code__panel-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ch-space-sm, 0.75rem);
+  }
+
+  .preview-code__panel-title {
+    font-size: var(--ch-text-xs, 0.78rem);
+    font-weight: var(--ch-weight-semibold, 600);
+    color: var(--ch-text-secondary, rgba(90, 97, 105, 0.78));
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .preview-code__copy {
     font: inherit;
     font-size: var(--ch-text-xs, 0.75rem);
@@ -122,30 +185,14 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     background: var(--ch-action-primary-soft-bg, rgba(0, 0, 0, 0.06));
   }
 
-  .preview-code__panel {
-    display: none;
-    padding: var(--ch-space-md, 1rem);
-  }
-
-  .preview-code[data-active="preview"] .preview-code__panel[data-panel="preview"],
-  .preview-code[data-active="code"] .preview-code__panel[data-panel="code"] {
-    display: block;
-  }
-
-  .preview-code__preview {
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-  }
-
   .preview-code__pre {
     margin: 0;
-    padding: var(--ch-space-md, 1rem);
-    border-radius: var(--ch-radius-sm, 0.5rem);
+    padding: 0;
+    border: 0;
     background: var(--ch-surface-raised, #0f172a);
     color: #f8fafc;
     overflow-x: auto;
+    width: 100%;
   }
 </style>
 
@@ -156,51 +203,75 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
 
     const targetId = script.dataset.target || "";
     const defaultCopyLabel = script.dataset.copyLabel || "Copy";
+    const container = targetId
+      ? document.getElementById(targetId)
+      : script.previousElementSibling;
+    if (!container) return;
 
-    const init = () => {
-      const container = targetId ? document.getElementById(targetId) : script.previousElementSibling;
-      if (!container) return;
+    const tabs = Array.from(
+      container.querySelectorAll(".preview-code__tab")
+    );
+    const panels = Array.from(
+      container.querySelectorAll(".preview-code__panel")
+    );
 
-      const tabs = Array.prototype.slice.call(container.querySelectorAll(".preview-code__tab"));
-      const copyButton = container.querySelector(".preview-code__copy");
-      const pre = container.querySelector(".preview-code__pre");
-
+    const setActive = panelId => {
+      container.setAttribute("data-active", panelId);
       tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-          const target = tab.getAttribute("data-tab");
-          if (!target) return;
-          container.setAttribute("data-active", target);
-
-          tabs.forEach(btn => {
-            btn.setAttribute("aria-selected", btn === tab ? "true" : "false");
-          });
-        });
+        const tabId = tab.dataset.tab;
+        tab.setAttribute("aria-selected", tabId === panelId ? "true" : "false");
       });
-
-      if (copyButton && pre) {
-        copyButton.addEventListener("click", async () => {
-          const code = pre.innerText.trim();
-          try {
-            await navigator.clipboard.writeText(code);
-            copyButton.textContent = "Copied";
-            setTimeout(() => {
-              copyButton.textContent = defaultCopyLabel;
-            }, 1500);
-          } catch (error) {
-            console.error(error);
-            copyButton.textContent = "Error";
-            setTimeout(() => {
-              copyButton.textContent = defaultCopyLabel;
-            }, 1500);
-          }
-        });
-      }
+      panels.forEach(panel => {
+        panel.classList.toggle(
+          "is-active",
+          panel.dataset.panel === panelId
+        );
+      });
     };
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init, { once: true });
-    } else {
-      init();
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const tabId = tab.dataset.tab;
+        if (!tabId) return;
+        setActive(tabId);
+      });
+    });
+
+    const copyButtons = Array.from(
+      container.querySelectorAll(".preview-code__copy")
+    );
+
+    copyButtons.forEach(button => {
+      button.addEventListener("click", async () => {
+        const index = button.dataset.copy;
+        if (typeof index === "undefined") {
+          return;
+        }
+        const codeEl = container.querySelector(
+          `code[data-code="${index}"]`
+        );
+        if (!codeEl) return;
+
+        const text = codeEl.innerText.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = "Copied";
+          setTimeout(() => {
+            button.textContent = defaultCopyLabel;
+          }, 1500);
+        } catch (error) {
+          console.error(error);
+          button.textContent = "Error";
+          setTimeout(() => {
+            button.textContent = defaultCopyLabel;
+          }, 1500);
+        }
+      });
+    });
+
+    const initial = container.dataset.active || (tabs[0] ? tabs[0].dataset.tab : "");
+    if (initial) {
+      setActive(initial);
     }
   })();
 </script>

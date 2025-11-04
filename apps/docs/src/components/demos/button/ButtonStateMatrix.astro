@@ -110,7 +110,13 @@ export const matrixCode = String.raw`<section class="state-matrix">
 
 export const demo = createDemo({
   label: "State matrix",
-  code: matrixCode
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: matrixCode
+    }
+  ]
 });
 ---
 

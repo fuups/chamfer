@@ -149,19 +149,9 @@ Add `ch-button--icon-only` when the label is visually hidden and provide an expl
 
 ### Using `enhanceButton`
 
-Chamfer buttons work with pure HTML and CSS. When you need animated feedback or keyboard polish, import `enhanceButton` and apply it to the elements you render. The helper stamps required data attributes, ensures a `type="button"` default on native buttons, and wires up the ripple effect when enabled.
+Chamfer buttons work with pure HTML and CSS. When you need animated feedback or keyboard polish, import `enhanceButton` and apply it to the elements you render. The helper stamps required data attributes, ensures a `type="button"` default on native buttons, and wires up the ripple effect when enabled. The demo below includes both the HTML markup and the JavaScript helper sources.
 
 <DemoBlock demo={rippleDemo} component={RippleDemo} />
-
-```ts
-import { enhanceButton } from "@chamfer/behavior";
-
-const buttons = document.querySelectorAll<HTMLButtonElement>('[data-ch-component="button"]');
-buttons.forEach((element) => {
-  const enhancement = enhanceButton(element);
-  element.addEventListener("disconnected", enhancement.destroy, { once: true });
-});
-```
 
 ### Options
 
@@ -193,7 +183,7 @@ Best practices:
 
 ## Theming
 
-Chamfer buttons draw their appearance from semantic action tokens so surfaces stay consistent across components. Override tokens at the theme root or under `[data-theme]` scopes to rebrand without editing component CSS. See the Reference section for a complete token table.
+Chamfer buttons draw their appearance from semantic action tokens so surfaces stay consistent across components. Override tokens at the theme root or under `[data-theme]` scopes to rebrand without editing component CSS. See the Reference section for a complete token table. The preview supplies both HTML and CSS snippets for quick reuse.
 
 <DemoBlock demo={buttonThemeOverride} component={ButtonThemeOverride} />
 

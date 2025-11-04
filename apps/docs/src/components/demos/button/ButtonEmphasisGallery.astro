@@ -3,7 +3,11 @@ import { createDemo } from "../createDemo";
 
 export const demo = createDemo({
   label: "Emphasis gallery",
-  code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
+  sources: [
+    {
+      label: "HTML",
+      language: "html",
+      code: String.raw`<div class="button-row" style="display: flex; flex-wrap: wrap; gap: var(--ch-space-sm);">
   <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button" type="button">
     <span class="ch-button__label">Solid</span>
   </button>
@@ -20,6 +24,8 @@ export const demo = createDemo({
     <span class="ch-button__label">Ghost</span>
   </button>
 </div>`
+    }
+  ]
 });
 ---
 
