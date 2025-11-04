@@ -1,5 +1,14 @@
+/**
+ * @chamfer/behavior
+ * Progressive enhancement helpers for Chamfer UI components
+ */
+
 export interface Enhancement {
   destroy: () => void;
+}
+
+export interface ButtonEnhancementOptions {
+  ripple?: boolean;
 }
 
 function prefersReducedMotion(): boolean {
@@ -8,6 +17,9 @@ function prefersReducedMotion(): boolean {
     : false;
 }
 
+/**
+ * Creates a ripple wave element positioned at the interaction point
+ */
 function createWave(
   container: HTMLElement,
   position: { x: number; y: number }
@@ -57,6 +69,13 @@ function isElementLoading(element: HTMLElement): boolean {
   return ariaBusy === "true";
 }
 
+/**
+ * Checks if the element can be interacted with
+ */
+function canInteract(element: HTMLElement): boolean {
+  return !isElementDisabled(element) && !isElementLoading(element);
+}
+
 export function enhanceRipple(element: HTMLElement): Enhancement {
   const MAX_RIPPLES = 3;
   const activeRipples = new Map<string, HTMLSpanElement>();
@@ -97,7 +116,7 @@ export function enhanceRipple(element: HTMLElement): Enhancement {
   };
 
   const spawnRipple = (event: PointerEvent | KeyboardEvent) => {
-    if (reducedMotion || isElementDisabled(element) || isElementLoading(element)) {
+    if (reducedMotion || !canInteract(element)) {
       return;
     }
 
@@ -141,7 +160,11 @@ export function enhanceRipple(element: HTMLElement): Enhancement {
     element.appendChild(ripple);
 
     if (typeof PointerEvent !== "undefined" && event instanceof PointerEvent) {
-      element.setPointerCapture(event.pointerId);
+      try {
+        element.setPointerCapture(event.pointerId);
+      } catch {
+        // Ignore pointer capture errors
+      }
     }
 
     if (activeRipples.size > MAX_RIPPLES) {
@@ -161,7 +184,11 @@ export function enhanceRipple(element: HTMLElement): Enhancement {
 
   const pointerUpHandler = (event: PointerEvent) => {
     if (element.hasPointerCapture(event.pointerId)) {
-      element.releasePointerCapture(event.pointerId);
+      try {
+        element.releasePointerCapture(event.pointerId);
+      } catch {
+        // Ignore release errors
+      }
     }
     releaseRipple(`pointer-${event.pointerId}`);
   };
@@ -174,9 +201,25 @@ export function enhanceRipple(element: HTMLElement): Enhancement {
     if (event.repeat) {
       return;
     }
-    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
-      spawnRipple(event);
+
+    const isSpace = event.key === " " || event.key === "Spacebar";
+    const isEnter = event.key === "Enter";
+
+    if (!isSpace && !isEnter) {
+      return;
     }
+
+    // Check interaction state before preventing default
+    if (!canInteract(element)) {
+      return;
+    }
+
+    // Prevent spacebar from scrolling the page
+    if (isSpace) {
+      event.preventDefault();
+    }
+
+    spawnRipple(event);
   };
 
   const keyUpHandler = (event: KeyboardEvent) => {
@@ -203,10 +246,6 @@ export function enhanceRipple(element: HTMLElement): Enhancement {
       element.classList.remove("ch-rippling");
     }
   };
-}
-
-export interface ButtonEnhancementOptions {
-  ripple?: boolean;
 }
 
 export const enhanceButton = (

@@ -5,7 +5,6 @@ import Logo from "@components/layout/Logo.astro";
 import Footer from "@components/layout/Footer.astro";
 import Hamburger from "@components/icons/Hamburger.astro";
 import Close from "@components/icons/Close.astro";
-import initButtonsScript from "../scripts/init-buttons.js?url";
 
 interface Props {
   title: string;
@@ -39,9 +38,6 @@ const withBase = (path) => {
   }
   return `${basePath}${path}`;
 };
-
-const initButtonsSrc =
-  import.meta.env?.DEV === true ? initButtonsScript : withBase(initButtonsScript);
 
 const navGroups = [
   {
@@ -556,6 +552,62 @@ const navGroups = [
         }
       }
     </style>
-    <script type="module" src={initButtonsSrc}></script>
+    <script>
+      import { enhanceButton } from "@chamfer/behavior";
+
+      const registry = new Map();
+
+      const enhanceAll = (root = document) => {
+        root
+          .querySelectorAll('[data-ch-component="button"]')
+          .forEach((button) => {
+            if (registry.has(button)) {
+              return;
+            }
+            const enhancement = enhanceButton(button);
+            registry.set(button, enhancement.destroy);
+          });
+      };
+
+      const cleanupMissing = () => {
+        for (const [button, destroy] of registry.entries()) {
+          if (!document.contains(button)) {
+            destroy();
+            registry.delete(button);
+          }
+        }
+      };
+
+      const destroyAll = () => {
+        for (const destroy of registry.values()) {
+          destroy();
+        }
+        registry.clear();
+      };
+
+      const initRipple = () => {
+        enhanceAll();
+        cleanupMissing();
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initRipple, { once: true });
+      } else {
+        initRipple();
+      }
+
+      document.addEventListener("astro:after-swap", () => {
+        cleanupMissing();
+        enhanceAll();
+      });
+
+      document.addEventListener(
+        "astro:before-swap",
+        () => {
+          destroyAll();
+        },
+        { passive: true }
+      );
+    </script>
   </body>
 </html>

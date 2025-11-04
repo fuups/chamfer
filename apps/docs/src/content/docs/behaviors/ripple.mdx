@@ -8,13 +8,13 @@ slug: /behaviors/ripple
 
 import Callout from "@components/ui/Callout.astro";
 
-Chamfer’s ripple mirrors the press feedback used in the playground demos: a wave originates where the user presses, fills the component while the pointer or key is held, then fades when the press completes. The helper works with any element that exposes `data-ch-component="button"`—native `<button>`, anchors acting as buttons, or custom elements.
+Chamfer’s ripple mirrors the press feedback used in the playground demos: a wave originates where the user presses, fills the component while the pointer or key is held, then fades when the press completes. Buttons get this automatically through `enhanceButton`, and any other element can opt in by calling the exported `enhanceRipple` helper.
 
 ## Lifecycle
 
-1. **Pointer or key down:** `enhanceButton` spawns a `.ch-ripple` span, adds `ch-rippling` to the host, and animates the wave using `ch-button-ripple-enter`. The element keeps its base background during this period.
-2. **Holding the press:** The ripple remains at full opacity until the user releases. Multiple simultaneous presses (e.g. touch points) receive unique ripples.
-3. **Pointer or key up:** The helper starts `ch-button-ripple-exit`. When the animation finishes the helper removes the span and clears `ch-rippling`.
+1. **Pointer or key down:** The helper ensures a `.ch-ripple > .ch-ripple__surface` container exists, toggles `is-pressed`, and animates the surface `::after` from the interaction point.
+2. **Holding the press:** The ripple remains at full opacity until the user releases. Multiple simultaneous presses reuse the same pseudo-element but restart the animation.
+3. **Pointer or key up:** The helper lets the animation finish, then clears `is-pressed` so the overlay fades away.
 4. **Cancellation:** If the pointer is cancelled or keyboard focus moves away, the ripple exits immediately.
 
 The ripple automatically disables when `prefers-reduced-motion: reduce` is active or when the page is in forced-colors mode.
@@ -22,7 +22,7 @@ The ripple automatically disables when `prefers-reduced-motion: reduce` is activ
 ## Usage
 
 ```ts
-import { enhanceButton } from "@chamfer/behavior";
+import { enhanceButton, enhanceRipple } from "@chamfer/behavior";
 
 const destroy = enhanceButton(myButton, {
   ripple: true
@@ -38,6 +38,13 @@ destroy();
 </button>
 ```
 
+```ts
+// Generic usage: enhance an arbitrary element
+import { enhanceRipple } from "@chamfer/behavior";
+
+const destroyRipple = enhanceRipple(cardElement);
+```
+
 ### Options
 
 | Option | Type | Default | Notes |
@@ -45,29 +52,40 @@ destroy();
 | `ripple` | `boolean` | `true` | Disable per element with `data-ch-ripple="false"` or in code with `{ ripple: false }`. |
 
 <Callout tone="tip">
-  `enhanceButton` also normalises `type="button"`, augments keyboard handling for anchors, and guards disabled/loading states. Ripple is only one part of the helper.
+  `enhanceButton` also normalises `type="button"`, augments keyboard handling for anchors, and guards disabled/loading states. Ripple is only one part of the helper. Reach for `enhanceRipple` when you want the effect without the button-specific affordances.
 </Callout>
 
 ## Styling hooks
 
-- `ch-rippling` class marks the host while any ripple is active.
-- `.ch-ripple` spans are appended inside the host. When the user releases, the helper toggles `.ch-ripple--exit` to trigger the exit animation.
-- CSS variables:
-  - `--ch-button-ripple-color`
-  - `--ch-button-ripple-opacity`
-
-Solid buttons derive the ripple from their background tone, transparent variants mix with their foreground colour, and forced-colors users never see the effect.
+- `.ch-ripple` and `.ch-ripple__surface` are injected automatically and inherit the host border radius.
+- Hover and press states toggle `is-hovered` / `is-pressed` on the surface, letting CSS handle the opacity changes.
+- Customise the effect with CSS variables:
+  - `--ch-ripple-color`
+  - `--ch-ripple-hover-opacity`
+  - `--ch-ripple-pressed-opacity`
+  - `--ch-ripple-duration`
+  - `--ch-ripple-easing`
+  - `--ch-ripple-min-press`
 
 ```css
 /* Scope a stronger wave to primary surfaces */
 .surface-dark .ch-button--solid.ch-button--primary {
-  --ch-button-ripple-color: color-mix(in oklab, #ffffff 85%, var(--ch-action-primary-bg) 15%);
-  --ch-button-ripple-opacity: 0.6;
+  --ch-ripple-color: color-mix(in oklab, #ffffff 85%, var(--ch-action-primary-bg) 15%);
+  --ch-ripple-pressed-opacity: 0.26;
 }
 
 /* Disable ripple entirely for secondary actions */
 .secondary-pane [data-ch-component="button"] {
   data-ch-ripple: false;
+}
+
+/* Apply ripple to a card */
+.dashboard-card {
+  position: relative;
+  overflow: hidden;
+  --ch-ripple-color: color-mix(in oklab, currentColor 40%, transparent);
+  --ch-ripple-hover-opacity: 0.05;
+  --ch-ripple-pressed-opacity: 0.18;
 }
 ```
 

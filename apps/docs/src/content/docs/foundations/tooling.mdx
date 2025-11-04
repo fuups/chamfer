@@ -39,7 +39,49 @@ CI will run lint/tests/build per package before release. SemVer tagging is plann
 
 ## Progressive enhancement
 
-Vanilla JS helpers live in `@chamfer/behavior`. They are optional but recommended for features like ripple, focus overlays, or keyboard guards. Wrappers re-export these helpers so framework consumers don’t touch the DOM directly.
+Vanilla JS helpers live in `@chamfer/behavior`. They are optional but recommended for features like ripple, focus overlays, or keyboard guards. Wrappers re-export these helpers so framework consumers don't touch the DOM directly.
+
+## Astro development notes
+
+### Importing workspace packages in scripts
+
+When importing workspace packages like `@chamfer/behavior` in Astro `<script>` tags, **do not add `type="module"`**:
+
+```astro
+<!-- Correct: Astro processes this and resolves bare imports -->
+<script>
+  import { enhanceButton } from "@chamfer/behavior";
+</script>
+
+<!-- Wrong: type="module" makes it inline, breaking bare imports -->
+<script type="module">
+  import { enhanceButton } from "@chamfer/behavior";
+</script>
+```
+
+According to Astro docs, adding `type="module"` or any attribute (except `src`) causes the script to be treated as `is:inline`, which prevents Vite from resolving workspace packages. The browser will then try to fetch `@chamfer/behavior` directly, resulting in: `Failed to resolve module specifier "@chamfer/behavior"`.
+
+### Required Vite configuration
+
+To make workspace packages work in client scripts, add them to `vite.ssr.noExternal` and `vite.optimizeDeps.include` in `astro.config.mjs`:
+
+```js
+vite: {
+  ssr: {
+    noExternal: ["@chamfer/behavior"]
+  },
+  optimizeDeps: {
+    include: ["@chamfer/behavior"]
+  },
+  resolve: {
+    alias: {
+      "@chamfer/behavior": path.resolve(__dirname, "../../packages/behavior/src/index.ts")
+    }
+  }
+}
+```
+
+This ensures Vite bundles the workspace package correctly for both SSR and client-side usage.
 
 ## Repository hygiene
 

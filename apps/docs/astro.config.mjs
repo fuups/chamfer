@@ -42,12 +42,19 @@ export default defineConfig({
     css: {
       postcss: path.resolve(__dirname, "postcss.config.cjs")
     },
+    ssr: {
+      noExternal: ["@chamfer/behavior"]
+    },
+    optimizeDeps: {
+      include: ["@chamfer/behavior"]
+    },
     resolve: {
       alias: {
         "@components": path.resolve(__dirname, "src/components"),
         "@layouts": path.resolve(__dirname, "src/layouts"),
         "@content": path.resolve(__dirname, "src/content"),
-        "@styles": path.resolve(__dirname, "src/styles")
+        "@styles": path.resolve(__dirname, "src/styles"),
+        "@chamfer/behavior": path.resolve(__dirname, "../../packages/behavior/src/index.ts")
       }
     }
   }

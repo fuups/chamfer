@@ -4,8 +4,11 @@
   --ch-button-border-color: transparent;
   --ch-button-hover-bg: var(--ch-button-bg);
   --ch-button-active-bg: var(--ch-button-bg);
-  --ch-button-ripple-color: color-mix(in oklab, currentColor 60%, transparent);
-  --ch-button-ripple-opacity: 0.4;
+  --ch-ripple-color: currentColor;
+  --ch-ripple-hover-opacity: 0.08;
+  --ch-ripple-pressed-opacity: 0.16;
+  --ch-ripple-duration: 240ms;
+  --ch-ripple-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
   position: relative;
   display: inline-flex;
@@ -36,105 +39,53 @@
   overflow: hidden;
 }
 
-@supports (color: color-mix(in oklab, black 10%, white)) {
+@supports (color: color-mix(in oklab, white 0%, black 0%)) {
   :is(.ch-button, [data-ch-component="button"]) {
-    --ch-button-ripple-color:
-      color-mix(in oklab, var(--ch-button-fg) 60%, transparent);
+    --ch-ripple-color: color-mix(in oklab, var(--ch-button-fg) 48%, transparent);
   }
 
   :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
-    --ch-button-ripple-color:
-      color-mix(in oklab, var(--ch-button-bg) 12%, white 88%);
-    --ch-button-ripple-opacity: 0.55;
+    --ch-ripple-color: color-mix(in oklab, var(--ch-button-bg) 18%, white 82%);
+    --ch-ripple-hover-opacity: 0.1;
+    --ch-ripple-pressed-opacity: 0.22;
   }
 
   .dark :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
-    --ch-button-ripple-color:
-      color-mix(in oklab, var(--ch-button-bg) 6%, white 94%);
+    --ch-ripple-color: color-mix(in oklab, var(--ch-button-bg) 12%, white 88%);
+    --ch-ripple-hover-opacity: 0.12;
+    --ch-ripple-pressed-opacity: 0.26;
   }
 
   :is(.ch-button, [data-ch-component="button"]).ch-button--soft,
   :is(.ch-button, [data-ch-component="button"]).ch-button--flat,
   :is(.ch-button, [data-ch-component="button"]).ch-button--outline,
   :is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
-    --ch-button-ripple-color:
-      color-mix(in oklab, var(--ch-button-fg) 68%, white 20%);
-    --ch-button-ripple-opacity: 0.38;
+    --ch-ripple-color: color-mix(in oklab, var(--ch-button-fg) 40%, transparent);
+    --ch-ripple-hover-opacity: 0.06;
+    --ch-ripple-pressed-opacity: 0.14;
   }
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
-  --ch-button-ripple-color: rgba(255, 255, 255, 0.55);
-  --ch-button-ripple-opacity: 0.55;
+  --ch-ripple-color: rgba(255, 255, 255, 0.32);
+  --ch-ripple-hover-opacity: 0.1;
+  --ch-ripple-pressed-opacity: 0.22;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--soft,
 :is(.ch-button, [data-ch-component="button"]).ch-button--flat,
 :is(.ch-button, [data-ch-component="button"]).ch-button--outline,
 :is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
-  --ch-button-ripple-opacity: 0.38;
+  --ch-ripple-hover-opacity: 0.06;
+  --ch-ripple-pressed-opacity: 0.14;
 }
 
-:is(.ch-button, [data-ch-component="button"])::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-:is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-  position: absolute;
-  border-radius: 9999px;
-  background-color: var(--ch-button-ripple-color);
-  background-image: radial-gradient(circle at center, var(--ch-button-ripple-color) 0%, transparent 70%);
-  transform: scale(0.01);
-  opacity: var(--ch-button-ripple-opacity, 0.38);
-  pointer-events: none;
-  mix-blend-mode: normal;
-  will-change: transform, opacity;
-  animation: ch-button-ripple-enter 320ms cubic-bezier(0.30, 0.87, 0.5, 1) forwards;
-  animation-fill-mode: forwards;
-}
-
-:is(.ch-button, [data-ch-component="button"]).ch-button--solid .ch-ripple {
-  mix-blend-mode: screen;
-}
-
-:is(.ch-button, [data-ch-component="button"]) .ch-ripple--exit {
-  animation: ch-button-ripple-exit 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-fill-mode: forwards;
-}
-
-:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger .ch-ripple {
-  opacity: 0.45;
+:is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger {
+  --ch-ripple-pressed-opacity: 0.24;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger :is(.ch-button__leading, .ch-button__trailing) {
   color: inherit;
-}
-
- :is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
-:is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
-:is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
-:is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
-  background-color: var(--ch-button-ripple-color);
-}
-
-@supports (color: color-mix(in oklab, white 0%, black 0%)) {
-  :is(.ch-button, [data-ch-component="button"]).ch-button--soft .ch-ripple,
-  :is(.ch-button, [data-ch-component="button"]).ch-button--flat .ch-ripple,
-  :is(.ch-button, [data-ch-component="button"]).ch-button--outline .ch-ripple,
-  :is(.ch-button, [data-ch-component="button"]).ch-button--ghost .ch-ripple {
-    background-color: color-mix(in oklab, var(--ch-button-fg) 55%, white 35%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-  }
 }
 
 @media (forced-colors: active) {
@@ -148,36 +99,10 @@
     forced-color-adjust: none;
   }
 
-  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-    display: none;
-  }
-
   :is(.ch-button, [data-ch-component="button"]):focus-visible {
     outline: 2px solid var(--ch-button-hcm-focus, Highlight);
     outline-offset: 2px;
     box-shadow: 0 0 0 3px var(--ch-button-hcm-focus, Highlight);
-  }
-}
-
-@keyframes ch-button-ripple-enter {
-  0% {
-    transform: scale(0.01);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.05);
-    opacity: var(--ch-button-ripple-opacity, 0.4);
-  }
-}
-
-@keyframes ch-button-ripple-exit {
-  0% {
-    transform: scale(1.05);
-    opacity: var(--ch-button-ripple-opacity, 0.4);
-  }
-  100% {
-    transform: scale(1.2);
-    opacity: 0;
   }
 }
 
@@ -497,4 +422,53 @@
 
 :is(a.ch-button, a[data-ch-component="button"]):visited {
   color: var(--ch-button-fg, var(--ch-text-primary));
+}
+
+/* Ripple effect for dynamic span elements */
+:is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.3;
+  pointer-events: none;
+  transform: scale(0);
+  animation: ch-ripple-enter 320ms cubic-bezier(0.3, 0.87, 0.5, 1) forwards;
+}
+
+:is(.ch-button, [data-ch-component="button"]) .ch-ripple--exit {
+  animation: ch-ripple-exit 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes ch-ripple-enter {
+  from {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+}
+
+@keyframes ch-ripple-exit {
+  from {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+    animation-duration: 1ms;
+  }
+}
+
+@media (forced-colors: active) {
+  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
+    display: none;
+  }
 }
