@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chamfer Playground · Spinner (HTML)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+    />
+    <link rel="stylesheet" href="/src/playground.css" />
+    <style>
+      .spinner-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+
+      .spinner-demo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        border: 1px solid var(--ch-border-ui-default);
+        border-radius: var(--ch-radius-sm);
+        background-color: var(--ch-surface-raised);
+      }
+
+      .spinner-demo figcaption {
+        font-size: var(--ch-text-sm);
+        font-weight: 600;
+        color: var(--ch-text-secondary);
+      }
+
+      .spinner-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-layout">
+        <div class="brand">
+          <h1><a href="../index.html">Chamfer Playground</a></h1>
+          <p>Component · Spinner</p>
+        </div>
+        <div class="header-controls">
+          <nav class="site-nav" aria-label="Playground navigation">
+            <a href="../index.html">Foundations</a>
+            <a href="./button.html">Button</a>
+            <a href="./spinner.html" aria-current="page">Spinner</a>
+          </nav>
+          <div class="theme-switch">
+            <label class="sr-only" for="theme-select">Theme</label>
+            <select id="theme-select" aria-label="Theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="system" selected>System</option>
+            </select>
+            <button
+              id="hcm-toggle"
+              class="control-button"
+              type="button"
+              aria-pressed="false"
+            >
+              High contrast off
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <p id="status" class="sr-only" aria-live="polite">Theme: system</p>
+
+    <main class="container">
+      <section>
+        <h2>Overview</h2>
+        <p>
+          Vanilla HTML rendering of the Chamfer spinner. The root element uses the
+          <code>ch-spinner</code> class and <code>data-ch-component="spinner"</code> attribute.
+        </p>
+        <p class="note">
+          Specification reference: <code>components/spinner.md</code>
+        </p>
+      </section>
+
+      <section>
+        <h2>Tone variants (md, default animation)</h2>
+        <div class="spinner-grid">
+          <figure class="spinner-demo">
+            <figcaption>Primary</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--primary"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo">
+            <figcaption>Secondary</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--secondary"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo">
+            <figcaption>Success</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--success"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo">
+            <figcaption>Warning</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--warning"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo">
+            <figcaption>Danger</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--danger"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo">
+            <figcaption>Info</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--info"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>Size variants (primary tone)</h2>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
+          <figure class="spinner-demo" style="width: auto;">
+            <figcaption>Small</figcaption>
+            <div
+              class="ch-spinner ch-spinner--sm ch-spinner--primary"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo" style="width: auto;">
+            <figcaption>Medium (default)</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--primary"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+
+          <figure class="spinner-demo" style="width: auto;">
+            <figcaption>Large</figcaption>
+            <div
+              class="ch-spinner ch-spinner--lg ch-spinner--primary"
+              data-ch-component="spinner"
+              aria-label="Loading"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>Paused state</h2>
+        <p>When <code>data-ch-paused="true"</code> is set, animation halts.</p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
+          <figure class="spinner-demo" style="width: auto;">
+            <figcaption>Paused</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--primary"
+              data-ch-component="spinner"
+              data-ch-paused="true"
+              aria-label="Loading paused"
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>With accessible label</h2>
+        <p>Use <code>aria-label</code> to provide context when no visible label is present.</p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
+          <figure class="spinner-demo" style="width: auto;">
+            <figcaption>Spinner with aria-label</figcaption>
+            <div
+              class="ch-spinner ch-spinner--md ch-spinner--primary"
+              data-ch-component="spinner"
+              aria-label="Uploading files..."
+              role="status"
+            >
+              <svg viewBox="0 0 24 24" class="ch-spinner__icon">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="62.83 62.83" />
+              </svg>
+            </div>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/init.js"></script>
+  </body>
+</html>

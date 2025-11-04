@@ -1,0 +1,32 @@
+---
+import DocsLayout from "@layouts/DocsLayout.astro";
+import ArticlePage from "@components/layout/ArticlePage.astro";
+import { getEntry } from "astro:content";
+
+const entry = await getEntry({ collection: "docs", slug: "/components/spinner" });
+
+const { Content, headings } = await entry.render();
+---
+
+<DocsLayout title={entry.data.title} description={entry.data.description}>
+  <ArticlePage
+    title={entry.data.title}
+    description={entry.data.description}
+    headings={headings}
+    showBreadcrumb={true}
+    breadcrumbSection="Components"
+    status={entry.data.status}
+    updated={entry.data.updated}
+  >
+    <Content />
+
+    <div slot="footer">
+      <h2>Next steps</h2>
+      <ul>
+        <li><a href="/foundations/tokens">Review token layering and theming overrides</a></li>
+        <li><a href="/foundations/accessibility">Validate against the accessibility baseline</a></li>
+        <li><a href="/components/button">Explore Button loading states</a></li>
+      </ul>
+    </div>
+  </ArticlePage>
+</DocsLayout>
