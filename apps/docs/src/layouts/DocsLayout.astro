@@ -25,6 +25,9 @@ const withBase = (path) => {
   if (/^(https?:)?\/\//.test(path) || path.startsWith("mailto:") || path.startsWith("#")) {
     return path;
   }
+  if (path.startsWith("/@")) {
+    return path;
+  }
   if (path === "/") {
     return basePath || "/";
   }
@@ -461,7 +464,7 @@ const navGroups = [
           gap: var(--ch-space-lg);
         }
       }
-    </style>
+      </style>
     <script type="module" src={withBase(initButtonsScript)}></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 # Chamfer UI - Session Progress
 
-_Last update: React wrapper typecheck resolved (behavior exports + forwarded ref alignment)._
+_Last update: Mobile drawer polish landed (z-index, hamburger spacing) and ripple initializer now loads through a `?url` bundled module with dev-safe base handling._
 
 ## Current Status
 
@@ -42,6 +42,7 @@ _Last update: React wrapper typecheck resolved (behavior exports + forwarded ref
 5. Decide whether to adopt a smaller interactive label size and update `--ch-text-sm` accordingly.
 6. Add automated smoke tests for the Tailwind preset/plugin (snapshot or fixture coverage).
 7. Expand docs coverage (guides, package reference, theming recipes) and integrate live playground snippets.
+8. Re-run GitHub Pages workflow (after local package builds) to validate base-path assets + ripple initializer bundle.
 
 ## Upcoming Questions
 
@@ -86,4 +87,5 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Added GitHub Pages workflow (`.github/workflows/deploy-docs.yml`) and configured Astro site metadata so the docs site can deploy automatically from `main`.
 - Updated docs build to respect base paths (GitHub Pages) and prefixed internal links/navigation so asset and page URLs resolve when hosted under `/chamfer`.
 - Polished mobile docs UI (hamburger icon, dedicated favicon, full-screen drawer, ripple script inlined) and ensured footer links/logo ignore visited colors.
-- Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and switched the ripple initializer to a resolved module import so builds work locally and on GitHub Pages.
+- Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and switched the ripple initializer to a bundled inline module import so builds work locally and on GitHub Pages.
+- Raised mobile drawer z-index above the sticky header, tightened hamburger/logo spacing, and routed the ripple helper through a `?url`-bundled module while guarding dev `/@` paths in `withBase`.

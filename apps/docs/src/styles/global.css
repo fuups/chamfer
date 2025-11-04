@@ -110,7 +110,7 @@ a {
     height: 100vh;
     transform: translateX(-100%);
     transition: transform 200ms var(--ch-ease-standard);
-    z-index: 60;
+    z-index: 140;
     gap: var(--ch-space-xl);
     padding: var(--ch-space-2xl);
     box-shadow: var(--ch-shadow-md);
@@ -162,7 +162,7 @@ a {
     visibility: hidden;
     pointer-events: none;
     transition: opacity 150ms var(--ch-ease-standard);
-    z-index: 50;
+    z-index: 130;
   }
 
   .drawer-open .sidebar-backdrop {
@@ -186,7 +186,7 @@ a {
     color: var(--ch-text-secondary);
     cursor: pointer;
     transition: all var(--ch-dur-fast);
-    z-index: 70;
+    z-index: 150;
   }
 
   .sidebar-close:hover {
@@ -208,7 +208,7 @@ a {
     background: var(--ch-surface-raised);
     position: sticky;
     top: 0;
-    z-index: 40;
+    z-index: 70;
     box-shadow: var(--ch-shadow-sm);
     min-height: var(--docs-mobile-header-height);
   }
@@ -221,7 +221,7 @@ a {
     text-decoration: none;
     color: var(--ch-text-primary);
     transition: opacity var(--ch-dur-fast) var(--ch-ease-standard);
-    margin-left: var(--ch-space-sm);
+    margin-left: 0;
   }
 
   .mobile-brand:visited,
