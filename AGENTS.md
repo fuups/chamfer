@@ -12,7 +12,7 @@ Deliver a framework-agnostic UI library (Chamfer UI) composed of design tokens, 
 ## Operating Rhythm
 
 1. Capture intent in `SESSION_PROGRESS.md` before large edits; list active todos and decisions there.
-2. Prefer incremental PR-sized changes; document rationale in commit messages referencing sections of `DESIGN_SYSTEM.md`.
+2. Prefer incremental PR-sized changes; document rationale in commit messages referencing sections of [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md) and keep component copy aligned with [`COMPONENT_DOCUMENTATION_GUIDELINES.md`](COMPONENT_DOCUMENTATION_GUIDELINES.md). When building a new component end-to-end, follow [`COMPONENT_CREATION_GUIDE.md`](COMPONENT_CREATION_GUIDE.md).
 3. Keep shared configs in `configs/` and reference them from packages via relative paths to avoid duplication.
 4. Record new conventions or cross-cutting decisions here (append dated entries).
 
