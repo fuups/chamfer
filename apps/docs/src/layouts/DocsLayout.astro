@@ -93,6 +93,46 @@ const navGroups = [
       href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900"
     />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <script is:inline>
+      (function () {
+        const root = document.documentElement;
+        if (!root) {
+          return;
+        }
+
+        const STORAGE_KEYS = {
+          theme: "ch-theme",
+          hcm: "ch-hcm"
+        };
+
+        const safeGet = (key) => {
+          try {
+            return localStorage.getItem(key);
+          } catch (error) {
+            return null;
+          }
+        };
+
+        const storedTheme = safeGet(STORAGE_KEYS.theme);
+        const themeValue = storedTheme || "system";
+
+        const prefersDark =
+          typeof window !== "undefined" && typeof window.matchMedia === "function"
+            ? window.matchMedia("(prefers-color-scheme: dark)").matches
+            : false;
+
+        const resolvedTheme = themeValue === "system" ? (prefersDark ? "dark" : "light") : themeValue;
+
+        root.setAttribute("data-theme", themeValue);
+        root.classList.toggle("dark", resolvedTheme === "dark");
+        root.style.setProperty("color-scheme", resolvedTheme);
+
+        const storedHcm = safeGet(STORAGE_KEYS.hcm);
+        if (storedHcm === "true") {
+          root.classList.add("hcm");
+        }
+      })();
+    </script>
     <slot name="head" />
   </head>
   <body class="docs-root">
@@ -197,6 +237,27 @@ const navGroups = [
       const mobileToggle = document.getElementById("mobile-nav-toggle");
       const mobileClose = document.getElementById("mobile-nav-close");
       const sidebarBackdrop = document.getElementById("sidebar-backdrop");
+      const STORAGE_KEYS = {
+        theme: "ch-theme",
+        hcm: "ch-hcm"
+      };
+
+      const safeGet = key => {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      };
+
+      const safeSet = (key, value) => {
+        try {
+          localStorage.setItem(key, value);
+        } catch {
+          /* ignore storage errors */
+        }
+      };
+
       const prefersDark =
         typeof window !== "undefined" && "matchMedia" in window
           ? window.matchMedia("(prefers-color-scheme: dark)")
@@ -214,6 +275,7 @@ const navGroups = [
         root.setAttribute("data-theme", value);
         root.classList.toggle("dark", resolved === "dark");
         root.style.setProperty("color-scheme", resolved);
+        safeSet(STORAGE_KEYS.theme, value);
       }
 
       function updateContrast(state) {
@@ -222,9 +284,16 @@ const navGroups = [
           hcmToggle.setAttribute("aria-pressed", String(state));
           hcmToggle.textContent = state ? "High contrast on" : "High contrast off";
         }
+        safeSet(STORAGE_KEYS.hcm, state ? "true" : "false");
       }
 
+      const storedTheme = safeGet(STORAGE_KEYS.theme);
+      const storedHcm = safeGet(STORAGE_KEYS.hcm) === "true";
+
       if (themeSelect instanceof HTMLSelectElement) {
+        if (storedTheme && ["light", "dark", "system"].includes(storedTheme)) {
+          themeSelect.value = storedTheme;
+        }
         themeSelect.addEventListener("change", event => {
           const value = event.target.value;
           updateTheme(value);
@@ -241,7 +310,10 @@ const navGroups = [
             prefersDark.addListener(listener);
           }
         }
-        updateTheme(themeSelect.value);
+        updateTheme(themeSelect.value || root.getAttribute("data-theme") || "system");
+      } else {
+        const fallbackTheme = storedTheme || root.getAttribute("data-theme") || "system";
+        updateTheme(fallbackTheme);
       }
 
       if (hcmToggle instanceof HTMLButtonElement) {
@@ -249,7 +321,9 @@ const navGroups = [
           const next = !root.classList.contains("hcm");
           updateContrast(next);
         });
-        updateContrast(false);
+        updateContrast(storedHcm);
+      } else if (storedHcm) {
+        updateContrast(true);
       }
 
       function setSidebar(state) {
