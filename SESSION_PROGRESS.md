@@ -1,6 +1,6 @@
 # Chamfer UI - Session Progress
 
-_Last update: Spinner component implemented with spec, core CSS, and build integration; ready for playground and docs integration._
+_Last update: Docs ripple helper now bundles as a hashed asset (inline limit disabled) with behavior logic inlined for GitHub Pages compatibility; mobile drawer polish already landed._
 
 ## Current Status
 
@@ -57,12 +57,6 @@ _Last update: Spinner component implemented with spec, core CSS, and build integ
 
 ## Recently Completed
 
-- **Spinner component implementation (2025-11-05):**
-  - Authored `components/spinner.md` specification covering anatomy, variants (sizes), accessibility (reduced motion, screen reader support), and token usage.
-  - Implemented `packages/core/src/spinner.css` with three size variants (sm, md, lg), SVG-based circular indicator, rotation animation, and forced-colors support.
-  - Added spinner stylesheet import to `packages/core/src/base.css` for inclusion in the core bundle.
-  - Verified build passes with `pnpm --filter @chamfer/core build`.
-  - Component follows design system conventions: semantic tokens only, currentColor inheritance, prefers-reduced-motion fallback (pulse animation), and high-contrast mode compatibility.
 - Initial repo skeleton established (this session).
 - Tokens/core/playground updated to design system v1.1.0 (structural palette refactor, inverse/on tokens, focus parity).
 - Token generation pipeline implemented (awaiting dependency install to execute).
