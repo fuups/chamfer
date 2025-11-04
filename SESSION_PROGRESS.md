@@ -91,3 +91,6 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and locked the ripple initializer to a standalone hashed module (via `?url` + `assetsInlineLimit: 0`) so local/dev builds and GitHub Pages share the same entry point.
 - Raised mobile drawer z-index above the sticky header, tightened hamburger/logo spacing, and updated `withBase` to skip scheme-prefixed URLs while preventing duplicate base prefixes (handles `/chamfer/_astro/*` correctly).
 - Inlined the current `enhanceButton` ripple logic inside the docs helper so GitHub Pages can load it without relying on workspace module resolution.
+- Added pre-paint theme script + localStorage persistence to stop light/dark flashes between page transitions in the docs layout (`data-theme`, `color-scheme`, and HCM stored under `ch-theme` / `ch-hcm`).
+- Restored true preformatted styling for code samples and made the PreviewCode panels horizontally scrollable with `min-width: 100%` so long snippets stay responsive without awkward wrapping.
+- Simplified code previews: removed the wrap toggle and default to wrapping on mobile viewports while keeping horizontal scroll on larger screens.

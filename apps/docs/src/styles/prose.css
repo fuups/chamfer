@@ -143,10 +143,11 @@
   background: var(--ch-surface-raised);
   border: var(--ch-border-width-sm) solid var(--ch-elevation-border);
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
-
-
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .prose pre code {

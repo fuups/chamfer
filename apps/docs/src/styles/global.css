@@ -87,6 +87,8 @@ a {
     grid-template-columns: 1fr;
     position: relative;
     padding-top: var(--docs-mobile-header-height);
+    padding-left: var(--ch-space-sm);
+    padding-right: var(--ch-space-sm);
   }
 }
 
@@ -130,7 +132,7 @@ a {
 
 @media (max-width: 960px) {
   .docs-main {
-    padding: var(--ch-space-xl);
+    padding: var(--ch-space-sm);
   }
 
   .drawer-open {

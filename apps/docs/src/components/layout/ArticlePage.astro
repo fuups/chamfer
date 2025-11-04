@@ -187,9 +187,12 @@ const withBase = (path) => {
   @media (max-width: 1024px) {
     .content-grid {
       flex-direction: column;
+      padding: 0 var(--ch-space-sm);
     }
 
     .toc {
+      flex: 0 0 auto;
+      min-width: 0;
       width: 100%;
       position: static;
       margin-top: var(--ch-space-xl);

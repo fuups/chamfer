@@ -70,14 +70,16 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
       <div class="preview-code__panel" data-panel={panelId} role="tabpanel">
         <div class="preview-code__panel-toolbar">
           <span class="preview-code__panel-title">{source.label}</span>
-          <button
-            type="button"
-            class="preview-code__copy"
-            data-copy={index}
-            aria-label={`${copyLabel} ${source.label}`}
-          >
-            {copyLabel}
-          </button>
+          <div class="preview-code__actions">
+            <button
+              type="button"
+              class="preview-code__copy"
+              data-copy={index}
+              aria-label={`${copyLabel} ${source.label}`}
+            >
+              {copyLabel}
+            </button>
+          </div>
         </div>
         <pre class="preview-code__pre">
           <code class={`language-${source.language}`} data-code={index}>
@@ -144,6 +146,8 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     padding: var(--ch-space-md, 1rem);
     gap: var(--ch-space-sm);
     flex-direction: column;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .preview-code__panel.is-active {
@@ -169,6 +173,12 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     letter-spacing: 0.06em;
   }
 
+  .preview-code__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ch-space-xs, 0.5rem);
+  }
+
   .preview-code__copy {
     font: inherit;
     font-size: var(--ch-text-xs, 0.75rem);
@@ -192,7 +202,22 @@ const id = `preview-code-${Math.random().toString(36).slice(2, 10)}`;
     background: var(--ch-surface-raised, #0f172a);
     color: #f8fafc;
     overflow-x: auto;
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
+    white-space: pre;
+  }
+
+  @media (max-width: 768px) {
+    .preview-code__pre {
+      width: 100%;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
+  .preview-code[data-wrap="true"] {
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 </style>
 
