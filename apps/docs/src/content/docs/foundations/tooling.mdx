@@ -1,11 +1,17 @@
 ---
 title: Tooling & Workflow
-description: Development workflow, build tooling, and repository conventions.
+description: Development workflow, build tooling, and repository conventions for Chamfer UI.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Chamfer UI is managed as a pnpm workspace so packages share configs while shipping independently. This page captures the essentials for local development and CI.
+Chamfer UI is managed as a pnpm workspace so packages share configs while shipping independently. Use this page as a cheat sheet for local development, CI, and repository conventions.
+
+## Overview
+
+- **pnpm workspaces** keep dependencies in sync and enable per-package commands via filters.
+- **Shared configs** live in `configs/` and are imported by every package to avoid drift.
+- **Build pipeline** runs tokens → core → behavior → docs/playgrounds to keep artifacts consistent.
 
 ## Workspace commands
 
@@ -23,11 +29,11 @@ All linting, formatting, and PostCSS configs live under `configs/` so packages c
 
 ## Build pipeline
 
-1. **Tokens** – generated via TypeScript scripts; outputs CSS/JSON/TS artifacts.
-2. **Core CSS** – composes semantic token CSS and component sources into `/dist/css`.
-3. **Behavior** – TypeScript compiled to ESM/CJS with declaration files.
-4. **Framework wrappers** – (future) wrap core CSS + behaviors and emit type-safe APIs.
-5. **Docs/Playgrounds** – import built artifacts to keep demos in sync with packages.
+1. **Tokens** - generated via TypeScript scripts; outputs CSS/JSON/TS artifacts.
+2. **Core CSS** - composes semantic token CSS and component sources into `/dist/css`.
+3. **Behavior** - TypeScript compiled to ESM/CJS with declaration files.
+4. **Framework wrappers** - (future) wrap core CSS + behaviors and emit type-safe APIs.
+5. **Docs/Playgrounds** - import built artifacts to keep demos in sync with packages.
 
 CI will run lint/tests/build per package before release. SemVer tagging is planned per package once automation is configured.
 
@@ -40,3 +46,9 @@ Vanilla JS helpers live in `@chamfer/behavior`. They are optional but recommende
 - Keep component specs (`components/*.md`) updated when behavior or tokens change.
 - Update `SESSION_PROGRESS.md` when large tasks land so long-running efforts remain traceable.
 - Document cross-cutting decisions in `AGENTS.md` to guide future contributors and automation.
+
+## Next steps
+
+1. Run through the [Quick Start](/foundations/quick-start) to confirm your local environment is configured.
+2. Read the [Accessibility baseline](/foundations/accessibility) so QA expectations are clear before shipping components.
+3. Review the [Design Principles](/foundations/design-principles) whenever you introduce new tokens, helpers, or docs.

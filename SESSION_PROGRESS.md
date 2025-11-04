@@ -1,4 +1,4 @@
-# Chamfer UI – Session Progress
+# Chamfer UI - Session Progress
 
 _Last update: React wrapper typecheck resolved (behavior exports + forwarded ref alignment)._
 
@@ -82,3 +82,5 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Captured the heading depth template in `COMPONENT_DOCUMENTATION_GUIDELINES.md` and restructured the Button page to follow the new H2/H3 hierarchy for a cleaner ToC.
 - Documented `enhanceButton` usage/options and parked the Examples section behind a “coming soon” placeholder until multi-component UI blocks are ready.
 - Upgraded docs preview tooling (`PreviewCode`) for multi-tab HTML/Style/Script snippets, refactored button demos to supply structured sources, and removed inline styling/loose code blocks in the Button page.
+- Refreshed foundation docs (Introduction, Design Principles, Tokens, Quick Start, Typography, Tooling, Accessibility) with consistent structure, updated guidance, and next-step pointers.
+- Added GitHub Pages workflow (`.github/workflows/deploy-docs.yml`) and configured Astro site metadata so the docs site can deploy automatically from `main`.

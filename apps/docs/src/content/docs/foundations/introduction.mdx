@@ -1,11 +1,17 @@
 ---
 title: Introduction
-description: Overview of Chamfer UI’s architecture, packages, and documentation structure.
+description: Orientation to Chamfer UI’s architecture, packages, and documentation structure.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Chamfer UI is a framework-agnostic component system focused on accessibility, semantic theming, and predictable design tokens. The monorepo is organised into pnpm workspaces so you can opt into just the layers you need-tokens, core CSS, progressive enhancement helpers, and framework wrappers.
+Chamfer UI is a framework-agnostic component system designed around accessibility, semantic theming, and predictable design tokens. The pnpm monorepo lets you opt into only the layers you need-tokens, core CSS, progressive enhancement helpers, or framework wrappers-without duplicating configuration.
+
+## Overview
+
+- **Philosophy:** ship accessible HTML first, layer on progressive enhancement, and keep design tokens semantic so rebranding stays predictable.
+- **Distribution:** each layer publishes under the `@chamfer/*` namespace; you can install a single package or the full stack.
+- **Documentation:** foundations provide the “why”, component pages document the contract, and upcoming guides capture integration recipes.
 
 ## Package landscape
 
@@ -17,10 +23,23 @@ Chamfer UI is a framework-agnostic component system focused on accessibility, se
 | `@chamfer/{react,vue,angular}` | Framework adapters that wrap the core CSS + behaviors. |
 | `@chamfer/tailwind` | Tailwind preset + CSS utilities mapped to Chamfer tokens. |
 
+## Repository layout
+
+- `packages/` - publishable workspaces (tokens, core, behavior, framework adapters, Tailwind utilities).
+- `apps/docs` - Astro documentation site consuming the published artifacts.
+- `apps/playground/*` - HTML and framework playgrounds for local QA.
+- `configs/` - shared ESLint, Stylelint, Prettier, PostCSS, and TS configs referenced by every package.
+
 ## Documentation structure
 
-- **Foundations** – principles, quick-start, tokens & theming, tooling.
-- **Components** – per-component specs with HTML baselines, behavior notes, and framework usage.
-- **Guides** (planned) – accessibility checklist, theming recipes, integration patterns.
+- **Foundations** - principles, quick start, tokens & theming, typography, tooling, accessibility.
+- **Components** - HTML-first specs covering semantics, variants, states, behaviors, and theming hooks.
+- **Guides** (planned) - deep dives into topics like theming recipes, framework integration, and accessibility audits.
 
-Each component page links back to the relevant foundation topics so you can understand both the “how” and the “why” behind the implementation.
+Every component page links back to the relevant foundation topics, so you can move from high-level principles to implementation details without losing context.
+
+## Next steps
+
+1. Walk through the [Quick Start](/foundations/quick-start) to install packages and render your first button.
+2. Review the [Design Principles](/foundations/design-principles) and [Tokens & Theming](/foundations/tokens) guides to understand how styling decisions flow.
+3. Explore the [Button component](/components/button) for a fully documented example of Chamfer’s contract.

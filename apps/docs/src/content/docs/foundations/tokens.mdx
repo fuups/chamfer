@@ -1,11 +1,17 @@
 ---
 title: Tokens & Theming
-description: How Chamfer tokens are generated, layered, and customized.
+description: How Chamfer tokens are generated, layered, exported, and themed.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Chamfer’s design tokens flow through three layers so theming stays predictable and overrides stay scoped.
+Chamfer’s design tokens flow through three layers so theming stays predictable and overrides remain scoped. This page explains how the layers relate, which artifacts are published, and how to customize them safely.
+
+## Overview
+
+- **Primitives → semantic → component** layers keep design intent separate from implementation details.
+- **Multiple outputs** (CSS, JSON, TypeScript) support both runtime theming and build-time tooling.
+- **Overrides** happen at the semantic layer, ensuring components, Tailwind utilities, and behaviors stay in sync.
 
 ## Layering model
 
@@ -21,9 +27,9 @@ Components only reference semantic/component tokens, never primitives, so a them
 
 `@chamfer/tokens` emits:
 
-- `dist/css/*.css` – primitives and semantic tokens as CSS custom properties.
-- `dist/json/*.json` – machine-readable token maps.
-- `dist/index.js` / `.d.ts` – typed exports for tooling.
+- `dist/css/*.css` - primitives and semantic tokens as CSS custom properties.
+- `dist/json/*.json` - machine-readable token maps.
+- `dist/index.js` / `.d.ts` - typed exports for tooling.
 
 Import CSS directly for runtime theming:
 
@@ -60,3 +66,9 @@ Components reference density-aware tokens like `--ch-button-padding-inline-md`, 
 ## Tailwind mapping
 
 The Tailwind preset consumes the same semantic tokens, exposing utilities like `bg-ch-action-primary`, `px-ch-button-inline-md`, and `rounded-ch-button`. Overriding tokens automatically updates both the vanilla CSS and the Tailwind utilities, keeping the system in sync regardless of styling approach.
+
+## Next steps
+
+1. Review the [Typography](/foundations/typography) guide for font and line-height tokens.
+2. Explore the [Button component](/components/button) to see semantic tokens applied in practice.
+3. Configure [Tailwind integration](/foundations/quick-start#_5-tailwind-integration-optional) if your project relies on utility classes.

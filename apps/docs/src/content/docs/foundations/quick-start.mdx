@@ -1,15 +1,26 @@
 ---
 title: Quick Start
-description: Install the core packages, run the playground, and render your first Chamfer component.
+description: Install the core packages, import the CSS, and render your first Chamfer component in minutes.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-The quickest way to see Chamfer UI in action is to install the core CSS bundle, spin up the HTML playground, and render the button component. The steps below assume you’re using pnpm, but the commands translate to npm/yarn.
+import DemoBlock from "@components/demos/DemoBlock.astro";
+import ButtonBaselineExample, { demo as buttonBaselineExample } from "@components/demos/button/ButtonBaselineExample.astro";
 
-## 1. Install packages
+Chamfer ships as framework-agnostic CSS plus optional enhancements. Follow the steps below to install the packages, pull in the baseline styles, and render your first button.
 
-```
+## Overview
+
+### Requirements
+
+- Node.js 18.18+ (20.x recommended)
+- A package manager (`pnpm`, `npm`, or `yarn`)
+- A bundler that understands ESM imports (Vite, Next.js, Remix, Astro, etc.)
+
+## 1. Install the packages
+
+```bash
 # pnpm
 pnpm add @chamfer/core @chamfer/behavior
 
@@ -20,25 +31,29 @@ npm install @chamfer/core @chamfer/behavior
 yarn add @chamfer/core @chamfer/behavior
 ```
 
-Need Tailwind utilities? Install `@chamfer/tailwind` alongside the core packages.
+> Need Tailwind utilities? Add `@chamfer/tailwind` to the same install command.
 
-## 2. Import baseline CSS
+## 2. Import the baseline CSS
+
+### HTML entry point
 
 ```html
 <!-- app.html -->
 <link rel="stylesheet" href="/node_modules/@chamfer/core/dist/css/index.css" />
 ```
 
-When bundling with Vite/Next/etc. you can import the module path directly:
+### Bundled setup
 
 ```ts
 // main.ts
 import "@chamfer/core/css";
 ```
 
-_Node 18.18+ or 20.9+ is recommended. Vite/Next/Remix all handle the CSS import without extra configuration._
+These imports expose the generated token layers, resets, and component styles. No additional PostCSS configuration is required.
 
-## 3. Render a button
+## 3. Render your first button
+
+<DemoBlock demo={buttonBaselineExample} component={ButtonBaselineExample} />
 
 ```html
 <button class="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
@@ -46,17 +61,21 @@ _Node 18.18+ or 20.9+ is recommended. Vite/Next/Remix all handle the CSS import 
 </button>
 ```
 
-To enable ripple behavior, call the helper from `@chamfer/behavior`:
+- `data-ch-component="button"` provides a stable hook for styling and tests.
+- Size, emphasis, and tone are controlled through BEM-style modifiers (for example `ch-button--md`, `ch-button--solid`, `ch-button--primary`).
+
+## 4. Add ripple behavior (optional)
 
 ```ts
 import { enhanceButton } from "@chamfer/behavior";
 
 document.querySelectorAll('[data-ch-component="button"]').forEach(element => {
-  enhanceButton(element as HTMLButtonElement);
+  const enhancement = enhanceButton(element as HTMLButtonElement);
+  element.addEventListener("disconnected", enhancement.destroy, { once: true });
 });
 ```
 
-**React example**
+React example:
 
 ```tsx
 import "@chamfer/core/css";
@@ -73,14 +92,18 @@ export function SaveButton() {
   }, []);
 
   return (
-    <button ref={ref} className="ch-button ch-button--md ch-button--solid ch-button--primary" data-ch-component="button">
+    <button
+      ref={ref}
+      className="ch-button ch-button--md ch-button--solid ch-button--primary"
+      data-ch-component="button"
+    >
       <span className="ch-button__label">Save changes</span>
     </button>
   );
 }
 ```
 
-## 4. Tailwind integration (optional)
+## 5. Tailwind integration (optional)
 
 ```ts
 // tailwind.config.ts
@@ -91,14 +114,18 @@ export default {
 };
 ```
 
-Now you can use utilities such as `bg-ch-action-primary`, `px-ch-button-inline-md`, and `focus-ring-ch` that stay in sync with the underlying tokens.
+Chamfer’s preset unlocks utilities such as `bg-ch-action-primary`, `px-ch-button-inline-md`, and `focus-ring-ch` that stay synchronized with design tokens.
 
-## 5. Explore the playground
-
-The repo ships an HTML playground showcasing tokens and components. From the root of the monorepo:
+## 6. Explore the playground
 
 ```bash
 pnpm --filter @chamfer/playground-html dev
 ```
 
-This launches a Vite server with live reload. Rebuild tokens/core (`pnpm --filter @chamfer/tokens build` then `pnpm --filter @chamfer/core build`) before starting if you’ve edited token sources.
+The HTML playground provides live previews of tokens, surfaces, and components. If you edit token sources, rebuild before launching: `pnpm --filter @chamfer/tokens build` followed by `pnpm --filter @chamfer/core build`.
+
+## 7. Next steps
+
+- Review the [Button documentation](/components/button) for contract details.
+- Browse the [Tokens & Theming guide](/foundations/tokens) to customize colors, typography, and spacing.
+- Add automated checks by following the [Accessibility baseline](/foundations/accessibility).

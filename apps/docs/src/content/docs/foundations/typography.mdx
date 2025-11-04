@@ -1,11 +1,17 @@
 ---
 title: Typography
-description: Font families, size scale, and line-height tokens used across Chamfer UI.
+description: Font families, size scale, weight, and line-height tokens used across Chamfer UI.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Chamfer ships a semantic typography scale built on design tokens so components can remain consistent across themes and frameworks. Override these tokens at the semantic layer to adapt font families, sizes, or line heights for your brand.
+Chamfer ships a semantic typography scale built on design tokens so components stay consistent across themes and frameworks. Override semantic tokens-not hard-coded values-to keep Tailwind utilities, core CSS, and docs aligned.
+
+## Overview
+
+- Sans and mono families default to the Geist stack with system fallbacks.
+- Font sizes are expressed as tokens (`--ch-text-*`) so density scaling can adjust them globally.
+- Weight and leading tokens ensure components share consistent typographic rhythm.
 
 ## Font families
 
@@ -30,24 +36,22 @@ pre, code {
 
 | Token | CSS value | Example |
 | --- | --- | --- |
-| `--ch-text-xs` | `0.75rem` | <span style="font-size: var(--ch-text-xs);">Typography token sample</span> |
-| `--ch-text-sm` | `0.875rem` | <span style="font-size: var(--ch-text-sm);">Typography token sample</span> |
-| `--ch-text-md` | `1rem` | <span style="font-size: var(--ch-text-md);">Typography token sample</span> |
-| `--ch-text-lg` | `1.25rem` | <span style="font-size: var(--ch-text-lg);">Typography token sample</span> |
-| `--ch-text-xl` | `1.5rem` | <span style="font-size: var(--ch-text-xl);">Typography token sample</span> |
+| `--ch-text-xs` | `0.75rem` | <span style="font-size: var(--ch-text-xs);">Sample text</span> |
+| `--ch-text-sm` | `0.875rem` | <span style="font-size: var(--ch-text-sm);">Sample text</span> |
+| `--ch-text-md` | `1rem` | <span style="font-size: var(--ch-text-md);">Sample text</span> |
+| `--ch-text-lg` | `1.25rem` | <span style="font-size: var(--ch-text-lg);">Sample text</span> |
+| `--ch-text-xl` | `1.5rem` | <span style="font-size: var(--ch-text-xl);">Sample text</span> |
 
 Use the size tokens rather than raw `rem` values so density scaling and overrides propagate everywhere.
 
 ## Font weights
 
-| Token | Value |
-| --- | --- |
-| `--ch-weight-normal` | `400` |
-| `--ch-weight-medium` | `500` |
-| `--ch-weight-semibold` | `600` |
-| `--ch-weight-bold` | `700` |
-
-Example:
+| Token | Value | Example |
+| --- | --- | --- |
+| `--ch-weight-normal` | `400` | <span style="font-weight: var(--ch-weight-normal);">Sample text</span> |
+| `--ch-weight-medium` | `500` | <span style="font-weight: var(--ch-weight-medium);">Sample text</span> |
+| `--ch-weight-semibold` | `600` | <span style="font-weight: var(--ch-weight-semibold);">Sample text</span> |
+| `--ch-weight-bold` | `700` | <span style="font-weight: var(--ch-weight-bold);">Sample text</span> |
 
 ```css
 .ch-button__label {
@@ -94,3 +98,9 @@ Override tokens at the semantic layer to align with your brand typography:
 ```
 
 Because components reference these tokens, overrides automatically cascade through core CSS, behavior helpers, and the Tailwind preset.
+
+## Next steps
+
+1. Review the [Tokens & Theming](/foundations/tokens) guide for the broader semantic layering model.
+2. Verify typography changes in the HTML playground using `pnpm --filter @chamfer/playground-html dev`.
+3. Update component docs (for example [Button](/components/button)) if typography changes affect spacing or state presentation.

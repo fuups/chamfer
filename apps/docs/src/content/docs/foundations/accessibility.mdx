@@ -2,10 +2,17 @@
 title: Accessibility Baseline
 description: Expectations and checklist for accessible Chamfer UI components.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Accessibility is non-negotiable for every Chamfer component. This baseline outlines the standards we apply before a component ships.
+Accessibility is non-negotiable for every Chamfer component. Use this baseline as a preflight checklist before shipping new work.
+
+## Overview
+
+- **Contrast:** tokens target WCAG 2.1 AA for text and UI indicators across light/dark/high-contrast themes.
+- **Focus:** shared focus tokens guarantee visible outlines and consistent ring styling.
+- **Semantics:** HTML defaults remain accessible; alternate hosts require documented `role`/`aria-*` attributes.
+- **Motion:** progressive enhancements respect user preferences and can be disabled per instance.
 
 ## Contrast & theming
 
@@ -47,4 +54,10 @@ Accessibility is non-negotiable for every Chamfer component. This baseline outli
 | Icon-only controls have accessible names | Required |
 | High-contrast mode (HCM) snapshot verified | Required |
 
-As new components ship, supplement this baseline with component-specific guidance (e.g., form error messaging, ARIA patterns) so teams can validate quickly.
+## Next steps
+
+1. Follow the [Quick Start](/foundations/quick-start) guide to confirm ripple helpers and focus styles are wired correctly in your stack.
+2. Reference component-specific docs (for example [Button](/components/button)) for detailed keyboard tables and state notes.
+3. Capture manual/automated test results in your PR description so reviewers can trace accessibility validation.
+
+As new components ship, supplement this baseline with component-specific guidance (for example form error messaging or ARIA patterns) so teams can validate quickly.

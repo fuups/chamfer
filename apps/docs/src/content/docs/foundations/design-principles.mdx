@@ -1,24 +1,49 @@
 ---
 title: Design Principles
-description: Core principles guiding Chamfer UI’s components and tokens.
+description: Core principles guiding Chamfer UI’s tokens, components, and documentation.
 status: draft
-updated: "2025-01-05"
+updated: "2025-01-07"
 ---
 
-Chamfer UI is grounded in four principles that guide every token, component, and documentation decision.
+Chamfer UI is grounded in four principles that shape every token, component, and documentation decision. Use them to evaluate new work and to keep future contributions aligned with the system.
 
-## Clarity
+## Overview
 
-Interfaces must be legible, discoverable, and predictable. Tokens follow semantic naming so designers and engineers can discuss “primary action soft foreground” instead of hard-coded hex values. Components ship with accessible defaults (contrast, focus outlines, high-contrast fallbacks) so UIs remain understandable across light/dark/HCM contexts.
+- **Clarity** - interfaces should be legible, discoverable, and predictable.
+- **Consistency** - tokens and components share contracts so theming remains stable.
+- **Flexibility** - adapt to new contexts without forking or rewriting.
+- **Accessibility** - inclusive defaults are the baseline, not an optional extra.
 
-## Consistency
+## Principles
 
-The token pipeline enforces consistency by mapping primitives → semantic → component layers. Components never reference primitives directly; they rely on semantic aliases, ensuring theme overrides flow through the same contract. Framework adapters render identical markup and attribute patterns so behavior stays uniform across React/Vue/Angular.
+### Clarity
 
-## Flexibility
+- Semantic token names (for example `--ch-action-primary-soft-fg`) communicate meaning instead of hex codes.
+- Component docs ship with HTML baselines, callouts, and tables so engineers know exactly which attributes and modifiers to use.
+- Contrast, focus outlines, and high-contrast fallbacks are baked into the core CSS.
 
-Chamfer exposes density scaling, forced-color overrides, and Tailwind utilities so teams can adapt components to varying contexts without forking the CSS. The vanilla HTML playground and framework wrappers both pull from the same tokens and behaviors, encouraging reuse instead of custom one-offs.
+### Consistency
 
-## Accessibility
+- Tokens flow primitives → semantic → component, preventing ad-hoc overrides.
+- Components never reference primitives directly; they rely on semantic aliases so brand updates propagate automatically.
+- Framework adapters output identical markup/attributes, ensuring React/Vue/Angular stay in sync with the vanilla contract.
 
-Every component defaults to accessible structures: data attributes for hooks, `aria-*` guidance, ripple checks for `prefers-reduced-motion`, and high-contrast tokens. Documentation highlights the minimum accessibility checklist per component so teams can verify every state (focus, hover, disabled, loading) before shipping.
+### Flexibility
+
+- Density scaling, Tailwind utilities, and token overrides make it easy to adapt components to dashboards, marketing sites, or native wrappers.
+- Progressive enhancement helpers are optional (the HTML works standalone), so teams can opt in to behavior only where needed.
+- Playgrounds and docs reuse the same artifacts as production builds, reducing drift.
+
+### Accessibility
+
+- Components expose semantic HTML and document required `aria-*` attributes for alternate hosts (like anchors posing as buttons).
+- Behaviors respect user preferences (`prefers-reduced-motion`, forced-colors) and ship with defaults that meet WCAG 2.1 AA contrast.
+- Every doc page includes accessibility checklists so states (focus, hover, loading, disabled) are reviewed before release.
+
+## Applying the principles
+
+1. **Plan**: start with tokens and anatomy-does the component expose a clear contract?
+2. **Build**: rely on semantic tokens, reusable helpers, and the progressive enhancement layer.
+3. **Document**: capture usage, states, and accessibility notes so adopters can succeed without reading the source.
+
+Reference these principles whenever you add a new component or adjust an existing one; they act as the shared rubric for code review, docs review, and design alignment.
