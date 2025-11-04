@@ -43,6 +43,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build tokens
+        run: pnpm --filter @chamfer/tokens build
+
+      - name: Build core CSS
+        run: pnpm --filter @chamfer/core build
+
+      - name: Build behavior helpers
+        run: pnpm --filter @chamfer/behavior build
+
       - name: Build docs
         run: pnpm --filter @chamfer/docs build
 
