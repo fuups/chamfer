@@ -28,8 +28,14 @@ const withBase = (path) => {
   if (path.startsWith("/@")) {
     return path;
   }
+  if (basePath && path.startsWith(`${basePath}/`)) {
+    return path;
+  }
   if (path === "/") {
     return basePath || "/";
+  }
+  if (!path.startsWith("/")) {
+    return `${basePath}/${path}`;
   }
   return `${basePath}${path}`;
 };
