@@ -40,14 +40,15 @@ _Last update: Docs ripple helper now bundles as a hashed asset (inline limit dis
 
 ## Active Todos
 
-1. Smoke-test the React playground locally (`pnpm --filter @chamfer/playground-react dev`) to confirm theme toggles still behave; repeat for the other playgrounds once dependencies are installed.
-2. Add SEO integrations (sitemap, structured data) + global navigation polish in Astro app.
-3. Decide whether to adopt a smaller interactive label size and update `--ch-text-sm` accordingly.
-4. Add automated smoke tests for the Tailwind preset/plugin (snapshot or fixture coverage).
-5. Expand docs coverage (guides, package reference, theming recipes) and integrate live playground snippets.
-6. Re-run GitHub Pages workflow (after local package builds) to validate base-path assets + ripple initializer bundle.
-7. Keep docs ripple helper in sync with `@chamfer/behavior` (longer-term: import the built bundle instead of duplicating logic).
-8. Integrate Spinner component into Button loading state (button.mdx, button playground).
+1. Run `pnpm --filter @chamfer/tokens build` and `pnpm --filter @chamfer/core build` locally (sandbox blocks `tsx`).
+2. Button follow-up: regenerate package builds locally and plan spinner integration for the loading state.
+3. Smoke-test the React playground locally (`pnpm --filter @chamfer/playground-react dev`) to confirm theme toggles still behave; repeat for the other playgrounds once dependencies are installed.
+4. Add SEO integrations (sitemap, structured data) + global navigation polish in Astro app.
+5. Decide whether to adopt a smaller interactive label size and update `--ch-text-sm` accordingly.
+6. Add automated smoke tests for the Tailwind preset/plugin (snapshot or fixture coverage).
+7. Expand docs coverage (guides, package reference, theming recipes) and integrate live playground snippets.
+8. Re-run GitHub Pages workflow (after local package builds) to validate base-path assets + ripple initializer bundle.
+9. Keep docs ripple helper in sync with `@chamfer/behavior` (longer-term: import the built bundle instead of duplicating logic).
 
 ## Upcoming Questions
 
@@ -103,4 +104,3 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - High contrast toggle now re-colors the docs shell (tokens + controls) and disables decorative ripple for clarity.
 - Ripple timing tweaks: solid buttons use foreground-derived blends, transparent variants lighten their waves, and buttons suppress active backgrounds while the ripple animation runs to avoid state clashes. Ripples now spawn on press down, stay filled until release, then fade via a dedicated exit animation.
 - Authored new documentation pages for Behaviors (overview + Ripple deep dive) and a Theming Recipes guide capturing ripple customisation snippets.
-- Spinner component shipped end-to-end: spec drafted (`components/spinner.md`), core CSS implemented with tone/size variants and animation keyframes (`packages/core/src/spinner.css`), React wrapper added (`packages/react` exports `Spinner` component), HTML playground created (`apps/playground/html/html/components/spinner.html`), comprehensive documentation written (`apps/docs/src/content/docs/components/spinner.mdx` + `apps/docs/src/pages/components/spinner.astro`), and package builds verified (`@chamfer/core` bundle includes spinner CSS with animation).

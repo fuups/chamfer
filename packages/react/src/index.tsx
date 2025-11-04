@@ -2,7 +2,6 @@ import type {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   ForwardedRef,
-  HTMLAttributes,
   MutableRefObject
 } from "react";
 import { forwardRef, useCallback, useEffect, useRef } from "react";
@@ -12,8 +11,6 @@ import { enhanceButton } from "@chamfer/behavior";
 export type ButtonTone = "primary" | "secondary" | "success" | "warning" | "danger";
 export type ButtonEmphasis = "solid" | "soft" | "flat" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
-export type SpinnerTone = "primary" | "secondary" | "success" | "warning" | "danger" | "info";
-export type SpinnerSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -96,56 +93,3 @@ const ButtonInner = (
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(ButtonInner);
 Button.displayName = "ChamferButton";
-
-export interface SpinnerProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  tone?: SpinnerTone;
-  size?: SpinnerSize;
-  label?: string;
-  paused?: boolean;
-}
-
-const SpinnerInner = (
-  {
-    tone = "primary",
-    size = "md",
-    label,
-    paused = false,
-    className,
-    role = "status",
-    "aria-label": ariaLabel,
-    "aria-busy": ariaBusy,
-    ...rest
-  }: SpinnerProps,
-  forwardedRef: ForwardedRef<HTMLDivElement>
-) => {
-  const classes = [
-    "ch-spinner",
-    size && `ch-spinner--${size}`,
-    tone && `ch-spinner--${tone}`,
-    className
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <div
-      ref={forwardedRef}
-      data-ch-component="spinner"
-      data-ch-paused={paused ? "true" : undefined}
-      className={classes}
-      role={role}
-      aria-busy={ariaBusy ?? "true"}
-      aria-label={ariaLabel ?? label}
-      {...rest}
-    >
-      <svg viewBox="0 0 24 24" className="ch-spinner__icon">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="62.83 62.83" />
-      </svg>
-      {label && <span className="ch-spinner__label">{label}</span>}
-    </div>
-  );
-};
-
-export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(SpinnerInner);
-Spinner.displayName = "ChamferSpinner";
