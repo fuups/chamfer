@@ -42,6 +42,7 @@ const withBase = (path) => {
 
 const initButtonsSrc =
   import.meta.env?.DEV === true ? initButtonsScript : withBase(initButtonsScript);
+
 const navGroups = [
   {
     title: "Getting Started",
@@ -473,7 +474,7 @@ const navGroups = [
           gap: var(--ch-space-lg);
         }
       }
-      </style>
+    </style>
     <script type="module" src={initButtonsSrc}></script>
   </body>
 </html>

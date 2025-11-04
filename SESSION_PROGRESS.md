@@ -1,6 +1,6 @@
 # Chamfer UI - Session Progress
 
-_Last update: Ripple helper now ships as a hashed module (Astro build asset inline limit disabled) so GitHub Pages serves it without `data:` URL mishaps; mobile drawer polish already landed._
+_Last update: Docs ripple helper now bundles as a hashed asset (inline limit disabled) with behavior logic inlined for GitHub Pages compatibility; mobile drawer polish already landed._
 
 ## Current Status
 
@@ -43,6 +43,7 @@ _Last update: Ripple helper now ships as a hashed module (Astro build asset inli
 6. Add automated smoke tests for the Tailwind preset/plugin (snapshot or fixture coverage).
 7. Expand docs coverage (guides, package reference, theming recipes) and integrate live playground snippets.
 8. Re-run GitHub Pages workflow (after local package builds) to validate base-path assets + ripple initializer bundle.
+9. Keep docs ripple helper in sync with `@chamfer/behavior` (longer-term: import the built bundle instead of duplicating logic).
 
 ## Upcoming Questions
 
@@ -89,3 +90,4 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Polished mobile docs UI (hamburger icon, dedicated favicon, full-screen drawer, ripple script inlined) and ensured footer links/logo ignore visited colors.
 - Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and locked the ripple initializer to a standalone hashed module (via `?url` + `assetsInlineLimit: 0`) so local/dev builds and GitHub Pages share the same entry point.
 - Raised mobile drawer z-index above the sticky header, tightened hamburger/logo spacing, and updated `withBase` to skip scheme-prefixed URLs while preventing duplicate base prefixes (handles `/chamfer/_astro/*` correctly).
+- Inlined the current `enhanceButton` ripple logic inside the docs helper so GitHub Pages can load it without relying on workspace module resolution.
