@@ -36,6 +36,9 @@ export default defineConfig({
     remarkPlugins: [[prefixInternalLinks, { basePath: SITE_BASE }]]
   },
   vite: {
+    build: {
+      assetsInlineLimit: 0
+    },
     css: {
       postcss: path.resolve(__dirname, "postcss.config.cjs")
     },

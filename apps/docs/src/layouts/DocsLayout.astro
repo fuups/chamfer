@@ -22,7 +22,7 @@ const relativePath =
 
 const withBase = (path) => {
   if (!path) return path;
-  if (/^(https?:)?\/\//.test(path) || path.startsWith("mailto:") || path.startsWith("#")) {
+  if (/^[a-zA-Z]+:/.test(path) || path.startsWith("#")) {
     return path;
   }
   if (path.startsWith("/@")) {
@@ -33,6 +33,9 @@ const withBase = (path) => {
   }
   return `${basePath}${path}`;
 };
+
+const initButtonsSrc =
+  import.meta.env?.DEV === true ? initButtonsScript : withBase(initButtonsScript);
 const navGroups = [
   {
     title: "Getting Started",
@@ -465,6 +468,6 @@ const navGroups = [
         }
       }
       </style>
-    <script type="module" src={withBase(initButtonsScript)}></script>
+    <script type="module" src={initButtonsSrc}></script>
   </body>
 </html>

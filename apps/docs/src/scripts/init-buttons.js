@@ -1,5 +1,11 @@
 import { enhanceButton } from "@chamfer/behavior";
 
+/**
+ * Chamfer docs ripple initializer. Bundled as a standalone module so CI/CD hosts
+ * (GitHub Pages) serve it with the correct MIME type. See `astro.config.mjs`
+ * for the custom `assetsInlineLimit` setup that keeps this from being inlined.
+ */
+
 const registry = new Map();
 
 function enhanceAll(root = document) {

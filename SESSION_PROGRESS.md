@@ -1,6 +1,6 @@
 # Chamfer UI - Session Progress
 
-_Last update: Mobile drawer polish landed (z-index, hamburger spacing) and ripple initializer now loads through a `?url` bundled module with dev-safe base handling._
+_Last update: Ripple helper now ships as a hashed module (Astro build asset inline limit disabled) so GitHub Pages serves it without `data:` URL mishaps; mobile drawer polish already landed._
 
 ## Current Status
 
@@ -87,5 +87,5 @@ Keep this file updated as tasks progress to avoid context loss across long-runni
 - Added GitHub Pages workflow (`.github/workflows/deploy-docs.yml`) and configured Astro site metadata so the docs site can deploy automatically from `main`.
 - Updated docs build to respect base paths (GitHub Pages) and prefixed internal links/navigation so asset and page URLs resolve when hosted under `/chamfer`.
 - Polished mobile docs UI (hamburger icon, dedicated favicon, full-screen drawer, ripple script inlined) and ensured footer links/logo ignore visited colors.
-- Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and switched the ripple initializer to a bundled inline module import so builds work locally and on GitHub Pages.
-- Raised mobile drawer z-index above the sticky header, tightened hamburger/logo spacing, and routed the ripple helper through a `?url`-bundled module while guarding dev `/@` paths in `withBase`.
+- Upgraded docs stack to Astro 5 + `@astrojs/mdx` 4 and locked the ripple initializer to a standalone hashed module (via `?url` + `assetsInlineLimit: 0`) so local/dev builds and GitHub Pages share the same entry point.
+- Raised mobile drawer z-index above the sticky header, tightened hamburger/logo spacing, and updated `withBase` to skip scheme-prefixed URLs so hashed assets and dev `/@` paths resolve correctly.
