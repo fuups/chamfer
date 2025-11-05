@@ -12,20 +12,20 @@ Chamfer’s tokens are deliberately semantic. You can rebrand or adjust interact
 
 ## Adjust ripple strength
 
-Chamfer components share the generic ripple tokens `--ch-ripple-color`, `--ch-ripple-hover-opacity`, and `--ch-ripple-pressed-opacity`. Increase the opacity on dark surfaces or dial it back for subtle cards.
+Chamfer components share the generic ripple tokens `--ch-ripple-color`, `--ch-ripple-enter-opacity`, and `--ch-ripple-exit-opacity`. Increase the opacity on dark surfaces or dial it back for subtle cards.
 
 ```css
 /* Brighter wave on primary solid buttons */
 .app-shell .ch-button--solid.ch-button--primary {
   --ch-ripple-color: color-mix(in oklab, var(--ch-action-primary-bg) 18%, white 82%);
-  --ch-ripple-hover-opacity: 0.12;
-  --ch-ripple-pressed-opacity: 0.28;
+  --ch-ripple-enter-opacity: 0.38;
+  --ch-ripple-exit-opacity: 0.28;
 }
 
 /* Very light ripple for tinted surfaces */
 .surface-soft [data-ch-component="button"] {
-  --ch-ripple-hover-opacity: 0.04;
-  --ch-ripple-pressed-opacity: 0.12;
+  --ch-ripple-enter-opacity: 0.18;
+  --ch-ripple-exit-opacity: 0.08;
 }
 ```
 

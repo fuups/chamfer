@@ -5,10 +5,10 @@
   --ch-button-hover-bg: var(--ch-button-bg);
   --ch-button-active-bg: var(--ch-button-bg);
   --ch-ripple-color: currentColor;
-  --ch-ripple-hover-opacity: 0.08;
-  --ch-ripple-pressed-opacity: 0.16;
-  --ch-ripple-duration: 240ms;
-  --ch-ripple-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --ch-ripple-duration: 320ms;
+  --ch-ripple-easing: cubic-bezier(0.3, 0.87, 0.5, 1);
+  --ch-ripple-enter-opacity: 0.32;
+  --ch-ripple-exit-opacity: 0.18;
 
   position: relative;
   display: inline-flex;
@@ -46,14 +46,14 @@
 
   :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
     --ch-ripple-color: color-mix(in oklab, var(--ch-button-bg) 18%, white 82%);
-    --ch-ripple-hover-opacity: 0.1;
-    --ch-ripple-pressed-opacity: 0.22;
+    --ch-ripple-enter-opacity: 0.36;
+    --ch-ripple-exit-opacity: 0.24;
   }
 
   .dark :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
     --ch-ripple-color: color-mix(in oklab, var(--ch-button-bg) 12%, white 88%);
-    --ch-ripple-hover-opacity: 0.12;
-    --ch-ripple-pressed-opacity: 0.26;
+    --ch-ripple-enter-opacity: 0.4;
+    --ch-ripple-exit-opacity: 0.28;
   }
 
   :is(.ch-button, [data-ch-component="button"]).ch-button--soft,
@@ -61,27 +61,27 @@
   :is(.ch-button, [data-ch-component="button"]).ch-button--outline,
   :is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
     --ch-ripple-color: color-mix(in oklab, var(--ch-button-fg) 40%, transparent);
-    --ch-ripple-hover-opacity: 0.06;
-    --ch-ripple-pressed-opacity: 0.14;
+    --ch-ripple-enter-opacity: 0.26;
+    --ch-ripple-exit-opacity: 0.12;
   }
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid {
-  --ch-ripple-color: rgba(255, 255, 255, 0.32);
-  --ch-ripple-hover-opacity: 0.1;
-  --ch-ripple-pressed-opacity: 0.22;
+  --ch-ripple-color: rgba(255, 255, 255, 0.34);
+  --ch-ripple-enter-opacity: 0.36;
+  --ch-ripple-exit-opacity: 0.24;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--soft,
 :is(.ch-button, [data-ch-component="button"]).ch-button--flat,
 :is(.ch-button, [data-ch-component="button"]).ch-button--outline,
 :is(.ch-button, [data-ch-component="button"]).ch-button--ghost {
-  --ch-ripple-hover-opacity: 0.06;
-  --ch-ripple-pressed-opacity: 0.14;
+  --ch-ripple-enter-opacity: 0.26;
+  --ch-ripple-exit-opacity: 0.12;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger {
-  --ch-ripple-pressed-opacity: 0.24;
+  --ch-ripple-exit-opacity: 0.26;
 }
 
 :is(.ch-button, [data-ch-component="button"]).ch-button--solid.ch-button--danger :is(.ch-button__leading, .ch-button__trailing) {
@@ -422,53 +422,4 @@
 
 :is(a.ch-button, a[data-ch-component="button"]):visited {
   color: var(--ch-button-fg, var(--ch-text-primary));
-}
-
-/* Ripple effect for dynamic span elements */
-:is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background-color: currentColor;
-  opacity: 0.3;
-  pointer-events: none;
-  transform: scale(0);
-  animation: ch-ripple-enter 320ms cubic-bezier(0.3, 0.87, 0.5, 1) forwards;
-}
-
-:is(.ch-button, [data-ch-component="button"]) .ch-ripple--exit {
-  animation: ch-ripple-exit 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes ch-ripple-enter {
-  from {
-    transform: scale(0);
-    opacity: 0.3;
-  }
-  to {
-    transform: scale(1);
-    opacity: 0.15;
-  }
-}
-
-@keyframes ch-ripple-exit {
-  from {
-    transform: scale(1);
-    opacity: 0.15;
-  }
-  to {
-    transform: scale(1.1);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-    animation-duration: 1ms;
-  }
-}
-
-@media (forced-colors: active) {
-  :is(.ch-button, [data-ch-component="button"]) .ch-ripple {
-    display: none;
-  }
 }

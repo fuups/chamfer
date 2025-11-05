@@ -12,9 +12,9 @@ Chamfer’s ripple mirrors the press feedback used in the playground demos: a wa
 
 ## Lifecycle
 
-1. **Pointer or key down:** The helper ensures a `.ch-ripple > .ch-ripple__surface` container exists, toggles `is-pressed`, and animates the surface `::after` from the interaction point.
-2. **Holding the press:** The ripple remains at full opacity until the user releases. Multiple simultaneous presses reuse the same pseudo-element but restart the animation.
-3. **Pointer or key up:** The helper lets the animation finish, then clears `is-pressed` so the overlay fades away.
+1. **Pointer or key down:** The helper appends a `<span class="ch-ripple">` inside the host, sizes it so the wave reaches the furthest corner, and starts the enter animation from the interaction point.
+2. **Holding the press:** The ripple remains active until the user releases. Additional presses reuse the computed size but spawn new spans as needed.
+3. **Pointer or key up:** The helper toggles the `ch-ripple--exit` class so the wave fades before the span is removed from the DOM.
 4. **Cancellation:** If the pointer is cancelled or keyboard focus moves away, the ripple exits immediately.
 
 The ripple automatically disables when `prefers-reduced-motion: reduce` is active or when the page is in forced-colors mode.
@@ -57,21 +57,21 @@ const destroyRipple = enhanceRipple(cardElement);
 
 ## Styling hooks
 
-- `.ch-ripple` and `.ch-ripple__surface` are injected automatically and inherit the host border radius.
-- Hover and press states toggle `is-hovered` / `is-pressed` on the surface, letting CSS handle the opacity changes.
-- Customise the effect with CSS variables:
+- `.ch-ripple` spans are created automatically and inherit the host’s border radius.
+- Release animations add the `ch-ripple--exit` modifier.
+- Customise the effect with CSS variables on the host:
   - `--ch-ripple-color`
-  - `--ch-ripple-hover-opacity`
-  - `--ch-ripple-pressed-opacity`
+  - `--ch-ripple-enter-opacity`
+  - `--ch-ripple-exit-opacity`
   - `--ch-ripple-duration`
   - `--ch-ripple-easing`
-  - `--ch-ripple-min-press`
 
 ```css
 /* Scope a stronger wave to primary surfaces */
 .surface-dark .ch-button--solid.ch-button--primary {
   --ch-ripple-color: color-mix(in oklab, #ffffff 85%, var(--ch-action-primary-bg) 15%);
-  --ch-ripple-pressed-opacity: 0.26;
+  --ch-ripple-enter-opacity: 0.4;
+  --ch-ripple-exit-opacity: 0.28;
 }
 
 /* Disable ripple entirely for secondary actions */
@@ -84,8 +84,8 @@ const destroyRipple = enhanceRipple(cardElement);
   position: relative;
   overflow: hidden;
   --ch-ripple-color: color-mix(in oklab, currentColor 40%, transparent);
-  --ch-ripple-hover-opacity: 0.05;
-  --ch-ripple-pressed-opacity: 0.18;
+  --ch-ripple-enter-opacity: 0.24;
+  --ch-ripple-exit-opacity: 0.12;
 }
 ```
 

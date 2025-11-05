@@ -34,7 +34,7 @@ _Last update: Docs ripple helper now bundles as a hashed asset (inline limit dis
 - Button playground showcases loading, raised ripple, anchor/input semantics, and RTL overflow scenarios; Tailwind preset exposes matching button spacing/radius tokens.
 - Ripple entry animation eased to start from a smaller wave so presses feel less “poppy” while still covering the full control (`packages/core/src/base.css`, `packages/core/src/button.css`).
 - Ripple styling is now component-agnostic: baseline CSS exposes `--ch-ripple-*` tokens and button styles map their semantics onto those shared hooks. Default hover/press opacities are dialed back so the wave reads as subtle feedback instead of a flash.
-- Ripple helper now mirrors the Material ripple structure: it injects a dedicated container+pseudo-element, drives hover/press via classes, and leaves colour/opacity entirely in CSS (`--ch-ripple-*` tokens) for predictable overrides.
+- Ripple helper appends per-interaction `<span class="ch-ripple">` waves; CSS variables control colour, timing, and entry/exit opacity so the effect stays consistent across surfaces.
 - Docs playground now imports `@chamfer/behavior` directly; removed the bespoke `init-buttons.js` shim so live demos stay in lockstep with the package.
 - Authored `COMPONENT_CREATION_GUIDE.md` to capture the soup-to-nuts workflow for shipping a new component; linked it from `AGENTS.md` alongside the design system and documentation guides.
 
